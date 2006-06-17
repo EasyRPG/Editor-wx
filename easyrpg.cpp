@@ -99,7 +99,7 @@ bool MyApp::OnInit()
 MyFrame::MyFrame(const wxString& title)
        : wxFrame(NULL, wxID_ANY, title)
 {
-    SetIcon(wxICON(sample));
+    SetIcon(wxICON(easyrpg));
 
     //Menu bar
     wxMenu *fileMenu = new wxMenu;
