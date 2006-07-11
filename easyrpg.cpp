@@ -9,7 +9,6 @@
 #endif
 
 #include "wx/artprov.h"
-#include "wx/sysopt.h"
 
 #if !defined(__WXMSW__) && !defined(__WXPM__)
     #include "easyrpg.xpm"
