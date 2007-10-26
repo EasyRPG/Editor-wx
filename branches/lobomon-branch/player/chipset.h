@@ -42,7 +42,7 @@
         bool GenerateFromSurface(SDL_Surface * Surface);
         bool GenerateFromFile(string Filename);
         void Release();
-               
+        void dispose();     
         void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
         void RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination);
         void RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination);

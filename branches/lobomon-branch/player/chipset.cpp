@@ -36,7 +36,7 @@
 
         int CurrentTile = 0;
 
-       	// Generate water A
+        // Generate water A
         for (int j=0; j<3; j++)
             for (int i=0; i<47; i++, CurrentTile++)
                 RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 0, i);
@@ -81,7 +81,11 @@
         SDL_Surface * FileSurface = LoadSurface(Filename);
         return GenerateFromSurface(FileSurface);
     }
-
+    void stChipset::dispose()
+    {
+         SDL_FreeSurface(BaseSurface); 
+         SDL_FreeSurface(ChipsetSurface); 
+    }
 
     // =========================================================================
     void stChipset::RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame)

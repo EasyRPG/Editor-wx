@@ -1,0 +1,42 @@
+
+#include "SDL_TTF.h"
+#include <SDL/SDL.h>
+#include "font.h"
+void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
+{	Fname="../Fonts/BASKVILL.TTF";
+    size=14;
+    fR=255;
+    fG=255;
+    fB=255;
+    TTF_Init();
+}    
+
+SDL_Surface* Font::drawText(char* string)
+{
+   TTF_Font* font = TTF_OpenFont(Fname, size);
+   SDL_Color foregroundColor = { fR, fG, fB };  
+   SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+   TTF_CloseFont(font); 
+   return(textSurface); 
+}
+SDL_Surface* Font::drawText(const char* string)
+{
+   TTF_Font* font = TTF_OpenFont(Fname, size);
+   SDL_Color foregroundColor = { fR, fG, fB };  
+   SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+   TTF_CloseFont(font);
+   return(textSurface); 
+   
+}
+SDL_Surface* Font::drawText(char* string,int r, int b,int g)
+{
+   TTF_Font* font = TTF_OpenFont(Fname, size);
+   SDL_Color foregroundColor = { r, g, b };
+   SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+   TTF_CloseFont(font);
+   return(textSurface); 
+}
+void Font::Quit()//esto es asi porque no se me ocurre aun algo mejor
+{
+TTF_Quit();
+}

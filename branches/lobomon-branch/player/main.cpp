@@ -16,33 +16,156 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-    #include "SDL.h"
+    #include <SDL/SDL.h>
+    #include <SDL/SDL_image.h>
+    #include <SDL/SDL_mixer.h>
+
     #include "tools.h"
     #include "map.h"
-    #include "window.h"
-    using namespace std;
-
+    #include "bitmap.h"
+    #include "sprite.h"
+    #include "key.h"
+    #include "font.h"
+    #include "audio.h"
+    #include <vector>
+    #include <string>  
+    #include "player.h"
+    #include "enemy.h"     
+    #include "scene.h"
+    #define SCREEN_SIZE_X  320
+    #define SCREEN_SIZE_Y  240
+    
+    bool running = true;
+    unsigned char TheScene=0;
+    Mix_Music *musica;
     SDL_Surface * Screen;
     unsigned long nextTicks = 0, fps = 0, frames = 0;
     char stringBuffer[255];
+    unsigned char speed=4,timer=0;
+    unsigned long FRECUENCIA=18;
+    Scene * actual;
+    Map_Scene mapas;
+    Title_Scene titulo;
+    GO_Scene fin;
+    Save_Load_Menu_Scene        Menu_Save_Load;
+    Euip_Menu_Scene             Menu_Euip;
+    Main_Menu_Scene             Menu_Main;
+    Objects_Menu_Scene          Menu_Objects;
+    Stats_Menu_Scene            Menu_Stats;
+    Skills_Menu_Scene           Menu_Skills;
+    Batle_Scene                 batalla;
+int fps_sincronizar (void)
+{
+	static int t;
+	static int tmp;
+	static int tl = 0;
+    static int fps=0;
+    static unsigned long nextTicks=0;
+     char stringBuffer[255];
+    fps++;
+	t = SDL_GetTicks ();//t tiempo trascurrido tl tiempo anterior
+    if(SDL_GetTicks() > nextTicks)//cada que pase un segudo
+    {nextTicks = SDL_GetTicks() + 1000;
+     sprintf(stringBuffer, "Map test - FPS %lu ", fps);//imprime el numero de frames
+     SDL_WM_SetCaption (stringBuffer, NULL);
+     if(fps<59)
+     FRECUENCIA--;
+     if(fps>59)
+     FRECUENCIA++;
+     fps=0;
+    } 
+    if (t - tl >= FRECUENCIA)// si se tarda mas que la frecuencia
+	{ 
+		tmp = (t - tl) / FRECUENCIA;
+		tl += tmp * FRECUENCIA;//incremente tiempo  pasado
+		return tmp;// retorna temp para que refresque mas la movimientos
+	}
+	else// si se tarda menos
+	{
+		SDL_Delay (FRECUENCIA - (t - tl));//retardalo la frecuencia menos el tiempo actual
+		tl += FRECUENCIA;//incremente tiempo  pasado
+		return 1;
+	}
+}
+ void CambioScene(Audio myaudio, Scene  ** apuntador) //si no haces esto, te cartgas la memoria donde lo estas ejecutando
+ {   unsigned static char LastScene=0; 
+      if(TheScene!=LastScene)
+     {  //si alguie encuntra una mejor forma de hacerlo que avise -_- 
+      (**apuntador).dispose();
+      if(TheScene==0)
+        { 
+         titulo.init(& myaudio,& running,& TheScene);
+         *apuntador=(& titulo);
+         LastScene=0;
+         }
+      if(TheScene==1)
+        { 
+         mapas.init(&myaudio,320,240,& TheScene);
+        *apuntador=& mapas;
+         LastScene=1;
+         }
+       if(TheScene==2)
+        { 
+         batalla.init(& myaudio,& running,& TheScene);
+        *apuntador=& batalla;
+         LastScene=2;
+         } 
+       if(TheScene==3)
+        { 
+        fin.init(& myaudio,& running,& TheScene);
+        *apuntador=& fin;
+         LastScene=3;
+         }   
+        if(TheScene==4)
+        { 
+        Menu_Main.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Main;
+         LastScene=4;
+         }
+        if(TheScene==5)
+        { 
+        Menu_Objects.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Objects;
+         LastScene=5;
+         }
+        if(TheScene==6)
+        { 
+        Menu_Skills.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Skills;
+         LastScene=6;
+         }       
+         if(TheScene==7)
+        { 
+        Menu_Euip.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Euip;
+         LastScene=7;
+         }
+        if(TheScene==8)
+        { 
+        Menu_Stats.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Stats;
+         LastScene=8;
+         }  
 
-    void CalculateFPS()
-    {
-        frames++;
-        if ( SDL_GetTicks() > nextTicks )
-        {
-            fps = frames;
-            frames = 0;
-            nextTicks = SDL_GetTicks() + 1000;
+        if(TheScene==9)
+        { 
+        Menu_Save_Load.init(& myaudio,& running,& TheScene);
+        *apuntador=& Menu_Save_Load;
+         LastScene=9;
+         }                  
+      }
+ }
+ 
+ 
+           
+ int main(int argc, char** argv)
+    {   Title_Scene titulo;
+        Audio myaudio;
+        
+       
 
-            sprintf(stringBuffer, "Map test - FPS %lu", fps);
-            SDL_WM_SetCaption (stringBuffer, NULL);
-        }
-    }
-
-    int main(int argc, char** argv)
-    {
-        // ===[ INITIALIZATION ]================================================
+        int repxciclo,i,j;
+	    // ===[ INITIALIZATION ]================================================
         // Start SDL
         if (SDL_Init (SDL_INIT_VIDEO) < 0) exit(1);
         atexit (SDL_Quit);
@@ -53,38 +176,21 @@
         if (videoInfo->hw_available) flags |= SDL_HWSURFACE;
         else                         flags |= SDL_SWSURFACE;
         if (videoInfo->blit_hw)      flags |= SDL_HWACCEL;
-
+//flags |= SDL_FULLSCREEN;
         // Start screen (set to 320x240)
-        Screen = SDL_SetVideoMode (320, 240, 16, flags );
+        Screen = SDL_SetVideoMode (SCREEN_SIZE_X  , SCREEN_SIZE_Y, 16, flags );
         if (Screen == NULL) exit(2);
-        SDL_WM_SetCaption ("Map test", NULL);
-
-        // ===[ LOADING MAP DATA ]==============================================
-        stMap Map;
-        if (argc!=2)
-        	Map.Load("Map0001.lmu");
-        else
-        	Map.Load(argv[1]);
-        Map.ShowInformation();
-        Map.Chipset.GenerateFromFile("ChipSet/Basis.png");
+        SDL_WM_SetCaption ("Proyecto 1", NULL);
 
         // ===[ ENTRY POINT ]===================================================
-        // Main loop
-        bool running = true;
+
         SDL_Event event;
-        unsigned char * keyData;
-        int cX = 0, cY = 0;
-
-        // TESTING BITMAPS!
-        //Bitmap bmp("Basis.png");
-        //Rect src(387, 32, 88, 64);
-        //Rect dest(0, 0, 64, 64);
-
-        //TESTING WINDOW!
-        //Window win("solidblue.png", 10, 10, 130, 107);
+         titulo.init(& myaudio,& running,& TheScene);
+        actual= & titulo;
 
         while (running)
-        {
+        {   
+            timer++;
             // Check for events
             while (SDL_PollEvent (&event));
             {
@@ -97,33 +203,19 @@
                         break;
                 }
             }
+	repxciclo = fps_sincronizar ();
+    SDL_FillRect(Screen, NULL, 0x0);// Clear screen    
+    for (i = 0; i < repxciclo; i ++)//estradas a lectrura de teclado
+	{
 
-            keyData = SDL_GetKeyState(NULL);
-            if ( keyData[SDLK_ESCAPE] ) running = false;
+         actual->updatekey( );
+	}
+           
+    actual->update(Screen);
+    CambioScene( myaudio, & actual);
+    SDL_Flip(Screen); // Flip
 
-            if ( keyData[SDLK_LEFT]  ) cX--;
-            if ( keyData[SDLK_RIGHT] ) cX++;
-            if ( keyData[SDLK_UP]    ) cY--;
-            if ( keyData[SDLK_DOWN]  ) cY++;
-
-            // Clear screen
-            SDL_FillRect(Screen, NULL, 0x0);
-
-                Map.Render(Screen, 0, cX, cY);
-                Map.Render(Screen, 1, cX, cY);
-                /*dest.x = cX;
-                dest.y = cY;
-                bmp.blit(Screen, dest, src);*/
-                //win.draw();
-
-            // Flip
-            SDL_Flip(Screen);
-
-            // Get FPS
-            CalculateFPS();
-
-            // Delay to ~60 fps
-            SDL_Delay(1000/60);
-        }
-        return true;
-    }
+    }        
+    SDL_Quit();
+    return true;
+ }
