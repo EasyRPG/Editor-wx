@@ -60,7 +60,34 @@ SDL_Surface * Sistem::Exdraw (int sizeX,int sizeY)
     SDL_FreeSurface(Eximg); 
 	return (CubeDraw ( Eximg2, sizeX, sizeY));
 }
+SDL_Surface * Sistem::Cube_select(int type,int sizeX,int sizeY)
+{   
+    SDL_Surface * screen;
+    screen = SDL_CreateRGBSurface(SDL_SWSURFACE, sizeX, sizeY, 16,0, 0,0, 0x000000ff);
+    int w = getw();
+	int h = geth();
+    int i,j;
+    int cubesX=((sizeX-2*w)/w+1);
+    int cubesY=((sizeY-1*h)/h);
+    
+ 	  for(j=1;j<cubesX+1;j++)
+	    for(i=1;i<cubesY+1;i++)
+	     draw (screen,(25+(4*type)),w*(j), h*(i));//cuadro
+   draw (screen,(4+(4*type)),0, 0);//esquina izq arriva
+    for(i=0;i<cubesX;i++)
+    draw (screen,(5+(4*type)),w*(i+1), 0);//recta horisontal arriva
+    for(i=0;i<cubesY;i++)
+    draw (screen,(24+(4*type)),0,h*(i+1));//recta vertical izq
+    draw (screen,(7+(4*type)),(sizeX-w), 0);//esquina derecha arriva
+    for(i=0;i<cubesY;i++)
+    draw (screen,(27+(4*type)),(sizeX-w), h*(i+1));//recta vertical derecha
+    draw (screen,(64+(4*type)),0, (sizeY-h));//esquina izquierda abajo
+    for(i=0;i<cubesX;i++)
+    draw (screen,(65+(4*type)),w*(i+1), (sizeY-h));//recta horisontal abajo
+    draw (screen,(67+(4*type)),(sizeX-w), (sizeY-h));//esquina derecha abajo
 
+	return (screen);
+}
 SDL_Surface * Sistem::ExdrawT (int sizeX,int sizeY,int tipe)
 {   SDL_Surface * Eximg;
     SDL_Surface * Eximg2;
@@ -79,8 +106,19 @@ void Faceset::init_Faceset(int posx,int posy,int theframe)//esto es asi porque n
          x = posx;
 	     y = posy;
 	     frame = theframe;
-	     cols=4;//redefinir
+
+         cols=4;//redefinir
 	     rows=4;//redefinir
+    	int w = 48;
+    	int h = 48;
+       SDL_Surface * Eximg;
+       Eximg = SDL_CreateRGBSurface(SDL_SWSURFACE,w, h, 16,0, 0,0, 0);
+	SDL_Rect fuente = {(frame%cols)* w,(frame/cols) * h, w, h};
+	SDL_Rect rect = {0,0, 0, 0};	
+	SDL_BlitSurface (img, & fuente,	Eximg, &rect);
+dispose();	 
+set_surface(Eximg);    
+
 }
 
 void Faceset::drawf (SDL_Surface * screen)
@@ -94,8 +132,8 @@ void Faceset::drawf (SDL_Surface * screen)
 }
 void Chara::init_Chara()//esto es asi porque no se me ocurre aun algo mejor
 {	    
-         x = 50;
-	     y = 50;
+         x = 12;
+	     y = 12;
 	     frame = 2;
 	     dir = 0;
 	     cols=3;
@@ -126,7 +164,13 @@ void Chara::frameupdate()
         delay=0;
         }
 }
-void Chara::draw (SDL_Surface * screen)
+void Chara::frame_ori()
+{    
+        if(frame!=0)
+        frame= 0;
+}
+
+void Chara::drawc (SDL_Surface * screen)
 {    int realframe;
 	int w = getw();
 	int h = geth();
@@ -136,13 +180,13 @@ void Chara::draw (SDL_Surface * screen)
 	SDL_BlitSurface (img, & fuente,	screen, &rect);
 }
 
-void Animacion::init_Anim()//esto es asi porque no se me ocurre aun algo mejor
+void Animacion::init_Anim(int the_cols,int the_rows)//esto es asi porque no se me ocurre aun algo mejor
 {	    
          x = 0;
 	     y = 0;
 	     frame = 0;
-	     cols=5;
-	     rows=2;
+	     cols=the_cols;
+	     rows=the_rows;
          maxframe=10;
          endanim=false;
          delay=0;
@@ -244,12 +288,12 @@ void Batler::draw (SDL_Surface * screen)
 */
 
 void Sprite::setimg(char* string)
-     {
+     { visible=true;
      not_clean =true;
      img = IMG_Load (string);
      }
 void Sprite::set_surface(SDL_Surface * imag)
- {   
+ {    visible=true;
      not_clean =true;
      img=imag;
  }
@@ -260,9 +304,9 @@ void Sprite::dispose()
       not_clean =false;}
 }
 void Sprite::draw (SDL_Surface * screen)
-{   
-	SDL_Rect rect = {x, y, 0, 0};	
-	SDL_BlitSurface (img, NULL,	screen, &rect);
+{   if(visible)
+{	SDL_Rect rect = {x, y, 0, 0};	
+	SDL_BlitSurface (img, NULL,	screen, &rect);}
 }
 
 int Sprite::colision(Sprite sp) {

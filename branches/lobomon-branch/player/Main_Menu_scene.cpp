@@ -8,14 +8,20 @@
 #include "map.h"
 #include <vector>
 #include <string>
-#include "player.h"
+#include "skill.h"
+#include "item.h"
 #include "enemy.h"
+#include "player.h"
+
 #include "scene.h"
 
-void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene)
-{    myaudio=theaudio;
+void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+{  int i;
+   myteam=TheTeam;
+   myaudio=theaudio;
    menu.init( theaudio, run, 0,5, 96, 125, 0, 0);
-   players.init(224,240,96,0);
+   players.init(theaudio, run,0,((*myteam).get_size()-1),224,240,96,0,166,48);
+   players.init_curXY(55,5); //ya eran muchos comandos
    gold.init(96,40,0,200);
    menu_exit.init( theaudio, run, 0,2, 96, 67, 112, 86);
    str_Vector.push_back("Objetos ");
@@ -32,21 +38,63 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
    menu_exit.visible=false; 
    running=  run;   
    NScene=TheScene;
+
+   gold.add_text("Gold",5,5);
+
+    char stringBuffer[255];
+    sprintf(stringBuffer, "$ %d", (*(*myteam).get_Gold()));
+    gold.add_text(stringBuffer,5,20);
+int space=60;
+
+
+for(i=0;i<(*myteam).get_size();i++)    
+{   
+   players.add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
+   players.add_text(((*myteam).get_name(i)),55,2+(i*space));
+   players.add_text(((*myteam).get_job(i)),150,2+(i*space));
+  
+   sprintf(stringBuffer, "Level %d  Normal", (*(*myteam).get_Level(i)));
+   players.add_text(stringBuffer,55,20+(i*space));
+   sprintf(stringBuffer, "Exp %d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
+   players.add_text(stringBuffer,55,37+(i*space));
+   sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
+   players.add_text(stringBuffer,150,20+(i*space));
+   sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
+   players.add_text(stringBuffer,150,37+(i*space));
+}
+ retardo =0;
+   
 }
 
 void Main_Menu_Scene::update(SDL_Surface* Screen)
-{   
+{  // static int retardo =0;
+if(retardo==0)
+{SDL_FillRect(Screen, NULL, 0x0);// Clear screen 
+ gold.draw(Screen);
+ players.draw(Screen);
+  menu.draw(Screen);
+}
+retardo++;
+   if(retardo==5)
+   {
    menu.draw(Screen);
-   players.draw(Screen);
-   gold.draw(Screen);
-   menu_exit.draw(Screen);      
+    players.draw(Screen);
+   menu_exit.draw(Screen); 
+   retardo=1;
+   }     
 }
 
 void Main_Menu_Scene::action()
 { int i;
-     for(i=0;i<5;i++)
+     for(i=1;i<4;i++)
      if(menu.getindexY()==i)
-    * NScene=i+5;  
+       players.visible=true;  
+    
+ if(menu.getindexY()==0)
+    * NScene=5;     
+  if(menu.getindexY()==4)
+    * NScene=9;  
+    
 if(menu.getindexY()==5)
    menu_exit.visible=true; 
 }
@@ -60,9 +108,26 @@ if(menu_exit.getindexY()==2)
     { menu_exit.visible=false; 
     menu_exit.restarmenu();
     menu.restarmenu();
+    retardo=0;
     }
 }
+
+void Main_Menu_Scene::action3()
+{    int i;
+  (*myteam).select=players.getindexY();
+   for(i=1;i<4;i++)
+     if(menu.getindexY()==i)
+        * NScene=5+i; 
+
+}
 void Main_Menu_Scene::updatekey() {
+if(players.visible)
+{
+players.updatekey();
+if(players.desition())
+action3();
+}
+
 if(menu_exit.visible)
 {
 menu_exit.updatekey();

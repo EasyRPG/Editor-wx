@@ -19,6 +19,18 @@ SDL_Surface* Font::drawText(char* string)
    TTF_CloseFont(font); 
    return(textSurface); 
 }
+
+void Font::draw_temp_Text(SDL_Surface* screen,char* string, int x, int y)
+{
+   TTF_Font* font = TTF_OpenFont(Fname, size);
+   SDL_Color foregroundColor = { fR, fG, fB };  
+   SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+   SDL_Rect textLocation = { x, y, 0, 0 };
+   SDL_BlitSurface(textSurface, NULL, screen, &textLocation);
+   SDL_FreeSurface(textSurface);
+   TTF_CloseFont(font);
+   
+}
 SDL_Surface* Font::drawText(const char* string)
 {
    TTF_Font* font = TTF_OpenFont(Fname, size);

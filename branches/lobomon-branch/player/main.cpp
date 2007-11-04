@@ -29,8 +29,10 @@
     #include "audio.h"
     #include <vector>
     #include <string>  
-    #include "player.h"
+    #include "skill.h"
+    #include "item.h"
     #include "enemy.h"     
+    #include "player.h" 
     #include "scene.h"
     #define SCREEN_SIZE_X  320
     #define SCREEN_SIZE_Y  240
@@ -53,7 +55,9 @@
     Objects_Menu_Scene          Menu_Objects;
     Stats_Menu_Scene            Menu_Stats;
     Skills_Menu_Scene           Menu_Skills;
+    Item_use_scene              Menu_item_use;
     Batle_Scene                 batalla;
+    Player_Team                 team;
 int fps_sincronizar (void)
 {
 	static int t;
@@ -94,65 +98,72 @@ int fps_sincronizar (void)
       (**apuntador).dispose();
       if(TheScene==0)
         { 
-         titulo.init(& myaudio,& running,& TheScene);
+         titulo.init(& myaudio,& running,& TheScene,& team);
          *apuntador=(& titulo);
          LastScene=0;
          }
       if(TheScene==1)
         { 
-         mapas.init(&myaudio,320,240,& TheScene);
+         mapas.init(&myaudio,320,240,& TheScene,& team);
         *apuntador=& mapas;
          LastScene=1;
          }
        if(TheScene==2)
         { 
-         batalla.init(& myaudio,& running,& TheScene);
+         batalla.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& batalla;
          LastScene=2;
          } 
        if(TheScene==3)
         { 
-        fin.init(& myaudio,& running,& TheScene);
+        fin.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& fin;
          LastScene=3;
          }   
         if(TheScene==4)
         { 
-        Menu_Main.init(& myaudio,& running,& TheScene);
+        Menu_Main.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Main;
          LastScene=4;
          }
         if(TheScene==5)
         { 
-        Menu_Objects.init(& myaudio,& running,& TheScene);
+        Menu_Objects.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Objects;
          LastScene=5;
          }
         if(TheScene==6)
         { 
-        Menu_Skills.init(& myaudio,& running,& TheScene);
+        Menu_Skills.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Skills;
          LastScene=6;
          }       
          if(TheScene==7)
         { 
-        Menu_Euip.init(& myaudio,& running,& TheScene);
+        Menu_Euip.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Euip;
          LastScene=7;
          }
         if(TheScene==8)
         { 
-        Menu_Stats.init(& myaudio,& running,& TheScene);
+        Menu_Stats.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Stats;
          LastScene=8;
          }  
 
         if(TheScene==9)
         { 
-        Menu_Save_Load.init(& myaudio,& running,& TheScene);
+        Menu_Save_Load.init(& myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Save_Load;
          LastScene=9;
-         }                  
+         }         
+       if(TheScene==10)
+        { 
+        Menu_item_use.init(& myaudio,& running,& TheScene,& team);
+        *apuntador=& Menu_item_use;
+         LastScene=10;
+         }   
+                  
       }
  }
  
@@ -185,7 +196,7 @@ int fps_sincronizar (void)
         // ===[ ENTRY POINT ]===================================================
 
         SDL_Event event;
-         titulo.init(& myaudio,& running,& TheScene);
+        titulo.init(& myaudio,& running,& TheScene,& team);
         actual= & titulo;
 
         while (running)
@@ -204,7 +215,7 @@ int fps_sincronizar (void)
                 }
             }
 	repxciclo = fps_sincronizar ();
-    SDL_FillRect(Screen, NULL, 0x0);// Clear screen    
+   // SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil   
     for (i = 0; i < repxciclo; i ++)//estradas a lectrura de teclado
 	{
 

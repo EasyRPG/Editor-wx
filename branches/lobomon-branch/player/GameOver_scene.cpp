@@ -8,12 +8,16 @@
 #include "map.h"
 #include <vector>
 #include <string>
-#include "player.h"
+#include "skill.h"
+#include "item.h"
 #include "enemy.h"
+#include "player.h"
 #include "scene.h"
 
-void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene)
-{   
+void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+{    myteam=TheTeam;
+   (*myteam).clear_team();
+   (*myteam).clear_obj();
      myaudio=theaudio;
      (*myaudio).musicload("../Music/2003sorrow.mid");
      title.x=0;

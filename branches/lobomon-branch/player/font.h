@@ -11,6 +11,7 @@ public:
       SDL_Surface* drawText(char* string);
       SDL_Surface* drawText(char* string,int r, int b,int g);
       SDL_Surface* drawText(const char* string);
+      void draw_temp_Text(SDL_Surface* screen,char* string, int x, int y);
       void Quit();
 
 };

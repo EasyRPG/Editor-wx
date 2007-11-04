@@ -4,9 +4,10 @@ class Sprite {
 protected:
             SDL_Surface * img;
           	int cols,rows;    
-          	int frame;
           	bool not_clean;
 public:
+     bool visible;
+    int frame;
     int x,y;   
     void setx(int posx) {x=posx;}
 	void sety(int posy) {y=posy;}
@@ -33,9 +34,10 @@ private:
   
 public:
     int dir;  
-    void init_Chara();     
+    void init_Chara();   
+    void frame_ori();  
     void frameupdate();
-   	void draw(SDL_Surface *screen);
+   	void drawc(SDL_Surface *screen);
 };
 
 class Faceset: public Sprite {
@@ -53,6 +55,7 @@ public:
     void draw (SDL_Surface * screen,int iframe,int posx,int posy);
     SDL_Surface * Exdraw (int sizeX,int sizeY);
     SDL_Surface * ExdrawT (int sizeX,int sizeY,int tipe);
+    SDL_Surface * Cube_select(int type,int sizeX,int sizeY);
 };
 class Animacion: public Sprite {
 private:
@@ -61,7 +64,7 @@ private:
 public:
     bool endanim; 
     void reset();
-    void init_Anim();     
+    void init_Anim(int the_cols,int the_rows);  
     void frameupdate();
    	void draw(SDL_Surface *screen);
 };
