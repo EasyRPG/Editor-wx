@@ -1,0 +1,26 @@
+/**
+	@file
+	@brief		ZLibà≥èkÇçsÇ§ÉNÉâÉX
+	@note		<éQçlURL> http://oku.edu.mie-u.ac.jp/~okumura/compression/zlib.html
+	@author		sue445
+*/
+#ifndef _INC_CZLIB
+#define _INC_CZLIB
+
+#include "CBasicStream.h"
+#include "smart_buffer.h"
+
+namespace sueLib {
+
+class CZLib{
+public:
+	static	bool Decompress(CBasicStream* pstInput, CBasicStream* pstOutput, unsigned int* lpSize=NULL);					///< zlibÇ≈ìWäJ
+	static	bool Compress(  CBasicStream* pstInput, CBasicStream* pstOutput, int nCompLv=-1, unsigned int* lpSize=NULL);	///< zlibÇ≈à≥èk
+
+	static	bool MemDecompress(const smart_buffer& bufSrc, smart_buffer& bufDst);						/// ÉÅÉÇÉäìWäJ
+	static	bool MemCompress(  const smart_buffer& bufSrc, smart_buffer& bufDst, int nCompLv=-1);		/// ÉÅÉÇÉäà≥èk
+};
+
+} // end of namespace sueLib
+
+#endif
