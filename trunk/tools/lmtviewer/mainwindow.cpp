@@ -8,7 +8,7 @@ mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wx
 
 	//Using native stock icons for treectrl for nice looking ^^.
 	//wxArtProvider does not load native Win32 icons, so we will get from our own technique ^^
-	#ifdef __WXMSW__
+#ifdef __WXMSW__
 	//Win32 TreeCtrl works only with 16x16 images
 	wxImageList* imageList = new wxImageList(16, 16);
 	// The number next filename and semicolon is the resource index number
@@ -17,12 +17,12 @@ mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wx
 	imageList->Add(wxIcon(wxT("shell32.dll;3"), wxBITMAP_TYPE_ICO, 16, 16)); // 3 is closed folder
 	imageList->Add(wxIcon(wxT("shell32.dll;4"), wxBITMAP_TYPE_ICO, 16, 16)); // 4 is opened folder
 	imageList->Add(wxIcon(wxT("shell32.dll;0"), wxBITMAP_TYPE_ICO, 16, 16)); // 0 is normal file
-	#else
+#else
 	wxImageList* imageList = new wxImageList;
 	imageList->Add(wxArtProvider::GetBitmap(wxART_FOLDER));
 	imageList->Add(wxArtProvider::GetBitmap(wxART_FILE_OPEN));
 	imageList->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE));
-	#endif
+#endif
 	maptree->AssignImageList(imageList);
 
 	//Sample fill, this will be replaced with LMT data in the future
@@ -59,7 +59,12 @@ void mainwindow::openbutton_click(wxCommandEvent &event)
 {
 	wxFileDialog * openlmtwindow = new wxFileDialog(this);
 	openlmtwindow->SetMessage(_("Select LcfMapTree file"));
+#ifdef __WXGTK__
+	// GTK+ is file name case sensitive
+	openlmtwindow->SetWildcard(_("LMT files (*.lmt)|*.[lL][mM][tT]"));
+#else
 	openlmtwindow->SetWildcard(_("LMT files (*.lmt)|*.lmt"));
+#endif
 	if (openlmtwindow->ShowModal() == wxID_OK)
 	{
 		wxString fileName = openlmtwindow->GetPath();
