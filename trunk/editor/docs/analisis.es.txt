@@ -85,6 +85,11 @@ la capa inferior. Bajo ningun concepto queda una celda del mapa sin ser
 adjudicado. Luego las celdas pueden ser modificadas con el editor.
 
 #
+NOMBRE: Abrir proyecto
+SINOPSIS: En este caso de uso se carga un proyecto ya creado en el editor
+cerrando previamente el anterior.
+
+#
 NOMBRE: Guardar proyecto
 SINOPSIS: En este caso de uso se guardan a disco las estructuras de datos
 que mantienen la información del proyecto.
@@ -117,3 +122,42 @@ marcando un cuadro y usando la técnica de 'banda de ule' con el mouse. Luego
 dicha selección (cuadro de aquí en más) puede ser dibujado en el mapa como un
 cuadro simple.
 Nota: en el dialogo 'SPRITES DEL MAPA' siempre hay seleccionado un cuadro.
+
+#
+NOMBRE: Seleccionar herramienta lapiz
+PRE: está seleccionada la capa inferior o la superior
+SINOPSIS: Se selecciona el modo de dibujo a mano alzada. Este coloca el cuadro
+seleccionado previamente en la celda escogida dentro del 'AREA DE EDICIÓN
+DEL MAPA'
+
+#
+NOMBRE: Editar capa inferior
+PRE: está seleccionada la capa inferior
+SINOPSIS: se dibuja el cuadro según la herramienta en la celda escogida en el
+'AREA DE EDICIÓN DEL MAPA' en la capa inferior
+
+#
+NOMBRE: Editar capa superior
+PRE: está seleccionada la capa superior
+SINOPSIS: se dibuja el cuadro según la herramienta en la celda escogida en el
+'AREA DE EDICIÓN DEL MAPA' en la capa superior
+
+#
+NOMBRE: Crear evento
+PRE: está seleccionada la capa de eventos
+PRE: la celda escogida no contiene eventos
+SINOPSIS: se crea un evento en la celda escogida del 'AREA DE EDICION DEL MAPA'
+en la capa de eventos
+
+#
+NOMBRE: Editar evento
+PRE: está seleccionada la capa de edición de eventos
+PRE: la celda seleccionada en el 'AREA DE EDICIÓN DEL MAPA' contiene un evento
+SINOPSIS: se modifican los datos del evento para la celda elegida en la capa de
+eventos
+
+#
+NOMBRE: Borrar evento
+PRE: está seleccionada la capa de edición de eventos
+PRE: la celda seleccionada en el 'AREA DE EDICIÓN DEL MAPA' contiene un evento
+SINOPSIS: se borra el evento de la celda elegida en la capa de eventos
