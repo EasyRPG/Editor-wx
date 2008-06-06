@@ -62,7 +62,6 @@ printf("posicion nave x %d \n",lmt.InitD.intAirshipX);
 printf("posicion nave y %d \n",lmt.InitD.intAirshipY);
 
 printf("\n");
-scanf("%d", &num);
 
 	return 0;
 }

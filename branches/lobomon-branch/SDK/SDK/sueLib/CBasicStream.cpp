@@ -4,7 +4,13 @@
 	@author		sue445
 */
 #include "CBasicStream.h"
+
+#ifdef __WIN32__
 #include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <fcntl.h>
 #include <sys/stat.h>
 
@@ -51,7 +57,7 @@ bool CBasicStream::OpenFromMemory(const void* pData, unsigned int nLength, bool 
 bool CBasicStream::OpenFromFile(const char* szFile, bool bWrite)
 {
 	if(m_bOpened)		return false;
-
+#ifdef __WIN32__
 	if(!bWrite){
 		m_nFile = _open( szFile, _O_BINARY | _O_RDONLY, _S_IREAD);
 	}
@@ -61,6 +67,19 @@ bool CBasicStream::OpenFromFile(const char* szFile, bool bWrite)
 	if(m_nFile==-1)		return false;	// ファイルのオープンに失敗
 
 	m_nLength	= static_cast< unsigned int >( _filelengthi64( m_nFile ) );
+#else
+	if(!bWrite){
+		m_nFile = open( szFile, O_RDONLY, S_IREAD);
+	}
+	else{
+		m_nFile = open( szFile, O_WRONLY | O_CREAT | O_TRUNC, S_IWRITE);
+	}
+	if(m_nFile==-1)		return false;	// ファイルのオープンに失敗
+
+        struct stat buffer;
+        fstat(m_nFile, &buffer);
+	m_nLength	= static_cast< unsigned int >( buffer.st_size );
+#endif
 	m_nPosition	= 0;
 	m_bFile		= true;
 	m_bOpened	= true;
@@ -83,7 +102,11 @@ void CBasicStream::Close()
 	m_pData = NULL;
 	m_nLength = m_nPosition = 0;
 	if(m_bFile){
+#ifdef __WIN32__
 		_close(m_nFile);
+#else
+		close(m_nFile);
+#endif
 		m_nFile = -1;
 		m_bFile = false;
 	}
@@ -118,7 +141,11 @@ void CBasicStream::SetSeek(int nPos, int nOrigin)
 
 	if(m_nPosition > m_nLength)		m_nPosition = m_nLength;
 
-	if(m_bFile)		_lseeki64(m_nFile, m_nPosition, SEEK_SET);
+#ifdef __WIN32__
+        if(m_bFile)		_lseeki64(m_nFile, m_nPosition, SEEK_SET);
+#else
+        if(m_bFile)		lseek64(m_nFile, m_nPosition, SEEK_SET);
+#endif
 }
 
 //=============================================================================
@@ -141,7 +168,11 @@ unsigned int CBasicStream::Read(void* pData, unsigned int nSize)
 	if(nSize > m_nLength-m_nPosition)	nSize = m_nLength - m_nPosition;
 
 	if(m_bFile){
+#ifdef __WIN32__
 		_read(m_nFile, pData, nSize);
+#else
+		read(m_nFile, pData, nSize);
+#endif
 	}
 	else{
 //		memcpy(pData, pSrc, nSize);
@@ -172,7 +203,11 @@ unsigned int CBasicStream::Write(const void* pData, unsigned int nSize)
 	if(!m_bFile && nSize > m_nLength-m_nPosition)	nSize = m_nLength - m_nPosition;
 
 	if(m_bFile){
+#ifdef __WIN32__
 		_write(m_nFile, pData, nSize);
+#else
+		write(m_nFile, pData, nSize);
+#endif
 	}
 	else{
 //		memcpy(pDst, pData, nSize);
