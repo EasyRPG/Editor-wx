@@ -140,76 +140,76 @@ void LMT::leafclear( DataofTree * leaf)
 	(*leaf).vcEnemyGroup.clear();	///< 0x29 grupo de enemigos
 	(*leaf).intNofsteeps	= 0;	///< 0x2C Pasos entre encuentros
 }
-	void LMT::GetNextChunk(FILE * Stream)
+void LMT::GetNextChunk(FILE * Stream)
 {
-	 int enemygroups=0,idgroup=0,enemy=0;
-	 unsigned int nodes=0, temp=0;
-		ReadCompressedInteger(Stream);
-		tChunk ChunkInfo; // informacion del pedazo leido
-		unsigned char Void;
-		DataofTree leaf;
-		leafclear(&leaf);
-		// Loop while we haven't reached the end of the file
-		while(nodes < treesize)
+	int enemygroups=0,idgroup=0,enemy=0;
+	unsigned int nodes=0, temp=0;
+	ReadCompressedInteger(Stream);
+	tChunk ChunkInfo; // informacion del pedazo leido
+	unsigned char Void;
+	DataofTree leaf;
+	leafclear(&leaf);
+	// Loop while we haven't reached the end of the file
+	while(nodes < treesize)
+	{
+		ChunkInfo.ID		= ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+		ChunkInfo.Length	= ReadCompressedInteger(Stream); // lectura de su tamaño
+		switch(ChunkInfo.ID) // segun el tipo
 		{
-			ChunkInfo.ID		= ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-			ChunkInfo.Length	= ReadCompressedInteger(Stream); // lectura de su tamaño
-			switch(ChunkInfo.ID) // segun el tipo
-			{
-				case CHUNK_NAME:
-					leaf.strName	= ReadString(Stream, ChunkInfo.Length);
-					break;
-				case CHUNK_IDF:
-					leaf.intIdMapF	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_DEPTH:
-					leaf.intDepth	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_FAREA:
-					leaf.intFlagMA	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_XBAR:
-					leaf.intXbar	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_YBAR:
-					leaf.intYbar	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_SON:
-					leaf.intSon	= ReadCompressedInteger(Stream);
-					break;
-				case CHUNK_FMUSIC:
-					leaf.intMusic	= ReadCompressedInteger(Stream); 
-					break;
-				case CHUNK_SMUSIC:
-					while (ChunkInfo.ID!=0)  
+			case CHUNK_NAME:
+				leaf.strName	= ReadString(Stream, ChunkInfo.Length);
+				break;
+			case CHUNK_IDF:
+				leaf.intIdMapF	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_DEPTH:
+				leaf.intDepth	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_FAREA:
+				leaf.intFlagMA	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_XBAR:
+				leaf.intXbar	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_YBAR:
+				leaf.intYbar	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_SON:
+				leaf.intSon	= ReadCompressedInteger(Stream);
+				break;
+			case CHUNK_FMUSIC:
+				leaf.intMusic	= ReadCompressedInteger(Stream); 
+				break;
+			case CHUNK_SMUSIC:
+				while (ChunkInfo.ID!=0)  
+				{
+					ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+					if(ChunkInfo.ID!=0)
+						ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño					switch(ChunkInfo.ID)// segun el tipo
 					{
-						ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-						if(ChunkInfo.ID!=0)
-							ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño						switch(ChunkInfo.ID)// segun el tipo
-						{
-							case 0x01:
-								leaf.stcMusic.Name_of_Sound_effect = ReadString(Stream, ChunkInfo.Length);
-								break;
-							case 0x02:
-								leaf.stcMusic.Fadein = ReadCompressedInteger(Stream);
-								break;
-							case 0x03:
-								leaf.stcMusic.Volume = ReadCompressedInteger(Stream);
-								break;
-							case 0x04:
-								leaf.stcMusic.Tempo = ReadCompressedInteger(Stream);
-								break;
-							case 0x05:
-								leaf.stcMusic.Balance = ReadCompressedInteger(Stream);
-								break;
-							case 0x00:
-								break;
-							default:
-								while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
-								break;
-						}
+						case 0x01:
+							leaf.stcMusic.Name_of_Sound_effect = ReadString(Stream, ChunkInfo.Length);
+							break;
+						case 0x02:
+							leaf.stcMusic.Fadein = ReadCompressedInteger(Stream);
+							break;
+						case 0x03:
+							leaf.stcMusic.Volume = ReadCompressedInteger(Stream);
+							break;
+						case 0x04:
+							leaf.stcMusic.Tempo = ReadCompressedInteger(Stream);
+							break;
+						case 0x05:
+							leaf.stcMusic.Balance = ReadCompressedInteger(Stream);
+							break;
+						case 0x00:
+							break;
+						default:
+							while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+							break;
 					}
-					break;
+				}
+				break;
 			case CHUNK_FBATLE:
 				leaf.intBatle	= ReadCompressedInteger(Stream);
 				break;
@@ -227,6 +227,7 @@ void LMT::leafclear( DataofTree * leaf)
 				break;
 			case CHUNK_AENEMYS:
 				enemygroups	= ReadCompressedInteger(Stream); // numero de grupos
+				idgroup = 0;
 				while(idgroup < enemygroups)
 				{
 					idgroup		= ReadCompressedInteger(Stream); //id de dato
