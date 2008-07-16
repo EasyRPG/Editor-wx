@@ -1,13 +1,32 @@
-#include "mainwindow.h"
+/* mainwindow.cpp, LMT Viewer window frame.
+   Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
-mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wxPoint& pos, const wxSize& size, long style):
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+#include "mainwindow.h"
+#include "tools.h"
+#include "LMT.h"
+
+
+mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wxPoint& pos, const wxSize& size, long WXUNUSED(style)):
 	wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
 	openbutton = new wxButton(this, wxID_OPEN, wxEmptyString);
 	maptree = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxSize(208,-1), wxTR_HAS_BUTTONS|wxTR_DEFAULT_STYLE|wxSUNKEN_BORDER);
 
-	//Using native stock icons for treectrl for nice looking ^^.
-	//wxArtProvider does not load native Win32 icons, so we will get from our own technique ^^
+	//Using native stock icons for treectrl for nice looking
+	//wxArtProvider does not load native Win32 icons, so we will get from our own technique
 #ifdef __WXMSW__
 	//Win32 TreeCtrl works only with 16x16 images
 	wxImageList* imageList = new wxImageList(16, 16);
@@ -31,7 +50,6 @@ mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wx
 	maptree->AppendItem(root, _("Rama 2"), 2);
 	maptree->AppendItem(root, _("Rama 3"), 2);
 	maptree->ExpandAll();
-
 	//wxGlade generated methods, I love it
 	set_properties();
 	do_layout();
@@ -55,8 +73,9 @@ void mainwindow::do_layout()
 	Layout();
 }
 
-void mainwindow::openbutton_click(wxCommandEvent &event)
+void mainwindow::openbutton_click(wxCommandEvent& WXUNUSED(event))
 {
+	LMT MYLMT;
 	wxFileDialog * openlmtwindow = new wxFileDialog(this);
 	openlmtwindow->SetMessage(_("Select LcfMapTree file"));
 #ifdef __WXGTK__
@@ -68,7 +87,10 @@ void mainwindow::openbutton_click(wxCommandEvent &event)
 	if (openlmtwindow->ShowModal() == wxID_OK)
 	{
 		wxString fileName = openlmtwindow->GetPath();
-		wxMessageBox(fileName);
-		//LMT file handling will be here
+		if(MYLMT.Load(fileName))
+		{
+			MYLMT.ShowInformation();
+		}
 	}
 }
+
