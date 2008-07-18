@@ -37,8 +37,6 @@
 		<Linker>
 			<Add option="`wx-config --libs`" />
 		</Linker>
-		<Unit filename="LMT.cpp" />
-		<Unit filename="LMT.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
 		<Unit filename="mainwindow.cpp" />
