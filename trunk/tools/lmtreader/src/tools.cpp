@@ -19,41 +19,40 @@
 #include <string.h>
 #include "tools.h"
 
-unsigned long ReadCompressedInteger(FILE * FileStream)
+int read_int(FILE * file)
 {
-	unsigned long Value = 0;
+	int Value = 0;
 	unsigned char Temporal = 0;
 	
-	// int i = 0;
 	do
 	{
 		Value <<= 7;
 		
 		// Get byte's value
-		fread(&Temporal, sizeof(char), 1, FileStream);
+		fread(&Temporal, sizeof(char), 1, file);
 		
 		// Check if it's a BER integer
-		Value |= Temporal&0x7F;
+		Value |= Temporal & 0x7F;
 		
-	} while (Temporal&0x80);
+	} while (Temporal & 0x80);
 	
 	return Value;
 }
 
-std::string ReadString(FILE * FileStream)
+std::string read_string(FILE * file)
 {
 	unsigned char Length;
 	char		* Characters;
 	std::string		String;
 	
-	// Read string lenght's
-	fread(&Length, sizeof(char), 1, FileStream);
+	// Read string length
+	fread(&Length, sizeof(char), 1, file);
 	if (Length == 0) return std::string("");
 	
 	// Allocate string buffer
 	Characters = new char[Length+1];
 	memset(Characters, 0, Length+1);
-	fread(Characters, sizeof(char), Length, FileStream);
+	fread(Characters, sizeof(char), Length, file);
 	
 	// Get string and free characters buffer
 	String = std::string(Characters);
@@ -62,15 +61,15 @@ std::string ReadString(FILE * FileStream)
 	return String;
 }
 
-std::string ReadString(FILE * FileStream, unsigned char Length)
+std::string read_string(FILE * file, int Length)
 {
 	char		* Characters;
-	std::string		String;
+	std::string	String;
 	
 	// Allocate string buffer
 	Characters = new char[Length+1];
 	memset(Characters, 0, Length+1);
-	fread(Characters, sizeof(char), Length, FileStream);
+	fread(Characters, sizeof(char), Length, file);
 	
 	// Get string and free characters buffer
 	String = std::string(Characters);
