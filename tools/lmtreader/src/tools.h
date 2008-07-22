@@ -17,50 +17,30 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-	// =========================================================================
-	#include <stdlib.h>
-	#include <stdio.h>
-	#include <string>
-	// =========================================================================
+// =========================================================================
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+// =========================================================================
+
+// --- Chunk structure -----------------------------------------------------
+// usada para guardar temporalemmte informacion de id  y  tamños de pedazos de mapa
+struct tChunk
+{
+	unsigned char ID;
 	
-	// --- Chunk structure -----------------------------------------------------
-	// usada para guardar temporalemmte informacion de id  y  tamños de pedazos de mapa
-	struct tChunk
+	union
 	{
-		unsigned char ID;
-		
-		union
-		{
-			unsigned long Length;
-			unsigned long NumEvents;
-		};
-		
-		unsigned long BytesRead;
+		unsigned long Length;
+		unsigned long NumEvents;
 	};
 	
-	// --- Read functions ------------------------------------------------------
-	unsigned long ReadCompressedInteger(FILE * FileStream);
-	std::string ReadString(FILE * FileStream);
-	std::string ReadString(FILE * FileStream, unsigned char Lenght);
-/*	
-	// --- Surface Tools -------------------------------------------------------
-	struct Color
-	{
-		unsigned char r, g, b;
-		// ---------------------------------------------------------------------
-		Color()					   { r=g=b=0; }
-		Color(int nr, int ng, int nb) { r=nr;g=ng;b=nb;}
-		
-		unsigned long GetColorFromFormat(SDL_PixelFormat * fmt)
-		{
-			return SDL_MapRGB(fmt, r, g, b);
-		}
-	};
-	
-	void SetTransparent(SDL_Surface * ima);
-	SDL_Surface * CreateSurface(int Width, int Height);
-	SDL_Surface * LoadSurface(string Filename);
-	SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
-	void DrawSurface(SDL_Surface * Destiny, int dX, int dY, SDL_Surface * Source, int sX=0, int sY=0, int sW=-1, int sH=-1);
-*/	
+	unsigned long BytesRead;
+};
+
+// --- Read functions ------------------------------------------------------
+int		read_int(FILE * file);
+std::string	read_string(FILE * file);
+std::string	read_string(FILE * file, int length);
+
 #endif
