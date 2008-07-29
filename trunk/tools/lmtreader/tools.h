@@ -25,16 +25,16 @@
 
 // --- Chunk structure -----------------------------------------------------
 // usada para guardar temporalemmte informacion de id  y  tamños de pedazos de mapa
-struct tChunk
+struct block
 {
-	unsigned char ID;
-	
+	unsigned char id;
+
 	union
 	{
-		unsigned long Length;
+		unsigned long size;
 		unsigned long NumEvents;
 	};
-	
+
 	unsigned long BytesRead;
 };
 

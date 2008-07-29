@@ -21,60 +21,62 @@
 
 int read_int(FILE * file)
 {
-	int Value = 0;
-	unsigned char Temporal = 0;
-	
+	int		value		= 0;
+	unsigned char	temporal	= 0;
+
 	do
 	{
-		Value <<= 7;
-		
+		value <<= 7;
+
 		// Get byte's value
-		fread(&Temporal, sizeof(char), 1, file);
-		
+		fread(&temporal, 1, 1, file);
+
 		// Check if it's a BER integer
-		Value |= Temporal & 0x7F;
-		
-	} while (Temporal & 0x80);
-	
-	return Value;
+		value |= temporal & 0x7F;
+
+	} while(temporal & 0x80);
+
+	return value;
 }
 
 std::string read_string(FILE * file)
 {
-	unsigned char Length;
-	char		* Characters;
-	std::string		String;
-	
+	unsigned char	length;
+	char		* characters;
+	std::string	result_string;
+
 	// Read string length
-	fread(&Length, sizeof(char), 1, file);
-	if (Length == 0) return std::string("");
-	
+	fread(&length, 1, 1, file);
+	if(length == 0)
+	{
+		return std::string("");
+	}
+
 	// Allocate string buffer
-	Characters = new char[Length+1];
-	memset(Characters, 0, Length+1);
-	fread(Characters, sizeof(char), Length, file);
-	
+	characters = new char[length+1];
+	memset(characters, 0, length+1);
+	fread(characters, 1, length, file);
+
 	// Get string and free characters buffer
-	String = std::string(Characters);
-	delete Characters;
-	
-	return String;
+	result_string = std::string(characters);
+	delete characters;
+
+	return result_string;
 }
 
-std::string read_string(FILE * file, int Length)
+std::string read_string(FILE * file, int length)
 {
-	char		* Characters;
-	std::string	String;
-	
-	// Allocate string buffer
-	Characters = new char[Length+1];
-	memset(Characters, 0, Length+1);
-	fread(Characters, sizeof(char), Length, file);
-	
-	// Get string and free characters buffer
-	String = std::string(Characters);
-	delete Characters;
-	
-	return String;
-}
+	char		* characters;
+	std::string	result_string;
 
+	// Allocate string buffer
+	characters = new char[length+1];
+	memset(characters, 0, length+1);
+	fread(characters, 1, length, file);
+
+	// Get string and free characters buffer
+	result_string = std::string(characters);
+	delete characters;
+
+	return result_string;
+}
