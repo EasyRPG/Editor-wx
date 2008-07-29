@@ -30,23 +30,23 @@ struct bgm_data
 
 struct item
 {
-	std::string		name;			///< 0x01 nombre del mapa
-	int			parent_id;		///< 0x02 ID del mapa padre
-	int			depth;			///< 0x03 Profundidad del árbol
-	int			type;			///< 0x04 Bandera de mapa o área
-	int			scrollbar_x;		///< 0x05 Barra de desplazamiento  X del mapa
-	int			scrollbar_y;		///< 0x06 Barra de desplazamiento Y del mapa
-	int			expanded;		///< 0x07 Tiene subrama (hijo)
-	int			bgm;			///< 0x0B Música de fondo 
-	bgm_data		bgm_file;		///< 0x0C Música de fondo (archivo) String
-	int			battle;			///< 0x15 Fondo de batalla 
-	std::string		battle_file;		///< 0x16 Fondo de batalla (archivo) String
-	int			teleport;		///< 0x1F Teletransporte
-	int			escape;			///< 0x20 Escapar Entero
-	int			save;			///< 0x21 Guardar Entero
-	std::vector<int>	encounter;		///< 0x29 arreglo dos dimensiones con enemigos
-	int			encounter_steps;	///< 0x2C Pasos entre encuentros
-	int			area_start_x;		///< 0x33 Datos del área
+	std::string		name;
+	int			parent_id;
+	int			depth;
+	int			type;
+	int			scrollbar_x;
+	int			scrollbar_y;
+	int			expanded;
+	int			bgm;
+	bgm_data		bgm_file;
+	int			battle;
+	std::string		battle_file;
+	int			teleport;
+	int			escape;
+	int			save;
+	std::vector<int>	encounter;
+	int			encounter_steps;
+	int			area_start_x;
 	int			area_start_y;
 	int			area_end_x;
 	int			area_end_y;
@@ -54,19 +54,19 @@ struct item
 
 class lmt
 {
-	public: 
-		int			start_map_id;	///< 0x01 Party start map
-		int			start_x;	///< 0x02 Party start X
-		int			start_y;	///< 0x03 Party start Y
-		int			skiff_map_id;	///< 0x0B Skiff start map
-		int			skiff_x;	///< 0x0C Skiff start X
-		int			skiff_y;	///< 0x0D Skiff start Y
-		int			boat_map_id;	///< 0x15 Boat start map
-		int			boat_x;		///< 0x16 Boat start X
-		int			boat_y;		///< 0x17 Boat start Y
-		int			airship_map_id;	///< 0x1F Airship start map
-		int			airship_x;	///< 0x20 Airship start X
-		int			airship_y;	///< 0x21 Airship start Y
+	public:
+		int			party_map_id;
+		int			party_x;
+		int			party_y;
+		int			skiff_map_id;
+		int			skiff_x;
+		int			skiff_y;
+		int			boat_map_id;
+		int			boat_x;
+		int			boat_y;
+		int			airship_map_id;
+		int			airship_x;
+		int			airship_y;
 		int			size;
 		std::vector<item>	list;
 		std::vector<int>	order;

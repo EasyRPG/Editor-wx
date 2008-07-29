@@ -21,49 +21,15 @@
 #include "tools.h"
 #include "lmt.h"
 
-enum eLMTChunks
-{
-	CHUNK_NAME		= 0x01,	///< nombre del mapa
-	CHUNK_IDF		= 0x02,	///< ID del mapa padre 
-	CHUNK_DEPTH		= 0x03,	///< Profundidad del árbol 
-	CHUNK_FAREA		= 0x04,	///< Bandera de mapa o área 
-	CHUNK_XBAR		= 0x05,	///< Barra de desplazamiento  X del mapa
-	CHUNK_YBAR		= 0x06,	///< Barra de desplazamiento Y del mapa
-	CHUNK_SON		= 0x07,	///< Tiene subrama (hijo)
-	CHUNK_FMUSIC		= 0x0B,	///< Música de fondo
-	CHUNK_SMUSIC		= 0x0C,	///< Música de fondo (archivo) String
-	CHUNK_FBATLE		= 0x15,	///< Fondo de batalla 
-	CHUNK_SBATLE		= 0x16,	///< Fondo de batalla (archivo) String
-	CHUNK_FTELEP		= 0x1F,	///< Teletransporte
-	CHUNK_FESCAPE		= 0x20,	///< posibilidad de escape en batalla
-	CHUNK_FSAVE		= 0x21,	///< posiblilidad de gravar
-	CHUNK_AENEMYS		= 0x29,	///< Encuentros enemigos
-	CHUNK_FNUMSTEP		= 0x2C,	///< Numero de pasos entre encuentros
-	CHUNK_MAP_END_OF_BLOCK	= 0x00
-};
-enum eLMTChunks2 
-{
-	CHUNK_PartymapId	= 0x01,	///< Party start map
-	CHUNK_PartymapX		= 0x02,	///< Party start X
-	CHUNK_PartymapY		= 0x03,	///< Party start Y
-	CHUNK_SkiffId		= 0x0B,	///< Skiff start map
-	CHUNK_SkiffX		= 0x0C,	///< Skiff start X
-	CHUNK_SkiffY		= 0x0D,	///< Skiff start Y
-	CHUNK_BoatId		= 0x15,	///< Boat start map
-	CHUNK_BoatX		= 0x16,	///< Boat start X
-	CHUNK_BoatY		= 0x17,	///< Boat start Y
-	CHUNK_AirshipId		= 0x1F,	///< Airship start map
-	CHUNK_AirshipX		= 0x20,	///< Airship start X
-	CHUNK_AirshipY		= 0x21	///< Airship start Y
-};
 bool lmt::load(std::string filename)
 {
-	unsigned char Void;
-	tChunk ChunkInfo;
-	// Open map file to read
-	FILE * file;// apertura de archivo
+	FILE * file;
+	std::string header;
+	block vehicle;
+	unsigned char dummy_byte;
+
 	file = fopen(filename.c_str(), "rb");
-	std::string header = read_string(file); // lectura de cabecera
+	header = read_string(file); // lectura de cabecera
 	if (header != "LcfMapTree") // comparacion con cabecera del mapa
 	{
 		printf("Reading error: File is not a valid RPG2000 map tree\n");
@@ -72,19 +38,19 @@ bool lmt::load(std::string filename)
 	}
 	size = read_int(file);
 	read_tree(file);
-	fread(&Void, sizeof(char), 1, file);//00 final de bloque
-	//orden en el que deve ser mostrado el arbol
-	int data = size;
-	int dat;
-	while(data--) // datos de como deve ser mostrado el arbol
+	fread(&dummy_byte, 1, 1, file); //00 final de bloque
+	//Tree order block
+	int tree = size;
+	int leaf;
+	while(tree--) // datos de como debe ser mostrado el arbol
 	{
-		dat = read_int(file);
-		order.push_back(dat);
+		leaf = read_int(file);
+		order.push_back(leaf);
 	}
 	// Initialize
-	start_map_id	= 0;
-	start_x		= 0;
-	start_y		= 0;
+	party_map_id	= 0;
+	party_x		= 0;
+	party_y		= 0;
 	skiff_map_id	= 0;
 	skiff_x		= 0;
 	skiff_y		= 0;
@@ -96,49 +62,52 @@ bool lmt::load(std::string filename)
 	airship_y	= 0;
 	while(!feof(file))
 	{
-		ChunkInfo.ID	 = read_int(file); // lectura de tipo del pedazo
-		ChunkInfo.Length = read_int(file); // lectura de su tamaño
-		switch(ChunkInfo.ID) // segun el tipo
+		vehicle.id	 = read_int(file); // lectura de tipo del pedazo
+		vehicle.size = read_int(file); // lectura de su tamaño
+		switch(vehicle.id) // segun el tipo
 		{
-			case CHUNK_PartymapId:
-				start_map_id	= read_int(file);
+			case 1: //0x01
+				party_map_id	= read_int(file);
 				break;
-			case CHUNK_PartymapX:
-				start_x		= read_int(file);
+			case 2: //0x02
+				party_x		= read_int(file);
 				break;
-			case CHUNK_PartymapY:
-				start_y		= read_int(file);
+			case 3: //0x03
+				party_y		= read_int(file);
 				break;
-			case CHUNK_SkiffId:
+			case 11: //0x0B
 				skiff_map_id	= read_int(file);
 				break;
-			case CHUNK_SkiffX:
+			case 12: //0x0C
 				skiff_x		= read_int(file);
 				break;
-			case CHUNK_SkiffY:
+			case 13: //0x0D
 				skiff_y		= read_int(file);
 				break;
-			case CHUNK_BoatId:
+			case 21: //0x15
 				boat_map_id	= read_int(file);
 				break;
-			case CHUNK_BoatX:
+			case 22: //0x16
 				boat_x		= read_int(file);
 				break;
-			case CHUNK_BoatY:
+			case 23: //0x17
 				boat_y		= read_int(file);
 				break;
-			case CHUNK_AirshipId:
-				 airship_map_id	= read_int(file);
+			case 31: //0x1F
+				airship_map_id	= read_int(file);
 				break;
-			case CHUNK_AirshipX:
+			case 32: //0x20
 				airship_x	= read_int(file);
 				break;
-			case CHUNK_AirshipY:
+			case 33: //0x21
 				airship_y	= read_int(file);
 				break;
 			default:
 				// saltate un pedazo del tamaño de la longitud
-				while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, file);
+				while(vehicle.size--)
+				{
+					fread(&dummy_byte, 1, 1, file);
+				}
 				break;
 		}
 	}
@@ -147,26 +116,26 @@ bool lmt::load(std::string filename)
 }
 void lmt::clear(item * leaf)
 {
-	(*leaf).name			= "";	///< 0x01 nombre del mapa
-	(*leaf).parent_id		= 0;	///< 0x02 ID del mapa padre 
-	(*leaf).depth			= 0;	///< 0x03 Profundidad del árbol 
-	(*leaf).type			= 0;	///< 0x04 Bandera de mapa o área 
-	(*leaf).scrollbar_x		= 0;	///< 0x05 Barra de desplazamiento  X del mapa
-	(*leaf).scrollbar_y		= 0;	///< 0x06 Barra de desplazamiento Y del mapa
-	(*leaf).expanded		= 0;	///< 0x07 Tiene subrama (hijo)
-	(*leaf).bgm			= 0;	///< 0x0B Música de fondo 
-	(*leaf).bgm_file.name		= "";	///< 0x0C Música de fondo (archivo) String
+	(*leaf).name			= "";
+	(*leaf).parent_id		= 0;
+	(*leaf).depth			= 0;
+	(*leaf).type			= 0;
+	(*leaf).scrollbar_x		= 0;
+	(*leaf).scrollbar_y		= 0;
+	(*leaf).expanded		= 0;
+	(*leaf).bgm			= 0;
+	(*leaf).bgm_file.name		= "";
 	(*leaf).bgm_file.fade_in	= 0;
 	(*leaf).bgm_file.volume		= 100;
 	(*leaf).bgm_file.tempo		= 100;
 	(*leaf).bgm_file.balance	= 50;
-	(*leaf).battle			= 0;	///< 0x15 Fondo de batalla 
-	(*leaf).battle_file		= "";	///< 0x16 Fondo de batalla (archivo) String
-	(*leaf).teleport		= 0;	///< 0x1F Teletransporte
-	(*leaf).escape			= 0;	///< 0x20 Escapar
-	(*leaf).save			= 0;	///< 0x21 Guardar
-	(*leaf).encounter.clear();		///< 0x29 grupo de enemigos
-	(*leaf).encounter_steps		= 0;	///< 0x2C Pasos entre encuentros
+	(*leaf).battle			= 0;
+	(*leaf).battle_file		= "";
+	(*leaf).teleport		= 0;
+	(*leaf).escape			= 0;
+	(*leaf).save			= 0;
+	(*leaf).encounter.clear();
+	(*leaf).encounter_steps		= 0;
 }
 void lmt::read_tree(FILE * file)
 {
@@ -176,50 +145,52 @@ void lmt::read_tree(FILE * file)
 	int nodes	= 0;
 	int temp	= 0;
 	read_int(file);
-	tChunk ChunkInfo; // informacion del pedazo leido
-	unsigned char Void;
+	block branch;
 	item leaf;
+	unsigned char dummy_byte;
 	clear(&leaf);
 	// Loop while we haven't reached the end of the file
 	while(nodes < size)
 	{
-		ChunkInfo.ID		= read_int(file); // lectura de tipo del pedazo
-		ChunkInfo.Length	= read_int(file); // lectura de su tamaño
-		switch(ChunkInfo.ID) // segun el tipo
+		branch.id		= read_int(file); // lectura de tipo del pedazo
+		branch.size	= read_int(file); // lectura de su tamaño
+		switch(branch.id) // segun el tipo
 		{
-			case CHUNK_NAME:
-				leaf.name		= read_string(file, ChunkInfo.Length);
+			case 1:
+				leaf.name		= read_string(file, branch.size);
 				break;
-			case CHUNK_IDF:
+			case 2:
 				leaf.parent_id		= read_int(file);
 				break;
-			case CHUNK_DEPTH:
+			case 3:
 				leaf.depth		= read_int(file);
 				break;
-			case CHUNK_FAREA:
+			case 4: //
 				leaf.type		= read_int(file);
 				break;
-			case CHUNK_XBAR:
+			case 5:
 				leaf.scrollbar_x	= read_int(file);
 				break;
-			case CHUNK_YBAR:
+			case 6:
 				leaf.scrollbar_y	= read_int(file);
 				break;
-			case CHUNK_SON:
+			case 7:
 				leaf.expanded		= read_int(file);
 				break;
-			case CHUNK_FMUSIC:
-				leaf.bgm		= read_int(file); 
+			case 11: //0x0B
+				leaf.bgm		= read_int(file);
 				break;
-			case CHUNK_SMUSIC:
-				while (ChunkInfo.ID != 0)
+			case 12:
+				while (branch.id != 0)
 				{
-					ChunkInfo.ID = read_int(file); // lectura de tipo del pedazo
-					if(ChunkInfo.ID!=0)
-						ChunkInfo.Length = read_int(file); // lectura de su tamaño					switch(ChunkInfo.ID)// segun el tipo
+					branch.id = read_int(file);
+					if(branch.id != 0)
+					{
+						branch.size = read_int(file);
+					}					switch(branch.id)
 					{
 						case 0x01:
-							leaf.bgm_file.name	= read_string(file, ChunkInfo.Length);
+							leaf.bgm_file.name	= read_string(file, branch.size);
 							break;
 						case 0x02:
 							leaf.bgm_file.fade_in	= read_int(file);
@@ -236,27 +207,30 @@ void lmt::read_tree(FILE * file)
 						case 0x00:
 							break;
 						default:
-							while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, file);
+							while(branch.size--)
+							{
+								fread(&dummy_byte, 1, 1, file);
+							}
 							break;
 					}
 				}
 				break;
-			case CHUNK_FBATLE:
+			case 21: //0x15
 				leaf.battle		= read_int(file);
 				break;
-			case CHUNK_SBATLE:
-				leaf.battle_file	= read_string(file, ChunkInfo.Length);
+			case 22: //0x16
+				leaf.battle_file	= read_string(file, branch.size);
 				break;
-			case CHUNK_FTELEP:
+			case 31: //0x1F
 				leaf.teleport		= read_int(file);
 				break;
-			case CHUNK_FESCAPE:
+			case 32: //0x20
 				leaf.escape		= read_int(file);
 				break;
-			case CHUNK_FSAVE:
+			case 33: //0x21
 				leaf.save		= read_int(file);
 				break;
-			case CHUNK_AENEMYS:
+			case 41: //0x29
 				enemygroups		= read_int(file); // numero de grupos
 				idgroup = 0;
 				while(idgroup < enemygroups)
@@ -270,26 +244,26 @@ void lmt::read_tree(FILE * file)
 					leaf.encounter.push_back(enemy);
 					read_int(file); //fin de bloque
 				}
-				break; 
-			case CHUNK_FNUMSTEP:
+				break;
+			case 44: //0x2C
 				leaf.encounter_steps = read_int(file);
 				break;
-			case CHUNK_MAP_END_OF_BLOCK:
-				break;
 			case 51: //0x33 Area data
-				fread(&(leaf.area_start_x), (sizeof(int)), 1, file);
-				fread(&(leaf.area_start_y), (sizeof(int)), 1, file);
-				fread(&(leaf.area_end_x), (sizeof(int)), 1, file);
-				fread(&(leaf.area_end_y), (sizeof(int)), 1, file);
+				fread(&(leaf.area_start_x),	4, 1, file);
+				fread(&(leaf.area_start_y),	4, 1, file);
+				fread(&(leaf.area_end_x),	4, 1, file);
+				fread(&(leaf.area_end_y),	4, 1, file);
 				list.push_back(leaf);
 				clear(&leaf);
 				nodes++;
 				while(nodes != temp) // sirve para quitar el fin del chunk y el id del siguiente
 				temp = read_int(file);
 				break;
+			case 0: //End of block
+				break;
 			default:
 				// saltate un pedazo del tamaño de la longitud
-				while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, file);
+				while(branch.size--) fread(&dummy_byte, 1, 1, file);
 				break;
 		}
 	}
@@ -298,57 +272,57 @@ void lmt::print() // muestra de informacion del mapa
 {
 	int j;
 	unsigned int i;
-	printf("=============================================\n");
+	printf("==========================================================\n");
 	printf("Listado de mapas\n");
 	for (j=0; j < size; j++)
 	{
-		printf("----------------------------------------------\n");
-		printf("Nombre:				%s\n", list[j].name.c_str());
-		printf("ID del mapa padre:		%d\n", list[j].parent_id);
-		printf("Profundidad:			%d\n", list[j].depth);
-		printf("Tipo (0=raiz, 1=mapa, 2=area):	%d\n", list[j].type);
-		printf("Barras de desplazamiento:	X = %d, Y = %d\n", list[j].scrollbar_x, list[j].scrollbar_y);
-		printf("Rama expandida?:		%d\n", list[j].expanded);
-		printf("Tiene musica de fondo?:		%d\n", list[j].bgm);
-		printf("Nombre musica:			%s\n", list[j].bgm_file.name.c_str());
-		printf("Fade in musica:			%d\n", list[j].bgm_file.fade_in);
-		printf("Volumen musica:			%d\n", list[j].bgm_file.volume);
-		printf("Tempo musica:			%d\n", list[j].bgm_file.tempo);
-		printf("Balance musica:			%d\n", list[j].bgm_file.balance);
-		printf("Tiene fondo de batalla?:	%d\n", list[j].battle);
-		printf("Nombre fondo:			%s\n", list[j].battle_file.c_str());
-		printf("Permite teletrasporte?		%d\n", list[j].teleport);
-		printf("Permite escapar?:		%d\n", list[j].escape);
-		printf("Permite guardar?:		%d\n", list[j].save);
+		printf("----------------------------------------------------------\n");
+		printf("Name:							%s\n", list[j].name.c_str());
+		printf("Parent ID:						%d\n", list[j].parent_id);
+		printf("Depth:							%d\n", list[j].depth);
+		printf("Type (0=root, 1=map, 2=area):				%d\n", list[j].type);
+		printf("Scrollbars:						X = %d, Y = %d\n", list[j].scrollbar_x, list[j].scrollbar_y);
+		printf("Is expanded?:						%d\n", list[j].expanded);
+		printf("Has BGM? (0=inherit, 1=don't change, 2=specify):	%d\n", list[j].bgm);
+		printf("BGM name:						%s\n", list[j].bgm_file.name.c_str());
+		printf("BGM fade in:						%d\n", list[j].bgm_file.fade_in);
+		printf("BGM volume:						%d\n", list[j].bgm_file.volume);
+		printf("BGM tempo:						%d\n", list[j].bgm_file.tempo);
+		printf("BGM balance:						%d\n", list[j].bgm_file.balance);
+		printf("Has battle background?:					%d\n", list[j].battle);
+		printf("battle baground name:					%s\n", list[j].battle_file.c_str());
+		printf("Teleport options (0=inherit, 1=don't change, 2=specify):%d\n", list[j].teleport);
+		printf("Escape options (0=inherit, 1=don't change, 2=specify):	%d\n", list[j].escape);
+		printf("Permite guardar?:					%d\n", list[j].save);
 		for(i = 0; i < list[j].encounter.size(); i++)
 		{
-			printf("Grupo enemigo:			%d\n", list[j].encounter[i]);
+			printf("Grupo enemigo:						%d\n", list[j].encounter[i]);
 		}
-		printf("Pasos para encuentro enemigo:	%d\n", list[j].encounter_steps);
-		printf("Inicio de area:			X = %d, Y = %d\n", list[j].area_start_x, list[j].area_start_y);
-		printf("Fin de area:			X = %d, Y = %d\n", list[j].area_end_y, list[j].area_end_y);
+		printf("Pasos para encuentro enemigo:				%d\n", list[j].encounter_steps);
+		printf("Inicio de area:						X = %d, Y = %d\n", list[j].area_start_x, list[j].area_start_y);
+		printf("Fin de area:						X = %d, Y = %d\n", list[j].area_end_y, list[j].area_end_y);
 	}
-	printf("==============================================\n");
-	printf("Fin del listado de mapas. Datos del final:\n");
-	printf("----------------------------------------------\n");
-	printf("Orden de las hojas:		");
+	printf("==========================================================\n");
+	printf("End of tree. Data after the tree:\n");
+	printf("----------------------------------------------------------\n");
+	printf("Branch order:					");
 	for(j = 0; j < (size - 1); j++)
 	{
 		printf("%d ", order[j]);
 	}
-	printf("\nHoja seleccionada:		%d\n", order[j]);
-	printf("----------------------------------------------\n");
-	printf("Start party map ID:		%d\n", start_map_id);
-	printf("Start party X:			%d\n", start_x);
-	printf("party Y:			%d\n", start_y);
-	printf("Skiff map ID:			%d\n", skiff_map_id);
-	printf("Skiff X:			%d\n", skiff_x);
-	printf("Skiff Y:			%d\n", skiff_y);
-	printf("Boat map ID:			%d\n", boat_map_id);
-	printf("Boat X:				%d\n", boat_x);
-	printf("Boat Y:				%d\n", boat_y);
-	printf("Airship map ID:			%d\n", airship_map_id);
-	printf("Airship X:			%d\n", airship_x);
-	printf("Airship Y:			%d\n", airship_y);
+	printf("\Selected branch:					%d\n", order[j]);
+	printf("----------------------------------------------------------\n");
+	printf("Party map ID:						%d\n", party_map_id);
+	printf("Party X:						%d\n", party_x);
+	printf("Party Y:						%d\n", party_y);
+	printf("Skiff map ID:						%d\n", skiff_map_id);
+	printf("Skiff X:						%d\n", skiff_x);
+	printf("Skiff Y:						%d\n", skiff_y);
+	printf("Boat map ID:						%d\n", boat_map_id);
+	printf("Boat X:							%d\n", boat_x);
+	printf("Boat Y:							%d\n", boat_y);
+	printf("Airship map ID:						%d\n", airship_map_id);
+	printf("Airship X:						%d\n", airship_x);
+	printf("Airship Y:						%d\n", airship_y);
 }
 
