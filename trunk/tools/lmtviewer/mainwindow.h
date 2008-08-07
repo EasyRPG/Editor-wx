@@ -25,65 +25,64 @@
 #include "wx/ffile.h"
 #include <vector>
 
-struct Sound_effect
+struct bgm_data
 {
-	wxString Name_of_Sound_effect;
-	int Fadein;
-	int Volume;
-	int Tempo;
-	int Balance;
+	wxString	name;
+	int		fade_in;
+	int		volume;
+	int		tempo;
+	int		balance;
 };
 
-struct DataofTree
+struct node
 {
-	wxString	strName;	///< 0x01 nombre del mapa
-	int		intIdMapF;	///< 0x02 ID del mapa padre
-	int		intDepth;	///< 0x03 Profundidad del árbol
-	int		intFlagMA;	///< 0x04 Bandera de mapa o área
-	int		intXbar;	///< 0x05 Barra de desplazamiento  X del mapa
-	int		intYbar;	///< 0x06 Barra de desplazamiento Y del mapa
-	int		intSon;		///< 0x07 Tiene subrama (hijo)
-	int		intMusic;	///< 0x0B Música de fondo
-	Sound_effect	stcMusic;	///< 0x0C Música de fondo (archivo) String
-	int		intBatle;	///< 0x15 Fondo de batalla
-	wxString	strBatle;	///< 0x16 Fondo de batalla (archivo) String
-	int		intTelepor;	///< 0x1F Teletransporte
-	int		intScape;	///< 0x20 Escapar Entero
-	int		intSave;	///< 0x21 Guardar Entero
-	std::vector<int> vcEnemyGroup; ///< 0x29 arreglo dos dimensiones con enemigos
-	int		intNofsteeps;	///< 0x2C Pasos entre encuentros
-					///< 0x33 Datos del área
-	int		intAreaX1;
-	int		intAreaY1;
-	int		intAreaX2;
-	int		intAreaY2;
+	wxString		name;
+	int			parent_id;
+	int			depth;
+	int			type;
+	int			scrollbar_x;
+	int			scrollbar_y;
+	int			expanded;
+	int			bgm;
+	bgm_data		bgm_file;
+	int			battle;
+	wxString		battle_file;
+	int			teleport;
+	int			escape;
+	int			save;
+	std::vector<int>	encounter;
+	int			encounter_steps;
+	int			area_start_x;
+	int			area_start_y;
+	int			area_end_x;
+	int			area_end_y;
 };
 
 class mainwindow: public wxFrame {
 	public:
-		int 	intPartymapId;	///< 0x01 Party start map
-		int	intPartymapX;	///< 0x02 Party start X
-		int	intPartymapY;	///< 0x03 Party start Y
-		int	intSkiffId;	///< 0x0B Skiff start map
-		int	intSkiffX;	///< 0x0C Skiff start X
-		int	intSkiffY;	///< 0x0D Skiff start Y
-		int	intBoatId;	///< 0x15 Boat start map
-		int	intBoatX;	///< 0x16 Boat start X
-		int	intBoatY;	///< 0x17 Boat start Y
-		int	intAirshipId;	///< 0x1F Airship start map
-		int	intAirshipX;	///< 0x20 Airship start X
-		int	intAirshipY;	///< 0x21 Airship start Y
-		unsigned long	treesize;
-		std::vector<DataofTree> str_Vector;
-		std::vector<long> vc_int_treeorder;
-		//Methods
-		mainwindow(wxWindow* parent, int id, const wxString& title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long style=wxDEFAULT_FRAME_STYLE);
-		bool	loadlmt(const wxString Filename);
+		int			total_nodes;
+		int			party_map_id;
+		int			party_x;
+		int			party_y;
+		int			skiff_map_id;
+		int			skiff_x;
+		int			skiff_y;
+		int			boat_map_id;
+		int			boat_x;
+		int			boat_y;
+		int			airship_map_id;
+		int			airship_x;
+		int			airship_y;
+		std::vector<node>	tree_list;
+		std::vector<int>	tree_order;
+		// Methods
+		mainwindow(wxWindow * parent, int id, const wxString & title, const wxPoint & pos = wxDefaultPosition, const wxSize & size = wxDefaultSize, long style = wxDEFAULT_FRAME_STYLE);
+		bool	load(wxString filename);
 	private:
-		void	openbutton_click(wxCommandEvent& WXUNUSED(event));
+		void	openbutton_click(wxCommandEvent & WXUNUSED(event));
 		void	filllmt();
-		void	GetNextChunk(wxFFile * Stream);
-		void	leafclear(DataofTree * leaf);
+		void	read_tree(wxFFile * file);
+		void	clear(node * leaf);
 	protected:
 		wxButton* openbutton;
 		wxTreeCtrl* maptree;

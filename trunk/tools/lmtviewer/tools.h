@@ -20,23 +20,8 @@
 #include "wx/wx.h"
 #include "wx/ffile.h"
 
-// --- Chunk structure -----------------------------------------------------
-// usada para guardar temporalemmte informacion de id y tamaños de pedazos de mapa
-struct tChunk
-{
-	wxByte ID;
+int		read_int(wxFFile * file);
+wxString	read_string(wxFFile * file);
+wxString	read_string(wxFFile * file, int length);
 
-	union
-	{
-		unsigned long Length;
-		unsigned long NumEvents;
-	};
-
-	unsigned long BytesRead;
-};
-
-// --- Read functions ------------------------------------------------------
-unsigned long ReadCompressedInteger(wxFFile * FileStream);
-wxString ReadString(wxFFile * FileStream);
-wxString ReadString(wxFFile * FileStream, wxByte Lenght);
 #endif
