@@ -17,28 +17,10 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-// =========================================================================
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
-// =========================================================================
 
-// --- Chunk structure -----------------------------------------------------
-// usada para guardar temporalemmte informacion de id  y  tamños de pedazos de mapa
-struct block
-{
-	unsigned char id;
-
-	union
-	{
-		unsigned long size;
-		unsigned long NumEvents;
-	};
-
-	unsigned long BytesRead;
-};
-
-// --- Read functions ------------------------------------------------------
 int		read_int(FILE * file);
 std::string	read_string(FILE * file);
 std::string	read_string(FILE * file, int length);
