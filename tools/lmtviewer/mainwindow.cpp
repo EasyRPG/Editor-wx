@@ -18,7 +18,7 @@
 #include "tools.h"
 #include <vector>
 
-mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wxPoint& pos, const wxSize& size, long WXUNUSED(style)):
+mainwindow::mainwindow(wxWindow * parent, int id, const wxString & title, const wxPoint & pos, const wxSize & size, long WXUNUSED(style)):
 	wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
 	openbutton = new wxButton(this, wxID_OPEN, wxEmptyString);
@@ -32,9 +32,9 @@ mainwindow::mainwindow(wxWindow* parent, int id, const wxString& title, const wx
 	// The number next filename and semicolon is the resource index number
 	// The returned bitmap is an icon, not resource icon due previous resource index selection
 	// 16x16 is desired size,  gets the 16x16 icon version instead of 32x32
-	imageList->Add(wxIcon(wxT("shell32.dll;3"), wxBITMAP_TYPE_ICO, 16, 16)); // 3 is closed folder
-	imageList->Add(wxIcon(wxT("shell32.dll;4"), wxBITMAP_TYPE_ICO, 16, 16)); // 4 is opened folder
-	imageList->Add(wxIcon(wxT("shell32.dll;0"), wxBITMAP_TYPE_ICO, 16, 16)); // 0 is normal file
+	imageList->Add(wxIcon(_T("shell32.dll;3"), wxBITMAP_TYPE_ICO, 16, 16)); // 3 is closed folder
+	imageList->Add(wxIcon(_T("shell32.dll;4"), wxBITMAP_TYPE_ICO, 16, 16)); // 4 is opened folder
+	imageList->Add(wxIcon(_T("shell32.dll;0"), wxBITMAP_TYPE_ICO, 16, 16)); // 0 is normal file
 #else
 	wxImageList* imageList = new wxImageList;
 	imageList->Add(wxArtProvider::GetBitmap(wxART_FOLDER));
@@ -67,244 +67,271 @@ void mainwindow::openbutton_click(wxCommandEvent& WXUNUSED(event))
 #endif
 	if (openlmtwindow->ShowModal() == wxID_OK)
 	{
-		wxString fileName = openlmtwindow->GetPath();
-		if(loadlmt(fileName))
+		wxString filename = openlmtwindow->GetPath();
+		if(load(filename))
 		{
 			filllmt();
 		}
 	}
 }
 
-bool mainwindow::loadlmt(wxString Filename)
+bool mainwindow::load(wxString filename)
 {
-	wxByte Void = 0;
-	tChunk ChunkInfo;
-	// Open map file to read
-	wxFFile * Stream;
-	Stream = new wxFFile(Filename, _T("rb")); // fopen()
-	wxString Header = ReadString(Stream); // lectura de cabecera
-	if (wxStrcmp(Header, _T("LcfMapTree"))) // comparacion con cabecera del mapa
+	wxFFile		* file;
+	wxString	header;
+	wxByte		dummy;
+	int		remaining_nodes;
+	int		node;
+	int		vehicle_chunk_id;
+	int		vehicle_chunk_size;
+
+	file = new wxFFile(filename, _T("rb")); // fopen()
+	header = read_string(file); // lectura de cabecera
+	if (wxStrcmp(header, _T("LcfMapTree"))) // comparacion con cabecera del mapa
 	{
 		wxMessageBox(_("File is not a valid RPG Maker 2000/2003 map tree"), _("Error reading RPG_RT.lmt data"), wxICON_ERROR);
-		Stream->Close();
+		file->Close();
 		return false;
 	}
-	treesize = ReadCompressedInteger(Stream);
-	GetNextChunk(Stream);
-	Stream->Read(&Void, 1); // 00 final de bloque
-
-	// orden en el que deve ser mostrado el arbol
-	int data = treesize;
-	int dat;
-	while(data--) // datos de como debe ser mostrado el arbol
+	//Read number of nodes
+	total_nodes = read_int(file);
+	//Read tree
+	read_tree(file);
+	file->Read(&dummy, 1); //00 end of block
+	//Read tree order
+	remaining_nodes = total_nodes;
+	while(remaining_nodes--)
 	{
-		dat = ReadCompressedInteger(Stream);
-		vc_int_treeorder.push_back(dat);
+		node = read_int(file);
+		tree_order.push_back(node);
 	}
-	while(!Stream->Eof())
+	//Read vehicles (if any)
+	party_map_id	= 0;
+	party_x		= 0;
+	party_y		= 0;
+	skiff_map_id	= 0;
+	skiff_x		= 0;
+	skiff_y		= 0;
+	boat_map_id	= 0;
+	boat_x		= 0;
+	boat_y		= 0;
+	airship_map_id	= 0;
+	airship_x	= 0;
+	airship_y	= 0;
+	while(!file->Eof())
 	{
-		ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-		ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-		switch(ChunkInfo.ID) // segun el tipo
+		vehicle_chunk_id	= read_int(file);
+		vehicle_chunk_size	= read_int(file);
+		switch(vehicle_chunk_id)
 		{
-			case 0x01: //Start party map ID
-				intPartymapId	= ReadCompressedInteger(Stream);
+			case 1: //0x01
+				party_map_id	= read_int(file);
 				break;
-			case 0x02: //Start party X position
-				intPartymapX	= ReadCompressedInteger(Stream);
+			case 2: //0x02
+				party_x		= read_int(file);
 				break;
-			case 0x03: //Start party Y position
-				intPartymapY	= ReadCompressedInteger(Stream);
+			case 3: //0x03
+				party_y		= read_int(file);
 				break;
-			case 0x0B: //Skiff map ID
-				intSkiffId	= ReadCompressedInteger(Stream);
+			case 11: //0x0B
+				skiff_map_id	= read_int(file);
 				break;
-			case 0x0C: //Skiff X position
-				intSkiffX	= ReadCompressedInteger(Stream);
+			case 12: //0x0C
+				skiff_x		= read_int(file);
 				break;
-			case 0x0D: //Skiff Y position
-				intSkiffY	= ReadCompressedInteger(Stream);
+			case 13: //0x0D
+				skiff_y		= read_int(file);
 				break;
-			case 0x15: //Boat map ID
-				intBoatId	= ReadCompressedInteger(Stream);
+			case 21: //0x15
+				boat_map_id	= read_int(file);
 				break;
-			case 0x16: //Boat X position
-				intBoatX	= ReadCompressedInteger(Stream);
+			case 22: //0x16
+				boat_x		= read_int(file);
 				break;
-			case 0x17: //Boat Y position
-				intBoatY	= ReadCompressedInteger(Stream);
+			case 23: //0x17
+				boat_y		= read_int(file);
 				break;
-			case 0x1F: //Airship map ID
-				 intAirshipId	= ReadCompressedInteger(Stream);
+			case 31: //0x1F
+				airship_map_id	= read_int(file);
 				break;
-			case 0x20: //Airshop X position
-				intAirshipX	= ReadCompressedInteger(Stream);
+			case 32: //0x20
+				airship_x	= read_int(file);
 				break;
-			case 0x21: //Airship Y location
-				intAirshipY	= ReadCompressedInteger(Stream);
+			case 33: //0x21
+				airship_y	= read_int(file);
+				break;
+			case 0: //0x00
 				break;
 			default:
-				// saltate un pedazo del tamaño de la longitud
-				while(ChunkInfo.Length--) Stream->Read(&Void, 1);
+				// skip unknown vehicle_chunk_id case
+				while(vehicle_chunk_size--)
+				{
+					file->Read(&dummy, 1);
+				}
 				break;
 		}
 	}
-	Stream->Close();
+	file->Close();
 	return true;
 }
 
-void mainwindow::leafclear(DataofTree * leaf)
+
+void mainwindow::clear(node * node)
 {
-	(*leaf).strName		= _T("");	///< 0x01 nombre del mapa
-	(*leaf).intIdMapF	= 0;	///< 0x02 ID del mapa padre
-	(*leaf).intDepth	= 0;	///< 0x03 Profundidad del árbol
-	(*leaf).intFlagMA	= 0;	///< 0x04 Bandera de mapa o área
-	(*leaf).intXbar		= 0;	///< 0x05 Barra de desplazamiento  X del mapa
-	(*leaf).intYbar		= 0;	///< 0x06 Barra de desplazamiento Y del mapa
-	(*leaf).intSon		= 0;	///< 0x07 Tiene subrama (hijo)
-	(*leaf).intMusic	= 0;	///< 0x0B Música de fondo
-	(*leaf).stcMusic.Name_of_Sound_effect	= _T("");	///< 0x0C Música de fondo (archivo) String
-	(*leaf).stcMusic.Fadein	= 0;
-	(*leaf).stcMusic.Volume	= 100;
-	(*leaf).stcMusic.Tempo	= 100;
-	(*leaf).stcMusic.Balance= 50;
-	(*leaf).intBatle	= 0;	///< 0x15 Fondo de batalla
-	(*leaf).strBatle	= _T("");	///< 0x16 Fondo de batalla (archivo) String
-	(*leaf).intTelepor	= 0;	///< 0x1F Teletransporte
-	(*leaf).intScape	= 0;	///< 0x20 Escapar
-	(*leaf).intSave		= 0;	///< 0x21 Guardar
-	(*leaf).vcEnemyGroup.clear();	///< 0x29 grupo de enemigos
-	(*leaf).intNofsteeps	= 0;	///< 0x2C Pasos entre encuentros
+	(*node).name			= _T("");
+	(*node).parent_id		= 0;
+	(*node).depth			= 0;
+	(*node).type			= 0;
+	(*node).scrollbar_x		= 0;
+	(*node).scrollbar_y		= 0;
+	(*node).expanded		= 0;
+	(*node).bgm			= 0;
+	(*node).bgm_file.name		= _T("");
+	(*node).bgm_file.fade_in	= 0;
+	(*node).bgm_file.volume		= 100;
+	(*node).bgm_file.tempo		= 100;
+	(*node).bgm_file.balance	= 50;
+	(*node).battle			= 0;
+	(*node).battle_file		= _T("");
+	(*node).teleport		= 0;
+	(*node).escape			= 0;
+	(*node).save			= 0;
+	(*node).encounter.clear();
+	(*node).encounter_steps		= 0;
 }
 
-void mainwindow::GetNextChunk(wxFFile * Stream)
+
+void mainwindow::read_tree(wxFFile * file)
 {
-	int enemygroups=0,idgroup=0,enemy=0;
-	unsigned int nodes=0, temp=0;
-	ReadCompressedInteger(Stream);
-	tChunk ChunkInfo; // informacion del pedazo leido
-	wxByte Void = 0;
-	DataofTree leaf;
-	str_Vector.clear();
-	//initialize/clear map data
-	leafclear(&leaf);
-	while(nodes < treesize)
+	int enemygroups		= 0;
+	int idgroup		= 0;
+	int enemy		= 0;
+	int current_node	= 0;
+	node			node;
+	char			* dummy;
+	int			node_chunk_id;
+	int			node_chunk_size;
+
+	read_int(file);
+	tree_list.clear();
+	tree_order.clear();
+	clear(&node);
+	while(current_node < total_nodes)
 	{
-		ChunkInfo.ID		= ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-		ChunkInfo.Length	= ReadCompressedInteger(Stream); // lectura de su tamaño
-		switch(ChunkInfo.ID) // segun el tipo
+		node_chunk_id	= read_int(file);
+		node_chunk_size	= read_int(file);
+		switch(node_chunk_id)
 		{
-			case 0x01: //Name
-				leaf.strName	= ReadString(Stream, ChunkInfo.Length);
+			case 1:
+				node.name		= read_string(file, node_chunk_size);
 				break;
-			case 0x02: //Parent ID
-				leaf.intIdMapF	= ReadCompressedInteger(Stream);
+			case 2:
+				node.parent_id		= read_int(file);
 				break;
-			case 0x03: //Indent depth
-				leaf.intDepth	= ReadCompressedInteger(Stream);
+			case 3:
+				node.depth		= read_int(file);
 				break;
-			case 0x04: //Root=0, map=1 or area=2
-				leaf.intFlagMA	= ReadCompressedInteger(Stream);
+			case 4: //
+				node.type		= read_int(file);
 				break;
-			case 0x05: //Horizontal scroll bar position
-				leaf.intXbar	= ReadCompressedInteger(Stream);
+			case 5:
+				node.scrollbar_x	= read_int(file);
 				break;
-			case 0x06: //Vertical scroll bar position
-				leaf.intYbar	= ReadCompressedInteger(Stream);
+			case 6:
+				node.scrollbar_y	= read_int(file);
 				break;
-			case 0x07: //Is expanded
-				leaf.intSon	= ReadCompressedInteger(Stream);
+			case 7:
+				node.expanded		= read_int(file);
 				break;
-			case 0x0B: //Background music 0=Inherit, 1=Do not change, 2=specify
-				leaf.intMusic	= ReadCompressedInteger(Stream);
+			case 11: //0x0B
+				node.bgm		= read_int(file);
 				break;
-			case 0x0C: //Background music file
-				while (ChunkInfo.ID != 0)
+			case 12:
+				while(node_chunk_id != 0) //FIXME esta utilizando la misma variable para un bucle anidado
 				{
-					ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-					if(ChunkInfo.ID != 0)
-						ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-					switch(ChunkInfo.ID)// segun el tipo
+					node_chunk_id = read_int(file);
+					if(node_chunk_id != 0)
+					{
+						node_chunk_size = read_int(file);
+					}
+					switch(node_chunk_id)
 					{
 						case 0x01:
-							leaf.stcMusic.Name_of_Sound_effect = ReadString(Stream, ChunkInfo.Length);
+							node.bgm_file.name	= read_string(file, node_chunk_size);
 							break;
 						case 0x02:
-							leaf.stcMusic.Fadein = ReadCompressedInteger(Stream);
+							node.bgm_file.fade_in	= read_int(file);
 							break;
 						case 0x03:
-							leaf.stcMusic.Volume = ReadCompressedInteger(Stream);
+							node.bgm_file.volume	= read_int(file);
 							break;
 						case 0x04:
-							leaf.stcMusic.Tempo = ReadCompressedInteger(Stream);
+							node.bgm_file.tempo	= read_int(file);
 							break;
 						case 0x05:
-							leaf.stcMusic.Balance = ReadCompressedInteger(Stream);
+							node.bgm_file.balance	= read_int(file);
 							break;
 						case 0x00:
 							break;
 						default:
-							while(ChunkInfo.Length--)
+							// skip unknown vehicle_chunk_id case
+							while(node_chunk_size--)
 							{
-								Stream->Read(&Void, 1);
+								file->Read(&dummy, 1);
 							}
 							break;
 					}
 				}
 				break;
-			case 0x15: //Battle background 0=Inherit, 1=Do not change, 2=specify
-				leaf.intBatle	= ReadCompressedInteger(Stream);
+			case 21: //0x15
+				node.battle		= read_int(file);
 				break;
-			case 0x16: //Battle background file
-				leaf.strBatle	= ReadString(Stream, ChunkInfo.Length);
+			case 22: //0x16
+				node.battle_file	= read_string(file, node_chunk_size);
 				break;
-			case 0x1F: //Teleport 0=Inherit, 1=Allow, 2=Disallow
-				leaf.intTelepor	= ReadCompressedInteger(Stream);
+			case 31: //0x1F
+				node.teleport		= read_int(file);
 				break;
-			case 0x20: //Escape 0=Inherit, 1=Allow, 2=Disallow
-				leaf.intScape	= ReadCompressedInteger(Stream);
+			case 32: //0x20
+				node.escape		= read_int(file);
 				break;
-			case 0x21: //Save 0=Inherit, 1=Allow, 2=Disallow
-				leaf.intSave	= ReadCompressedInteger(Stream);
+			case 33: //0x21
+				node.save		= read_int(file);
 				break;
-			case 0x29: //Enemy groups
-				enemygroups	= ReadCompressedInteger(Stream); // numero de grupos
+			case 41: //0x29
+				enemygroups	= read_int(file); // numero de grupos
 				idgroup = 0;
 				while(idgroup < enemygroups)
 				{
-					idgroup		= ReadCompressedInteger(Stream); //id de dato
+					idgroup		= read_int(file); //id de dato
 					// no se para que escribieron los dos primeros enteros pero el 3ro es el id de grupo
 					// probablemente quedo incompleto el rm2k
-					ReadCompressedInteger(Stream);
-					ReadCompressedInteger(Stream);
-					enemy		= ReadCompressedInteger(Stream);
-					leaf.vcEnemyGroup.push_back(enemy);
-					ReadCompressedInteger(Stream); //fin de bloque
+							read_int(file);
+							read_int(file);
+					enemy		= read_int(file);
+					node.encounter.push_back(enemy);
+					read_int(file); //fin de bloque
 				}
 				break;
-			case 0x2C: //Number of steps between enemy encounters
-				leaf.intNofsteeps = ReadCompressedInteger(Stream);
+			case 44: //0x2C
+				node.encounter_steps = read_int(file);
 				break;
-			case 0x00: //0x00
+			case 51: //0x33 Area data
+				file->Read(&(node.area_start_x), 4);
+				file->Read(&(node.area_start_y), 4);
+				file->Read(&(node.area_end_x), 4);
+				file->Read(&(node.area_end_y), 4);
+				tree_list.push_back(node);
 				break;
-			case 0x33: //Area data
-				Stream->Read(&(leaf.intAreaX1), 4);
-				Stream->Read(&(leaf.intAreaY1), 4);
-				Stream->Read(&(leaf.intAreaX2), 4);
-				Stream->Read(&(leaf.intAreaY2), 4);
-				str_Vector.push_back(leaf);
-				leafclear(&leaf);
-				nodes++;
-				while(nodes!=temp) // sirve para quitar el fin del chunk y el id del siguiente
-				{
-					temp = ReadCompressedInteger(Stream);
-				}
+			case 0: //End of block
+				clear(&node);
+				current_node++;
 				break;
 			default:
-				// saltate un pedazo del tamaño de la longitud
-				while(ChunkInfo.Length--)
+				// skip unknown vehicle_chunk_id case
+				while(node_chunk_size--)
 				{
-					Stream->Read(&Void, 1);
+					file->Read(&dummy, 1);
 				}
 				break;
 		}
@@ -314,11 +341,11 @@ void mainwindow::GetNextChunk(wxFFile * Stream)
 void mainwindow::filllmt()
 {
 	maptree->DeleteAllItems();
-	unsigned long i;
-	wxTreeItemId root = maptree->AddRoot(str_Vector[0].strName, 1, 0);
-	for (i=1; i < treesize; i++)
+	int i;
+	wxTreeItemId root = maptree->AddRoot(tree_list[0].name, 1, 0);
+	for (i = 1; i < total_nodes; i++)
 	{
-		maptree->AppendItem(root, str_Vector[i].strName, 2);
+		maptree->AppendItem(root, tree_list[i].name, 2);
 	}
 	maptree->ExpandAll();
 }

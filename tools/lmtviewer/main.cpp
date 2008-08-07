@@ -27,4 +27,3 @@ bool MyApp::OnInit()
 	mymainwindow->Show();
 	return true;
 }
-

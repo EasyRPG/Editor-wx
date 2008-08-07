@@ -17,64 +17,61 @@
 #include "wx/ffile.h"
 #include "tools.h"
 
-unsigned long ReadCompressedInteger(wxFFile * FileStream)
+int read_int(wxFFile * file)
 {
-    unsigned long Value = 0;
-    wxByte Temporal = 0;
+	int	value		= 0;
+	wxByte	temporal	= 0;
 
-    // int i = 0;
-    do
-    {
-        Value <<= 7;
+	do
+	{
+		value = value << 7;
 
-        // Get byte's value
-        FileStream->Read(&Temporal, 1);
+		// Get byte's value
+		file->Read(&temporal, 1);
 
-        // Check if it's a BER integer
-        Value |= Temporal & 0x7F;
+		// Check if it's a BER integer
+		value = value | (temporal & 0x7F);
+	}
+	while (temporal & 0x80);
 
-    }
-    while (Temporal & 0x80);
-
-    return Value;
+	return value;
 }
 
-wxString ReadString(wxFFile * FileStream)
+wxString read_string(wxFFile * file)
 {
-    wxByte Length;
-    char * Characters;
-    wxString String;
+	wxByte		length;
+	char		* characters;
+	wxString	result_string;
 
-    // Read string lenght's
-    FileStream->Read(&Length, 1);
-    if (Length == 0) return wxString(_T(""));
+	// Read string length
+	file->Read(&length, 1);
+	if (length == 0) return wxString(_T(""));
 
-    // Allocate string buffer
-    Characters = new char[Length+1];
-    memset(Characters, 0, Length+1);
-    FileStream->Read(Characters, Length);
+	// Allocate string buffer
+	characters = new char[length + 1];
+	memset(characters, 0, length + 1);
+	file->Read(characters, length);
 
-    // Get string and free characters buffer. FIXME: Character set from locale or selectable
-    String = wxString(Characters, wxCSConv(wxT("CP1252")));
-    delete Characters;
+	// Get string and free characters buffer. FIXME: Character set from locale or selectable
+	result_string = wxString(characters, wxCSConv(wxT("CP1252")));
+	delete characters;
 
-    return String;
+	return result_string;
 }
 
-wxString ReadString(wxFFile * FileStream, wxByte Length)
+wxString read_string(wxFFile * file, int length)
 {
-    char * Characters;
-    wxString String;
+	char		* characters;
+	wxString	result_string;
 
-    // Allocate string buffer
-    Characters = new char[Length+1];
-    memset(Characters, 0, Length+1);
-    FileStream->Read(Characters, Length);
+	// Allocate string buffer
+	characters = new char[length + 1];
+	memset(characters, 0, length + 1);
+	file->Read(characters, length);
 
-    // Get string and free characters buffer. FIXME: Character set from locale or selectable
-    String = wxString(Characters, wxCSConv(wxT("CP1252")));
-    delete Characters;
+	// Get string and free characters buffer. FIXME: Character set from locale or selectable
+	result_string = wxString(characters, wxCSConv(wxT("CP1252")));
+	delete characters;
 
-    return String;
+	return result_string;
 }
-
