@@ -26,13 +26,13 @@ int read_int(FILE * file)
 
 	do
 	{
-		value <<= 7;
+		value = value << 7;
 
 		// Get byte's value
 		fread(&temporal, 1, 1, file);
 
 		// Check if it's a BER integer
-		value |= temporal & 0x7F;
+		value = value | (temporal & 0x7F);
 
 	} while(temporal & 0x80);
 
@@ -66,6 +66,9 @@ std::string read_string(FILE * file)
 
 std::string read_string(FILE * file, int length)
 {
+	//When the program is reading different chunk IDs and the chunk size
+	//is previous read, the file cursor already have read the length,
+	//so the overload is intended for those cases
 	char		* characters;
 	std::string	result_string;
 

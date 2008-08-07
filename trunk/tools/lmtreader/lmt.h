@@ -28,7 +28,7 @@ struct bgm_data
 	int		balance;
 };
 
-struct item
+struct node
 {
 	std::string		name;
 	int			parent_id;
@@ -55,6 +55,7 @@ struct item
 class lmt
 {
 	public:
+		int			total_nodes;
 		int			party_map_id;
 		int			party_x;
 		int			party_y;
@@ -67,15 +68,14 @@ class lmt
 		int			airship_map_id;
 		int			airship_x;
 		int			airship_y;
-		int			size;
-		std::vector<item>	list;
-		std::vector<int>	order;
+		std::vector<node>	tree_list;
+		std::vector<int>	tree_order;
 		// Methods
 		bool	load(std::string filename);
 		void	print();
 	private:
 		void	read_tree(FILE * file);
-		void	clear(item * leaf);
+		void	clear(node * leaf);
 };
 
 #endif
