@@ -32,11 +32,17 @@ bool lmt::load(std::string filename)
 	int		vehicle_chunk_size;
 
 	file = fopen(filename.c_str(), "rb");
+	//check if the file is valid, if not...
+	if(file == null)
+	{
+	    printf("The file %s is not valid, make sure the file exists and you have read privileges on it.\n");
+        return false;
+	}
 	//Read header
 	header = read_string(file);
 	if(header != "LcfMapTree")
 	{
-		printf("Reading error: File is not a valid RPG2000 map tree\n");
+		printf("Reading error: File is not a valid RPG2000 map tree.\n");
 		fclose(file);
 		return false;
 	}
