@@ -17,17 +17,44 @@
 #include "tools.h"
 #include "lmt.h"
 
+void proccessFile(char *file)
+{
+    lmt my_lmt;
+	my_lmt.load(file);
+	my_lmt.print();
+}
+
 int main(int argc, char *argv[])
 {
+    //User need to know what the program is about, right?
+    printf("== LmtReader ==\n");
+    printf("LmtReader is a tool of the EasyRPG project created to read .Lmt files.\n\n");
 	if(argc != 2)
 	{
-		printf("Usage: %s file\n", argv[0]);
+		printf("Usage:\n%s file\n", argv[0]);
+		printf("\nDo you want to type the file path?(y/n)");
+		char in[1];
+		scanf("%s", in);
+		switch (in[0])
+		{
+		    case 'y':
+		    case 'Y':
+                char fileName[500];
+                printf("Write the file path: ");
+                scanf("%s",fileName);
+                proccessFile(fileName);
+                free(fileName);
+		    break;
+		    case 'n':
+		    case 'N':
+		    default:
+		    break;
+		}
+		free (in);
 	}
 	else
 	{
-		lmt my_lmt;
-		my_lmt.load(argv[1]);
-		my_lmt.print();
+        proccessFile(argv[1]);
 	}
 	return 0;
 }
