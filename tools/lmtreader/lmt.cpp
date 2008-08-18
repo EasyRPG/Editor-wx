@@ -33,7 +33,7 @@ bool lmt::load(std::string filename)
 
 	file = fopen(filename.c_str(), "rb");
 	//check if the file is valid, if not...
-	if(file == null)
+	if(file == NULL)
 	{
 	    printf("The file %s is not valid, make sure the file exists and you have read privileges on it.\n");
         return false;
