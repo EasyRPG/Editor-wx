@@ -341,11 +341,11 @@ void mainwindow::read_tree(wxFFile * file)
 void mainwindow::filllmt()
 {
 	maptree->DeleteAllItems();
-	int i;
+	int current_node;
 	wxTreeItemId root = maptree->AddRoot(tree_list[0].name, 1, 0);
-	for (i = 1; i < total_nodes; i++)
+	for (current_node = 1; current_node < total_nodes; current_node++)
 	{
-		maptree->AppendItem(root, tree_list[i].name, 2);
+		maptree->AppendItem(wxTreeItemId asdf = tree_list[current_node].parent_id, tree_list[current_node].name, 2);
 	}
 	maptree->ExpandAll();
 }
