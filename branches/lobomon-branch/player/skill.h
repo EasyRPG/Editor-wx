@@ -17,26 +17,29 @@
 #ifndef SKILL_H_
 #define SKILL_H_
 
-class Skill {
+///perfesssto
 
-protected: 
-const char* nombre;
-int mp_price;//numero mp a usar
-Animacion anim;//animacion de batalla
-int damange;
-int level_req; 
-public: 
+class Skill
+{
 
-void set_name(const char * name);
-const char * get_name();
-void set_anim(Animacion the_anim);
-Animacion * get_anim();
-void set_mp_price(int The_mp_price);
-int* get_mp_price();
-void set_damange(int The_damange);
-int* get_damange();
-void set_level_req(int The_level_req);
-int* get_level_req();
+    protected:
+        const char  *actual_name;
+        int         mp_price;
+        Animation   actual_anim;    //  battle skills animation
+        int         actual_damage;
+        int         level_required;
+    public:
+
+        void        set_name(const char *name);
+        const char  *get_name();
+        void        set_anim(Animation the_anim);
+        Animation   *get_anim();
+        void        set_mp_price(int the_mp_price);
+        int         *get_mp_price();
+        void        set_damage(int the_damage);
+        int         *get_damage();
+        void        set_level_req(int the_level_req);
+        int         *get_level_req();
 };
 
 #endif

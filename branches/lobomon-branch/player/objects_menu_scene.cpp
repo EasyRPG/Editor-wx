@@ -1,4 +1,4 @@
-/* objects_menu_scene.cpp, objects menu scene routines.
+/*objects_menu_scene.cpp, objects My_menu scene routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,65 +32,78 @@
 #include "actor.h"
 #include "scene.h"
 
-void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    myteam=TheTeam;
-     myaudio=theaudio;
-     
-     int k =(((*myteam).get_num_items()-1)/2);
-   menu.init( theaudio, run, 1,k, 320, 210, 0, 30);
-   descripcion.init(320,30,0,0);
-   int i=0,space=16,Size_of_Block=150;
-   char stringBuffer[255];
-   for(i=0;i<(*myteam).get_num_items();i++) 
-  { 
-  str_Vector.push_back( (const char *) ((*myteam).get_item_name(i)) );
-   sprintf(stringBuffer, "%d ", (*(*myteam).get_NOI(i)));
-   menu.add_text(stringBuffer,Size_of_Block-10+((Size_of_Block+10)*((i)%(2))),5+((i/2)*space));
-  }
+void Inventory_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team)
+{
+    My_team = the_team;
+    My_audio = the_audio;
 
-if(str_Vector.size()%2)//para que no truene si son nones
-{ str_Vector.push_back( " " );
+    int k = (((*My_team).get_num_items() - 1) / 2);// S.O.S.!!!
+    My_menu.init(the_audio, run, 1, k, 320, 210, 0, 30);
+    description.init(320,30,0,0);
+    int i = 0,space = 16,block_size = 150;
+    char string_buffer[255];
+    for (i = 0;i<(*My_team).get_num_items();i++)
+    {
+        string_vector.push_back( (const char *) ((*My_team).get_item_name(i)) );
+        sprintf(string_buffer, "%d ", (*(*My_team).get_items_number(i)));
+        My_menu.add_text(string_buffer,block_size-10+((block_size+10)*((i)%(2))),5+((i/2)*space));
+    }
+
+    if (string_vector.size()%2)//para que no truene si son nones
+    {
+        string_vector.push_back( " " );
+    }
+
+    while (string_vector.size()<2)//para que no truene si no hay nada
+    {
+        string_vector.push_back( " " );
+    }
+    My_menu.set_commands(& string_vector);
+    running = run;
+    new_scene = the_scene;
+    delay = 0;
 }
 
-while(str_Vector.size()<2)//para que no truene si no hay nada
-{ str_Vector.push_back( " " );
-}
-   menu.setComands(& str_Vector);
-   running=  run;   
-   NScene=TheScene;
-   retardo=0;
-}
-
-void Objects_Menu_Scene::update(SDL_Surface* Screen)
-{ //en los menus no se necesitnatantos refrescos
-  retardo++;
-   if(retardo==4)
-   { 
-   menu.draw(Screen);
-   descripcion.draw(Screen);  
-   retardo=0;
-   }        
+void Inventory_scene::update(SDL_Surface*screen)
+{
+    //en los menus no se necesitnatantos refrescos
+    delay++;
+    if (delay == 4)
+    {
+        My_menu.draw(screen);
+        description.draw(screen);
+        delay = 0;
+    }
 }
 
-void Objects_Menu_Scene::action()
-{ (*myteam).select=menu.getindexY()*2+menu.getindexX();
-   if((*myteam).select <(*myteam).get_num_items())
-   { * NScene=10; }else
-   {menu.restarmenu();
-   }           
+void Inventory_scene::action()
+{
+    (*My_team).select = My_menu.get_index_y() * 2 + My_menu.get_index_x();
+    if ((*My_team).select < (*My_team).get_num_items())
+    {
+        *new_scene = 10;
+    }
+    else
+    {
+        My_menu.restart_menu();
+    }
 }
 
-void Objects_Menu_Scene::updatekey() {
-menu.updatekey();
-     if(menu.desition())
-     action();
-
- if (Key_press_and_realsed(LMK_X ))
-        {
-        (*myaudio).soundload("../Sound/Cansel2.wav");
-        * NScene=4; }
-     }
-void Objects_Menu_Scene::dispose() {
-   menu.dispose();
-   descripcion.dispose();  
+void Inventory_scene::update_key()
+{
+    My_menu.update_key();
+    if (My_menu.decision())
+    {
+        action();
+    }
+    if (key_pressed_and_released(KEY_X ))
+    {
+        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        *new_scene = 4;
+    }
+}
+void Inventory_scene::dispose()
+{
+    My_menu.dispose();
+    description.dispose();
 }

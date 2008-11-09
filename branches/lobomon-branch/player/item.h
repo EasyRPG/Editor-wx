@@ -14,27 +14,31 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+///a quedado perfessto
+
 #ifndef ITEM_H_
 #define ITEM_H_
 
-class Item {
-protected: 
-const char* nombre;
-int NOI;//numero de items
-Animacion anim;//animacion de batalla
-unsigned char type;//tipo arama, recuperador, protector etc.
-int coste;//para las tiendas
-public: 
-int id;
-void set_NOI(int The_NOI);
-int* get_NOI();
-void set_name(const char * name);
-const char * get_name();
-void set_type(unsigned char The_type);
-unsigned char * get_type();
-void set_anim(Animacion the_anim);
-Animacion * get_anim();
-// cuanto sube o baja y a que, mejor definido por herencia
+class Item
+{
+protected:
+    const char  *actual_name;          //  item name
+    int         items_number;   //  items quantity
+    Animation   anim;           //  battle animation
+    Uint8       actual_type;           //  weapon, healer, protecter, etc types
+    int         shop_price;     //  item prices for shops
+
+public:
+    //  better we define on herency changes in items data
+    int         id;
+    void        set_items_number(int the_items_number);
+    int         *get_items_number();
+    void        set_name(const char *name);
+    const char  *get_name();
+    void        set_type(Uint8 the_type);
+    Uint8       *get_type();
+    void        set_anim(Animation the_anim);
+    Animation   *get_anim();
 };
 
 #endif

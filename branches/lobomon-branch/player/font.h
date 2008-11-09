@@ -1,4 +1,4 @@
-/* font.h, EasyRPG player font class declaration file.
+/*font.h, EasyRPG player font class declaration file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,20 @@
 #ifndef FONT_H_
 #define FONT_H_
 
-class Font{
-protected:
-          int size;
-          int fR,  fG,  fB,  fU; // fU = unused
-          const char * Fname;
-public:
-      void init_Font();
-      SDL_Surface* drawText(char* string);
-      SDL_Surface* drawText(char* string,int r, int b,int g, int u);
-      SDL_Surface* drawText(const char* string);
-      void draw_temp_Text(SDL_Surface* screen,char* string, int x, int y);
-      void Quit();
+class Font
+{
+    protected:
+        int         size;
+        int         red_color,  green_color,  blue_color,  fU; // fU = unused
+        const char  *font_name;
+
+    public:
+        void        init_font();
+        SDL_Surface *draw_text(char*string);
+        SDL_Surface *draw_text(char*string,int red_color, int blue_color,int green_color, int u);
+        SDL_Surface *draw_text(const char*string);
+        void        draw_temp_text(SDL_Surface*screen,char*string, int x_pos, int y_pos);
+        void        quit();
 
 };
 

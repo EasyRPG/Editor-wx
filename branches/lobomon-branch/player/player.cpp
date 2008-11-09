@@ -1,4 +1,4 @@
-/* player.cpp, player routines.
+/*player.cpp, player routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -26,533 +26,539 @@
 #include "map.h"
 #include "skill.h"
 #include "item.h"
-#include "enemy.h"#include "player.h"
+#include "enemy.h"
+#include "player.h"
 
-Item* Player::get_Weapon()
+Item*Player::get_weapon()
 {
-   return (&Weapon);
+    return (&weapon);
 }
-Item* Player::get_Shield()
+Item*Player::get_shield()
 {
-   return (&Shield);
+    return (&shield);
 }
-Item* Player::get_Armor()
+Item*Player::get_armor()
 {
-   return (&Armor);
+    return (&armor);
 }
-Item* Player::get_Helmet()
+Item*Player::get_helmet()
 {
-   return (&Helmet);
+    return (&helmet);
 }
-Item* Player::get_Accessory()
+Item*Player::get_accessory()
 {
-   return (&Accessory);
-}
-
-
-void Player::set_Weapon(Item The_Weapon)
-{
-   Weapon=The_Weapon;
-}
-void Player::set_Shield(Item The_Shield)
-{
-   Shield=The_Shield;
-}
-
-void Player::set_Armor(Item The_Armor)
-{
-   Armor=The_Armor;
-}
-
-void Player::set_Helmet(Item The_Helmet)
-{
-   Helmet=The_Helmet;
-}
-void Player::set_Accessory(Item The_Accessory)
-{
-   Accessory=The_Accessory;
-}
-
-unsigned char* Player::get_Weapon_type()
-{
-   return (&Weapon_type);
-}
-unsigned char* Player::get_Shield_type()
-{
-   return (&Shield_type);
-}
-unsigned char* Player::get_Armor_type()
-{
-   return (&Armor_type);
-}
-unsigned char* Player::get_Helmet_type()
-{
-   return (&Helmet_type);
-}
-unsigned char* Player::get_Accessory_type()
-{
-   return (&Accessory_type);
-}
-
-void Player::set_Weapon_type(unsigned char The_Weapon_type)
-{
-   Weapon_type=The_Weapon_type;
-}
-void Player::set_Shield_type(unsigned char The_Shield_type)
-{
-   Shield_type=The_Shield_type;
-}
-void Player::set_Armor_type(unsigned char The_Armor_type)
-{
-   Armor_type=The_Armor_type;
-}
-void Player::set_Helmet_type(unsigned char The_Helmet_type)
-{
-   Helmet_type=The_Helmet_type;
-}      
-void Player::set_Accessory_type(unsigned char The_Accessory_type)
-{
-   Accessory_type=The_Accessory_type;
-}
-void Player::set_HP(int The_HP)
-{
-   HP=The_HP;
-}
-void Player::set_MaxHP(int The_MaxHP)
-{
-   MaxHP=The_MaxHP;
-}
-void Player::set_MP(int The_MP)
-{
-   MP=The_MP;
-}
-void Player::set_MaxMP(int The_MaxMP)
-{
-   MaxMP=The_MaxMP;
-}
-
-int * Player::get_HP()
-{
-  return (&HP);
-}
-int * Player::get_MaxHP()
-{
-  return (&MaxHP);
-}
-int* Player::get_MP()
-{
-   return (&MP);
-}
-int* Player::get_MaxMP()
-{
-   return (&MaxMP);
-}
-
-void Player::set_Heal(int The_Heal)
-{
-   Heal=The_Heal;
-}
-void Player::set_Attack(int The_Attack)
-{
-   Attack=The_Attack;
-}
-void Player::set_Defense(int The_Defense)
-{
-   Defense=The_Defense;
-}
-void Player::set_Speed(int The_Speed)
-{
-   Speed=The_Speed;
-}
-void Player::set_Spirit(int The_Spirit)
-{
-   Spirit=The_Spirit;
-}
-void Player::set_Level(int The_Level)
-{
-   Level=The_Level;
-}
-void Player::set_Exp(int The_Exp)
-{
-   Exp=The_Exp;
-}
-void Player::set_MaxExp(int The_MaxExp)
-{
-   MaxExp=The_MaxExp;
-}
-
-int * Player::get_Heal()
-{
-  return (&Heal);
-}
-int * Player::get_Attack()
-{
-  return (&Attack);
-}
-int* Player::get_Defense()
-{
-   return (&Defense);
-}
-int* Player::get_Speed()
-{
-   return (&Speed);
-}
-
-int * Player::get_Spirit()
-{
-  return (&Spirit);
-}
-int * Player::get_Level()
-{
-  return (&Level);
-}
-int* Player::get_Exp()
-{
-   return (&Exp);
-}
-int* Player::get_MaxExp()
-{
-   return (&MaxExp);
+    return (&accessory);
 }
 
 
-void Player::set_job(const char * name)
+void Player::set_weapon(Item the_weapon)
 {
-   titulo=name;
+    weapon = the_weapon;
 }
-const char * Player::get_job()
+void Player::set_shield(Item the_shield)
 {
-   return(titulo);
+    shield = the_shield;
 }
-void Player::set_name(const char * name)
+
+void Player::set_armor(Item the_armor)
 {
-   nombre=name;
+    armor = the_armor;
 }
-const char * Player::get_name()
+
+void Player::set_helmet(Item the_helmet)
 {
-   return(nombre);
+    helmet = the_helmet;
 }
-void Player::set_faceset(Faceset theFaceset)
+void Player::set_accessory(Item the_accessory)
 {
-   Face=theFaceset;
+    accessory = the_accessory;
 }
-Faceset * Player::get_faceset()
+
+Uint8*Player::get_weapon_type()
 {
-   return (& Face);
+    return (&weapon_type);
 }
-void Player::set_chara(Chara thecharset)
+Uint8*Player::get_shield_type()
 {
-   charset=thecharset;
+    return (&shield_type);
 }
-Chara * Player::get_chara()
+Uint8*Player::get_armor_type()
 {
-   return (& charset);
+    return (&armor_type);
+}
+Uint8*Player::get_helmet_type()
+{
+    return (&helmet_type);
+}
+Uint8*Player::get_accessory_type()
+{
+    return (&accessory_type);
+}
+
+void Player::set_weapon_type(Uint8 the_weapon_type)
+{
+    weapon_type = the_weapon_type;
+}
+void Player::set_shield_type(Uint8 the_shield_type)
+{
+    shield_type = the_shield_type;
+}
+void Player::set_armor_type(Uint8 the_armor_type)
+{
+    armor_type = the_armor_type;
+}
+void Player::set_helmet_type(Uint8 the_helmet_type)
+{
+    helmet_type = the_helmet_type;
+}
+void Player::set_accessory_type(Uint8 the_accessory_type)
+{
+    accessory_type = the_accessory_type;
+}
+void Player::set_hp(int the_hp)
+{
+    hp = the_hp;
+}
+void Player::set_max_hp(int the_max_hp)
+{
+    max_hp = the_max_hp;
+}
+void Player::set_mp(int the_mp)
+{
+    mp = the_mp;
+}
+void Player::set_max_mp(int the_max_mp)
+{
+    max_mp = the_max_mp;
+}
+
+int *Player::get_hp()
+{
+    return (&hp);
+}
+int *Player::get_max_hp()
+{
+    return (&max_hp);
+}
+int*Player::get_mp()
+{
+    return (&mp);
+}
+int*Player::get_max_mp()
+{
+    return (&max_mp);
+}
+
+void Player::set_heal(int the_heal)
+{
+    heal = the_heal;
+}
+void Player::set_attack(int the_attack)
+{
+    attack = the_attack;
+}
+void Player::set_defense(int the_defense)
+{
+    defense = the_defense;
+}
+void Player::set_speed(int the_speed)
+{
+    speed = the_speed;
+}
+void Player::set_spirit(int the_spirit)
+{
+    spirit = the_spirit;
+}
+void Player::set_level(int the_level)
+{
+    level = the_level;
+}
+void Player::set_exp(int the_exp)
+{
+    exp = the_exp;
+}
+void Player::set_max_exp(int the_max_exp)
+{
+    max_exp = the_max_exp;
+}
+
+int *Player::get_heal()
+{
+    return (&heal);
+}
+int *Player::get_attack()
+{
+    return (&attack);
+}
+int*Player::get_defense()
+{
+    return (&defense);
+}
+int*Player::get_speed()
+{
+    return (&speed);
+}
+
+int *Player::get_spirit()
+{
+    return (&spirit);
+}
+int *Player::get_level()
+{
+    return (&level);
+}
+int*Player::get_exp()
+{
+    return (&exp);
+}
+int*Player::get_max_exp()
+{
+    return (&max_exp);
+}
+
+
+void Player::set_job(const char *name)
+{
+    My_title_scene = name;
+}
+const char *Player::get_job()
+{
+    return(My_title_scene);
+}
+void Player::set_name(const char *name)
+{
+    name = name;
+}
+const char *Player::get_name()
+{
+    return(name);
+}
+void Player::set_faceset(Faceset the_faceset)
+{
+    my_face = the_faceset;
+}
+Faceset *Player::get_faceset()
+{
+    return(& my_face);
+}
+void Player::set_chara(Character thecharset)
+{
+    my_charset = thecharset;
+}
+Character *Player::get_chara()
+{
+    return (& my_charset);
 }
 void Player::add_skill(Skill Myskill)
 {
-      Skills.push_back(Myskill);
+    my_skills.push_back(Myskill);
 }
 
-const char * Player::get_skill_name(int num)
+const char *Player::get_skill_name(int num)
 {
-   return (((Skills.at(num))).get_name()); 
+    return (((my_skills.at(num))).get_name());
 }
-int * Player::get_skill_mp_price(int num)
+int *Player::get_skill_mp_price(int num)
 {
-   return (((Skills.at(num))).get_mp_price()); 
+    return (((my_skills.at(num))).get_mp_price());
 }
-int * Player::get_skill_damange(int num)
+int *Player::get_skill_damage(int num)
 {
-   return (((Skills.at(num))).get_damange()); 
+    return (((my_skills.at(num))).get_damage());
 }
-int * Player::get_skill_level_req(int num)
+int *Player::get_skill_level_req(int num)
 {
-   return (((Skills.at(num))).get_level_req()); 
-}
-
-Animacion * Player::get_Weapon_Anim()
-{
-   return (Weapon.get_anim()); 
+    return (((my_skills.at(num))).get_level_req());
 }
 
-Animacion * Player::get_skill_get_anim(int num)
+Animation *Player::get_weapon_anim()
 {
-   return (((Skills.at(num))).get_anim()); 
+    return (weapon.get_anim());
+}
+
+Animation *Player::get_skill_get_anim(int num)
+{
+    return (((my_skills.at(num))).get_anim());
 }
 int Player::get_skill_size()
 {
-     return (Skills.size());
+    return (my_skills.size());
 }
 
-void Player_Team::clear_team()
+void Player_team::clear_team()
 {
-      Players.clear();
+    players.clear();
 }
-void Player_Team::clear_obj()
+void Player_team::clear_objects()
 {
-      Items.clear();
+    items.clear();
 }
-void Player_Team::clear_enemy()
+void Player_team::clear_enemy()
 {
-      Enemys.clear();
+    enemies.clear();
 }
-void Player_Team::add_enemy(Enemy Myplayer)
+void Player_team::add_enemy(Enemy player)
 {
-      Enemys.push_back(Myplayer);
+    enemies.push_back(player);
 }
 
-void Player_Team::add_player(Player Myplayer)
+void Player_team::add_player(Player My_player)
 {
-      Players.push_back(Myplayer);
+    players.push_back(My_player);
 }
-Item Player_Team::get_item(int num)
+Item Player_team::get_item(int num)
 {
-return (Items.at(num));
+    return (items.at(num));
 }
-void Player_Team::add_item(Item Myitem)
+void Player_team::add_item(Item Myitem)
 {
-unsigned int i;
-int the_id;
-the_id=Myitem.id;
-     for (i=0;i<Items.size();i++)
-    { if (the_id ==(Items.at(i)).id)
-       break;
-    }
-    
-    if (i<Items.size())//lo encontro
+    Uint32 i;
+    int the_id;
+    the_id = Myitem.id;
+    for (i = 0;i<items.size();i++)
     {
-    *((Items.at(i)).get_NOI())= *((Items.at(i)).get_NOI())+*Myitem.get_NOI();
+        if (the_id==(items.at(i)).id)
+            break;
+    }
+
+    if (i<items.size())//lo encontro
+    {
+        *((items.at(i)).get_items_number())=*((items.at(i)).get_items_number())+*Myitem.get_items_number();
     }
     else
-      {Items.push_back(Myitem);}
+    {
+        items.push_back(Myitem);
+    }
 }
 
 
 
-int Player_Team::get_size()
+int Player_team::get_size()
 {
-     return (Players.size());
+    return (players.size());
 }
-Chara * Player_Team::get_chara(int num)
+Character *Player_team::get_chara(int num)
 {
-     return (((Players.at(num))).get_chara()); 
+    return (((players.at(num))).get_chara());
 }
-Faceset * Player_Team::get_faceset(int num)
+Faceset *Player_team::get_faceset(int num)
 {
-     return (((Players.at(num))).get_faceset()); 
+    return (((players.at(num))).get_faceset());
 }
-const char * Player_Team::get_name(int num)
+const char *Player_team::get_name(int num)
 {
-   return (((Players.at(num))).get_name()); 
+    return (((players.at(num))).get_name());
 }
-const char * Player_Team::get_job(int num)
+const char *Player_team::get_job(int num)
 {
-   return (((Players.at(num))).get_job()); 
+    return (((players.at(num))).get_job());
 }
-int * Player_Team::get_HP(int num)
+int *Player_team::get_hp(int num)
 {
-  return (((Players.at(num))).get_HP()); 
+    return (((players.at(num))).get_hp());
 }
-int * Player_Team::get_MaxHP(int num)
+int *Player_team::get_max_hp(int num)
 {
-  return (((Players.at(num))).get_MaxHP()); 
+    return (((players.at(num))).get_max_hp());
 }
-int* Player_Team::get_MP(int num)
+int*Player_team::get_mp(int num)
 {
-   return (((Players.at(num))).get_MP()); 
+    return (((players.at(num))).get_mp());
 }
-int* Player_Team::get_MaxMP(int num)
+int*Player_team::get_max_mp(int num)
 {
-   return (((Players.at(num))).get_MaxMP()); 
+    return (((players.at(num))).get_max_mp());
 }
 
-int * Player_Team::get_Heal(int num)
+int *Player_team::get_heal(int num)
 {
-  return (((Players.at(num))).get_Heal()); 
+    return (((players.at(num))).get_heal());
 }
-int * Player_Team::get_Attack(int num)
+int *Player_team::get_attack(int num)
 {
-  return (((Players.at(num))).get_Attack()); 
+    return (((players.at(num))).get_attack());
 }
-int* Player_Team::get_Defense(int num)
+int*Player_team::get_defense(int num)
 {
-  return (((Players.at(num))).get_Defense()); 
+    return (((players.at(num))).get_defense());
 }
-int* Player_Team::get_Speed(int num)
+int*Player_team::get_speed(int num)
 {
-   return (((Players.at(num))).get_Speed()); 
+    return (((players.at(num))).get_speed());
 }
 
-int * Player_Team::get_Spirit(int num)
+int *Player_team::get_spirit(int num)
 {
-  return (((Players.at(num))).get_Spirit()); 
+    return (((players.at(num))).get_spirit());
 }
-int * Player_Team::get_Level(int num)
+int *Player_team::get_level(int num)
 {
-  return (((Players.at(num))).get_Level()); 
+    return (((players.at(num))).get_level());
 }
-int* Player_Team::get_Exp(int num)
+int*Player_team::get_exp(int num)
 {
-  return (((Players.at(num))).get_Exp()); 
+    return (((players.at(num))).get_exp());
 }
-int* Player_Team::get_MaxExp(int num)
+int*Player_team::get_max_exp(int num)
 {
-  return (((Players.at(num))).get_MaxExp()); 
+    return (((players.at(num))).get_max_exp());
 }
 
-int Player_Team::get_num_items()
+int Player_team::get_num_items()
 {
-     return (Items.size());
+    return (items.size());
 }
-void Player_Team::erase_item(int the_item)
-{  vector<Item>::iterator the_iterator;
-the_iterator=Items.begin();
-int i;
-for(i=0;i<the_item;i++)
-{the_iterator++;
-}
-Items.erase( the_iterator);
-}
-int* Player_Team::get_NOI(int num)
+void Player_team::erase_item(int the_item)
 {
-  return (((Items.at(num))).get_NOI()); 
+    std::vector<Item>::iterator the_iterator;
+    the_iterator = items.begin();
+    int i;
+    for (i = 0;i<the_item;i++)
+    {
+        the_iterator++;
+    }
+    items.erase(the_iterator);
 }
-unsigned char * Player_Team::get_type(int num)
+int*Player_team::get_items_number(int num)
 {
-  return (((Items.at(num))).get_type()); 
+    return (((items.at(num))).get_items_number());
 }
-const char * Player_Team::get_item_name(int num)
+Uint8 *Player_team::get_type(int num)
 {
-   return (((Items.at(num))).get_name()); 
+    return (((items.at(num))).get_type());
 }
-Animacion * Player_Team::get_item_anim(int num)
+const char *Player_team::get_item_name(int num)
 {
-   return (((Items.at(num))).get_anim()); 
+    return (((items.at(num))).get_name());
 }
-void Player_Team::set_Gold(int The_Gold)
+Animation *Player_team::get_item_anim(int num)
 {
-   Gold=The_Gold;
+    return (((items.at(num))).get_anim());
 }
-int* Player_Team::get_Gold()
+void Player_team::set_gold(int the_gold)
 {
-   return (&Gold);
+    gold = the_gold;
 }
-int Player_Team::get_skill_size(int num) 
-{  
-    return (((Players.at(num))).get_skill_size()); 
-}
-const char * Player_Team::get_skill_name(int nump,int num)
-{  
-   return (((Players.at(nump))).get_skill_name(num)); 
-}
-int * Player_Team::get_skill_mp_price(int nump,int num)
+int*Player_team::get_gold()
 {
-    return (((Players.at(nump))).get_skill_mp_price(num)); 
+    return (&gold);
 }
-int * Player_Team::get_skill_damange(int nump,int num)
+int Player_team::get_skill_size(int num)
 {
-   return (((Players.at(nump))).get_skill_damange(num)); 
+    return (((players.at(num))).get_skill_size());
 }
-int * Player_Team::get_skill_level_req(int nump,int num)
+const char *Player_team::get_skill_name(int player_num,int num)
 {
-   return (((Players.at(nump))).get_skill_level_req(num)); 
+    return (((players.at(player_num))).get_skill_name(num));
+}
+int *Player_team::get_skill_mp_price(int player_num,int num)
+{
+    return (((players.at(player_num))).get_skill_mp_price(num));
+}
+int *Player_team::get_skill_damage(int player_num,int num)
+{
+    return (((players.at(player_num))).get_skill_damage(num));
+}
+int *Player_team::get_skill_level_req(int player_num,int num)
+{
+    return (((players.at(player_num))).get_skill_level_req(num));
 }
 
-Animacion * Player_Team::get_skill_get_anim(int nump,int num)
+Animation *Player_team::get_skill_get_anim(int player_num,int num)
 {
-    return (((Players.at(nump))).get_skill_get_anim(num)); 
+    return (((players.at(player_num))).get_skill_get_anim(num));
 }
-Animacion * Player_Team::get_Weapon_Anim(int nump)
+Animation *Player_team::get_weapon_anim(int player_num)
 {
-    return (((Players.at(nump))).get_Weapon_Anim()); 
-}
-
-
-
-
-
-Item* Player_Team::get_Weapon(int nump)
-{
-   return ((Players.at(nump)).get_Weapon());
-}
-Item* Player_Team::get_Shield(int nump)
-{
-    return ((Players.at(nump)).get_Shield());
-}
-Item* Player_Team::get_Armor(int nump)
-{
-   return ((Players.at(nump)).get_Armor());
-}
-Item* Player_Team::get_Helmet(int nump)
-{
-    return ((Players.at(nump)).get_Helmet());
-}
-Item* Player_Team::get_Accessory(int nump)
-{
-   return ((Players.at(nump)).get_Accessory());
+    return (((players.at(player_num))).get_weapon_anim());
 }
 
 
-void Player_Team::set_Weapon(int nump,Item The_Weapon)
+
+
+
+Item*Player_team::get_weapon(int player_num)
 {
-  (Players.at(nump)).set_Weapon(The_Weapon); 
+    return ((players.at(player_num)).get_weapon());
 }
-void Player_Team::set_Shield(int nump,Item The_Shield)
+Item*Player_team::get_shield(int player_num)
 {
-    (Players.at(nump)).set_Shield(The_Shield); 
+    return ((players.at(player_num)).get_shield());
 }
-void Player_Team::set_Armor(int nump,Item The_Armor)
+Item*Player_team::get_armor(int player_num)
 {
-   (Players.at(nump)).set_Armor(The_Armor); 
+    return ((players.at(player_num)).get_armor());
 }
-void Player_Team::set_Helmet(int nump,Item The_Helmet)
+Item*Player_team::get_helmet(int player_num)
 {
-    (Players.at(nump)).set_Helmet(The_Helmet); 
+    return ((players.at(player_num)).get_helmet());
 }
-void Player_Team::set_Accessory(int nump,Item The_Accessory)
+Item*Player_team::get_accessory(int player_num)
 {
-    (Players.at(nump)).set_Accessory(The_Accessory); 
+    return ((players.at(player_num)).get_accessory());
 }
 
 
-unsigned char* Player_Team::get_Weapon_type(int nump)
+void Player_team::set_weapon(int player_num, Item the_weapon)
 {
-   return ( (Players.at(nump)).get_Weapon_type());
+    (players.at(player_num)).set_weapon(the_weapon);
 }
-unsigned char* Player_Team::get_Shield_type(int nump)
+void Player_team::set_shield(int player_num, Item the_shield)
 {
-   return ( (Players.at(nump)).get_Shield_type());
+    (players.at(player_num)).set_shield(the_shield);
 }
-unsigned char* Player_Team::get_Armor_type(int nump)
+void Player_team::set_armor(int player_num, Item the_armor)
 {
-   return ( (Players.at(nump)).get_Armor_type());
+    (players.at(player_num)).set_armor(the_armor);
 }
-unsigned char* Player_Team::get_Helmet_type(int nump)
+void Player_team::set_helmet(int player_num, Item the_helmet)
 {
-   return ( (Players.at(nump)).get_Helmet_type());
+    (players.at(player_num)).set_helmet(the_helmet);
 }
-unsigned char* Player_Team::get_Accessory_type(int nump)
+void Player_team::set_accessory(int player_num,Item the_accessory)
 {
-   return ( (Players.at(nump)).get_Accessory_type());
+    (players.at(player_num)).set_accessory(the_accessory);
 }
 
-void Player_Team::set_Weapon_type(int nump, unsigned char The_Weapon_type)
+
+Uint8*Player_team::get_weapon_type(int player_num)
 {
-    (Players.at(nump)).set_Weapon_type(The_Weapon_type); 
+    return ( (players.at(player_num)).get_weapon_type());
 }
-void Player_Team::set_Shield_type(int nump, unsigned char The_Shield_type)
+Uint8*Player_team::get_shield_type(int player_num)
 {
-    (Players.at(nump)).set_Shield_type(The_Shield_type); 
+    return ( (players.at(player_num)).get_shield_type());
 }
-void Player_Team::set_Armor_type(int nump, unsigned char The_Armor_type)
+Uint8*Player_team::get_armor_type(int player_num)
 {
-    (Players.at(nump)).set_Armor_type(The_Armor_type); 
+    return ( (players.at(player_num)).get_armor_type());
 }
-void Player_Team::set_Helmet_type(int nump, unsigned char The_Helmet_type)
+Uint8*Player_team::get_helmet_type(int player_num)
 {
-    (Players.at(nump)).set_Helmet_type(The_Helmet_type); 
-}      
-void Player_Team::set_Accessory_type(int nump, unsigned char The_Accessory_type)
+    return ( (players.at(player_num)).get_helmet_type());
+}
+Uint8*Player_team::get_accessory_type(int player_num)
 {
-    (Players.at(nump)).set_Accessory_type(The_Accessory_type); 
+    return ( (players.at(player_num)).get_accessory_type());
+}
+
+void Player_team::set_weapon_type(int player_num, Uint8 the_weapon_type)
+{
+    (players.at(player_num)).set_weapon_type(the_weapon_type);
+}
+void Player_team::set_shield_type(int player_num, Uint8 the_shield_type)
+{
+    (players.at(player_num)).set_shield_type(the_shield_type);
+}
+void Player_team::set_armor_type(int player_num, Uint8 the_armor_type)
+{
+    (players.at(player_num)).set_armor_type(the_armor_type);
+}
+void Player_team::set_helmet_type(int player_num, Uint8 the_helmet_type)
+{
+    (players.at(player_num)).set_helmet_type(the_helmet_type);
+}
+void Player_team::set_accessory_type(int player_num, Uint8 the_accessory_type)
+{
+    (players.at(player_num)).set_accessory_type(the_accessory_type);
 }

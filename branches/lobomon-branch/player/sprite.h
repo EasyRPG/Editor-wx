@@ -1,4 +1,4 @@
-/* sprite.h, EasyRPG player sprite class declaration file.
+/*sprite.h, EasyRPG player sprite class declaration file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -17,73 +17,116 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-class Sprite {
+class Sprite
+{
 protected:
-            SDL_Surface * img;
-          	int cols,rows;
-          	bool not_clean;
+    SDL_Surface     *actual_image;
+    int             columns;
+    int             rows;
+    bool not_clean;
 public:
-     bool visible;
+    bool visible;
     int frame;
-    int x,y;   
-    void setx(int posx) {x=posx;}
-	void sety(int posy) {y=posy;}
-	void setimg(const char* string);
-    void setcols(int icols) {cols=icols;}
-	void setrows(int irows) {rows=irows;}
-	void addx(int c) {x+=c;}
-	void addy(int c) {y+=c;}
-	void set_surface(SDL_Surface * imag);
-	int getx() {return x;}
-	int gety() {return y;}
-	int getw() {return img->w/cols;}
-	int geth() {return img->h/rows;}
-	int getcols() {return cols;}
-	int getrows() {return rows;}
-	void draw(SDL_Surface *screen);
-	void dispose();
-	int colision(Sprite sp);
+    int x_pos, y_pos;
+    void set_x(int actual_x_pos)
+    {
+        x_pos = actual_x_pos;
+    }
+    void set_y(int actual_y_pos)
+    {
+        y_pos = y_pos;
+    }
+    void set_image(const char*string);
+    void setcols(int icols)
+    {
+        columns = icols;
+    }
+    void setrows(int irows)
+    {
+        rows = irows;
+    }
+    void add_x(int c)
+    {
+        x_pos+=c;
+    }
+    void add_y(int c)
+    {
+        y_pos+=c;
+    }
+    void set_surface(SDL_Surface *imag);
+    int get_x()
+    {
+        return x_pos;
+    }
+    int get_y()
+    {
+        return y_pos;
+    }
+    int get_weight()
+    {
+        return actual_image -> w / columns;
+    }
+    int get_height()
+    {
+        return actual_image->h/rows;
+    }
+    int get_cols()
+    {
+        return columns;
+    }
+    int get_rows()
+    {
+        return rows;
+    }
+    void draw(SDL_Surface *screen);
+    void dispose();
+    int colision(Sprite My_sprite);
 };
 
-class Chara: public Sprite {
+class Character: public Sprite
+{
 private:
-  int animation[4][4];//up right down left XP 
-  
-public:
-    int dir;  
-    void init_Chara();   
-    void frame_ori();  
-    void frameupdate();
-   	void drawc(SDL_Surface *screen);
-};
-
-class Faceset: public Sprite {
+    int animation[4][4];//up right down left XP
 
 public:
-    void drawf (SDL_Surface * screen);
-    void init_Faceset(int posx,int posy,int theframe);     
+    int     dir;
+    void    init_chara();
+    void    frame_origin();
+    void    frame_update();
+    void    draw_c(SDL_Surface *screen);
 };
 
-class Sistem: public Sprite {
+class Faceset: public Sprite
+{
+
+public:
+    void drawf (SDL_Surface *screen);
+    void init_faceset(int x_pos,int y_pos,int theframe);
+};
+
+class Sprite_system: public Sprite
+{
+    private:
+        SDL_Surface     *CubeDraw (SDL_Surface *screen,int sizeX,int sizeY);
+
+    public:
+        void init_video_system();
+        void draw (SDL_Surface *screen,int i_frame,int x_pos,int y_pos);
+        SDL_Surface     *Exdraw (int sizeX,int sizeY);
+        SDL_Surface     *ex_draw_t (int sizeX,int sizeY,int tipe);
+        SDL_Surface     *Cube_select(int type,int sizeX,int sizeY);
+};
+class Animation: public Sprite
+{
 private:
-   SDL_Surface *CubeDraw (SDL_Surface * screen,int sizeX,int sizeY);
+    int max_frame;
+    short delay;
 public:
-    void init_Sistem();  
-    void draw (SDL_Surface * screen,int iframe,int posx,int posy);
-    SDL_Surface * Exdraw (int sizeX,int sizeY);
-    SDL_Surface * ExdrawT (int sizeX,int sizeY,int tipe);
-    SDL_Surface * Cube_select(int type,int sizeX,int sizeY);
-};
-class Animacion: public Sprite {
-private:
-  int maxframe;
-  short delay;
-public:
-    bool endanim; 
+    bool end_anim;
     void reset();
-    void init_Anim(int the_cols,int the_rows);  
-    void frameupdate();
-   	void draw(SDL_Surface *screen);
+    void init_anim(int the_columns,int the_rows);
+    void frame_update();
+    void draw(SDL_Surface *screen);
 };
 
 #endif

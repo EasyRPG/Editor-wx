@@ -1,4 +1,4 @@
-/* timer.cpp, timer routines.
+/*timer.cpp, timer routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -13,39 +13,41 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-   
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "SDL.h"#include "timer.h"
 
+///a quedado perfessto
+
 Timer::Timer()
 {
     //Initialize the variables
-    startTicks = 0;
-    pausedTicks = 0;
-    paused = false;
-    started = false;    
+    start_ticks     = 0;
+    paused_ticks    = 0;
+    paused          = false;
+    started         = false;
 }
 
 void Timer::start()
 {
     //Start the timer
     started = true;
-    
+
     //Unpause the timer
     paused = false;
-    
+
     //Get the current clock time
-    startTicks = SDL_GetTicks();    
+    start_ticks = SDL_GetTicks();
 }
 
 void Timer::stop()
 {
     //Stop the timer
     started = false;
-    
+
     //Unpause the timer
-    paused = false;    
+    paused = false;
 }
 
 void Timer::pause()
@@ -55,9 +57,9 @@ void Timer::pause()
     {
         //Pause the timer
         paused = true;
-    
+
         //Calculate the paused ticks
-        pausedTicks = SDL_GetTicks() - startTicks;
+        paused_ticks = SDL_GetTicks() - start_ticks;
     }
 }
 
@@ -68,43 +70,43 @@ void Timer::unpause()
     {
         //Unpause the timer
         paused = false;
-    
+
         //Reset the starting ticks
-        startTicks = SDL_GetTicks() - pausedTicks;
-        
+        start_ticks = SDL_GetTicks() - paused_ticks;
+
         //Reset the paused ticks
-        pausedTicks = 0;
+        paused_ticks = 0;
     }
 }
 
 int Timer::get_ticks()
 {
     //If the timer is running
-    if( started == true )
+    if(started == true)
     {
         //If the timer is paused
-        if( paused == true )
+        if(paused == true)
         {
             //Return the number of ticks when the the timer was paused
-            return pausedTicks;
+            return paused_ticks;
         }
         else
         {
             //Return the current time minus the start time
-            return SDL_GetTicks() - startTicks;
-        }    
+            return SDL_GetTicks() - start_ticks;
+        }
     }
-    
+
     //If the timer isn't running
-    return 0;    
+    return 0;
 }
 
 bool Timer::is_started()
 {
-    return started;    
+    return started;
 }
 
 bool Timer::is_paused()
 {
-    return paused;    
+    return paused;
 }

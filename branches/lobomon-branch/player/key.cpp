@@ -1,4 +1,4 @@
-/* key.cpp, keyboard routines.
+/*key.cpp, keyboard routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -14,18 +14,18 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+///Comentario de NeLo -> queda pendiente mirar alguno que estaba como antes de tocarlo, dejar para lo ultimo
 #include "SDL.h"
-bool Key_press_and_realsed( unsigned char key )
+bool key_pressed_and_released(Uint8 key)
 {
-  unsigned char * keyData;
-  keyData = SDL_GetKeyState(NULL);
-  static unsigned char Last_key;
-        if (( keyData[key]  )&&(Last_key!=key)) {
-           Last_key=key;
-           return(true);
-           }
-        if ((!keyData[key])&&(Last_key==key)){
-               Last_key=0; 
-          } 
-  return(false);
+    Uint8 *key_data;
+    key_data = SDL_GetKeyState(NULL);
+    if ( key_data[key] )
+    {
+        return(true);
+    }
+    else
+    {
+        return(false);
+    }
 }

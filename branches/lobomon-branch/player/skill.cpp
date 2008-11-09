@@ -1,4 +1,4 @@
-/* skill.cpp, skill routines.
+/*skill.cpp, skill routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -26,47 +26,49 @@
 #include "map.h"
 #include "skill.h"
 
-void Skill::set_name(const char * name)
+///a quedado perfessto
+//Actions separated in methods to make easily call each action
+
+void Skill::set_name(const char *name)
 {
-   nombre=name;
+    actual_name = name;
 }
-const char * Skill::get_name()
+const char *Skill::get_name()
 {
-   return(nombre);
+    return(actual_name);
 }
-void Skill::set_anim(Animacion the_anim)
+void Skill::set_anim(Animation the_anim)
 {
-   anim=the_anim;
+    actual_anim = the_anim;
 }
-Animacion * Skill::get_anim()
+Animation *Skill::get_anim()
 {
-   return (& anim);
+    return (&actual_anim);
 }
 
-void Skill::set_mp_price(int The_mp_price)
+void Skill::set_mp_price(int the_mp_price)
 {
-   mp_price=The_mp_price;
+    mp_price = the_mp_price; //it would be too longer if we put actual_mana_points_price
 }
-int* Skill::get_mp_price()
+int *Skill::get_mp_price()
 {
-   return (&mp_price);
+    return (&mp_price); // idem
 }
-void Skill::set_damange(int The_damange)
+void Skill::set_damage(int the_damage)
 {
-   damange=The_damange;
+    actual_damage = the_damage;
 }
-int* Skill::get_damange()
+int *Skill::get_damage()
 {
-   return (&damange);
+    return (&actual_damage);
 }
-void Skill::set_level_req(int The_level_req)
+void Skill::set_level_req(int the_level_req)
 {
-   level_req=The_level_req;
+    level_required = the_level_req;
 }
-int* Skill::get_level_req()
+int*Skill::get_level_req()
 {
-   return (&level_req);
+    return (&level_required);
 }
-
 
 

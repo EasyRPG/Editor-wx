@@ -32,45 +32,54 @@
 #include "actor.h"
 #include "scene.h"
 
-void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    myteam=TheTeam;
-   (*myteam).clear_team();
-   (*myteam).clear_obj();
-     myaudio=theaudio;
-     (*myaudio).musicload("../Music/2003sorrow.mid");
-     title.x=0;
-	 title.y=0;
-     title.setimg("../GameOver/gameover.png"); 
-     running=  run;   
-     NScene=TheScene;
+///a quedado perfessto
+
+void Game_over_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_team *the_team)
+{
+    My_team     = the_team;
+    (*My_team).clear_team();
+    (*My_team).clear_objects();
+    My_audio    = the_audio;
+    (*My_audio).music_load("../Music/2003sorrow.mid");
+    title.x_pos     = 0;
+    title.y_pos     = 0;
+    title.set_image("../GameOver/gameover.png");
+    running     = run;
+    new_scene   = the_scene;
 }
 
-void GO_Scene::update(SDL_Surface* Screen)
-{  
-  title.draw(Screen);
+void Game_over_scene::update(SDL_Surface *screen)
+{
+    title.draw(screen);
 }
 
-void GO_Scene::action()
-{ 
-    * NScene=0;             
+void Game_over_scene::action()
+{
+    *new_scene = 0;
 }
 
- void GO_Scene::updatekey() {
+void Game_over_scene::update_key()
+{
 
-  unsigned char * keyData;
-  static int delay=0;  
-  delay++;
-    if(delay==40)
+    Uint8 *key_data;
+    static int delay = 0;
+    delay++;
+    if (delay == 40)
     {
-          keyData = SDL_GetKeyState(NULL);
-            if ( keyData[SDLK_ESCAPE] ) * running = false;
+        key_data = SDL_GetKeyState(NULL);
+        if ( key_data[SDLK_ESCAPE] )
+        {
+            *running = false;
+        }
 
-        if ( keyData[LMK_Z]  ) {
-         action();	
-           }
-  delay=0;
-    }    
- }
-void GO_Scene::dispose() {
-title.dispose();
+        if ( key_data[KEY_Z]  )
+        {
+            action();
+        }
+        delay = 0;
+    }
+}
+void Game_over_scene::dispose()
+{
+    title.dispose();
 }

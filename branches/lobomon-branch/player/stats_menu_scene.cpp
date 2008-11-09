@@ -1,4 +1,4 @@
-/* stats_menu_scene.cpp, stats menu scene routines.
+/*stats_menu_scene.cpp, stats My_menu scene routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,82 +32,90 @@
 #include "actor.h"
 #include "scene.h"
 
-void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    myteam=TheTeam;
-    myaudio=theaudio;
-    Status_vit.init(200,80,120,0); 
-    Status.init(200,80,120,80); 
-    Aramas.init(200,80,120,160); 
-    Profesion.init(120,240,0,0); 
-    int i=(*myteam).select;
-    int space=17;
-    char stringBuffer[255]; 
-   sprintf(stringBuffer, "Hp             %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
-   Status_vit.add_text(stringBuffer,10,10);
-   sprintf(stringBuffer, "Mp             %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
-   Status_vit.add_text(stringBuffer,10,10+(1*space));
-   sprintf(stringBuffer, "Exp            %d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
-   Status_vit.add_text(stringBuffer,10,10+(2*space));
-   
-   sprintf(stringBuffer, "Fuerza        %d ", (*(*myteam).get_Attack(i)));
-   Status.add_text(stringBuffer,10,5);
-   sprintf(stringBuffer, "Defenza       %d ", (*(*myteam).get_Defense(i)));
-   Status.add_text(stringBuffer,10,5+(1*space));
-   sprintf(stringBuffer, "Intelecto     %d ", (*(*myteam).get_Spirit(i)));
-   Status.add_text(stringBuffer,10,5+(2*space));
-   sprintf(stringBuffer, "Agilidad      %d ", (*(*myteam).get_Speed(i)));
-   Status.add_text(stringBuffer,10,5+(3*space));
-   space=40;
-   Profesion.add_sprite(((*myteam).get_faceset(i)),10,10);
-   Profesion.add_text("Nombre",10,30+(1*space));
-   Profesion.add_text(((*myteam).get_name(i)),50,30+(1*space)+16);
-   Profesion.add_text("Profesión",10,30+(2*space));
-   Profesion.add_text(((*myteam).get_job(i)),50,30+(2*space)+16);
-   Profesion.add_text("Estado",10,30+(3*space));
-   Profesion.add_text("Normal",50,30+(3*space)+16);//falta el casteo del entero
-   Profesion.add_text("Nivel",10,30+(4*space));
-   sprintf(stringBuffer, "%d ", (*(*myteam).get_Level(i)));
-   
-   Profesion.add_text(stringBuffer,50,30+(4*space)+16);//falta el casteo del entero
-space=14;  
-   Aramas.add_text(  (*((*myteam).get_Weapon(i))).get_name(),75,5);
-   Aramas.add_text(  (*((*myteam).get_Shield(i))).get_name(),75,5+(1*space));
-   Aramas.add_text(  (*((*myteam).get_Armor(i))).get_name(),75,5+(2*space));
-   Aramas.add_text(  (*((*myteam).get_Helmet(i))).get_name(),75,5+(3*space));
-   Aramas.add_text(  (*((*myteam).get_Accessory(i))).get_name(),75,5+(4*space));
+void Status_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team)
+{
+    My_team     = the_team;
+    My_audio    = the_audio;
+    Status_vit.init(200, 80, 120, 0);
+    Status.init(200, 80, 120, 80);
+    my_weapons.init(200, 80, 120, 160);
+    Profession.init(120, 240, 0, 0);
+    int         i = (*My_team).select;
+    int         space = 17;
+    char        string_buffer[255];
 
-   Aramas.add_text("Arma",10,5);
-   Aramas.add_text("Escudo",10,5+(1*space));
-   Aramas.add_text("Armadura",10,5+(2*space));
-   Aramas.add_text("Casco",10,5+(3*space));
-   Aramas.add_text("Otros",10,5+(4*space));
-  
-  retardo=0;
-   running=  run;   
-   NScene=TheScene;
+    sprintf(string_buffer, "Hp             %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+    Status_vit.add_text(string_buffer, 10, 10);
+    sprintf(string_buffer, "Mp             %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+    Status_vit.add_text(string_buffer, 10, 10 + (1 * space));
+    sprintf(string_buffer, "Exp            %d / %d", (*(*My_team).get_exp(i)), (*(*My_team).get_max_exp(i)));
+    Status_vit.add_text(string_buffer, 10, 10 + (2 * space));
+
+    sprintf(string_buffer, "Fuerza        %d ", (*(*My_team).get_attack(i)));
+    Status.add_text(string_buffer, 10, 5);
+    sprintf(string_buffer, "Defenza       %d ", (*(*My_team).get_defense(i)));
+    Status.add_text(string_buffer, 10, 5 + (1 * space));
+    sprintf(string_buffer, "Intelecto     %d ", (*(*My_team).get_spirit(i)));
+    Status.add_text(string_buffer, 10 ,5 + (2 * space));
+    sprintf(string_buffer, "Agilidad      %d ", (*(*My_team).get_speed(i)));
+    Status.add_text(string_buffer, 10, 5 + (3 * space));
+    space = 40;
+    Profession.add_sprite(((*My_team).get_faceset(i)),10,10);
+    Profession.add_text("name", 10, 30 + (1 * space));
+    Profession.add_text(((*My_team).get_name(i)),50,30+(1*space) + 16);
+    Profession.add_text("ProfesiÃ³n", 10, 30 + (2 * space));
+    Profession.add_text(((*My_team).get_job(i)), 50, 30 + (2 * space) + 16);
+    Profession.add_text("Estado", 10, 30 + (3 * space));
+    Profession.add_text("Normal", 50, 30 + (3 * space) + 16);//falta el casteo del entero
+    Profession.add_text("Nivel", 10, 30 + (4 * space));
+    sprintf(string_buffer, "%d ", (*(*My_team).get_level(i)));
+
+    Profession.add_text(string_buffer, 50, 30 + (4 * space) + 16);//falta el casteo del entero
+    space = 14;
+    my_weapons.add_text((*((*My_team).get_weapon(i))).get_name(), 75, 5);
+    my_weapons.add_text((*((*My_team).get_shield(i))).get_name(), 75, 5 + (1 * space));
+    my_weapons.add_text((*((*My_team).get_armor(i))).get_name(), 75, 5 + (2 * space));
+    my_weapons.add_text((*((*My_team).get_helmet(i))).get_name(), 75, 5 + (3 * space));
+    my_weapons.add_text((*((*My_team).get_accessory(i))).get_name(), 75, 5 + (4 * space));
+
+    my_weapons.add_text("Weapon", 10, 5);
+    my_weapons.add_text("shield", 10, 5 + (1 * space));
+    my_weapons.add_text("Armor", 10, 5 + (2 * space));
+    my_weapons.add_text("helm", 10, 5 + (3 * space));
+    my_weapons.add_text("Others", 10, 5 + (4 * space));
+
+    delay       = 0;
+    running     = run;
+    new_scene   = the_scene;
 }
 
-void Stats_Menu_Scene::update(SDL_Surface* Screen)
-{ 
-if(retardo==0)
-{  Status.draw(Screen); 
-   Status_vit.draw(Screen); 
-   Profesion.draw(Screen);  
-   Aramas.draw(Screen); 
-   retardo++;        
+void Status_scene::update(SDL_Surface *screen)
+{
+    if (delay == 0)
+    {
+        Status.draw(screen);
+        Status_vit.draw(screen);
+        Profession.draw(screen);
+        my_weapons.draw(screen);
+        delay++;
+    }
+
+
+
 }
 
-
-   
+void Status_scene::update_key()
+{
+    if (key_pressed_and_released(KEY_X))
+    {
+        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        *new_scene = 4;
+    }
 }
-
-void Stats_Menu_Scene::updatekey() {
- if (Key_press_and_realsed(LMK_X ))
-        { (*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; }
-     }
-void Stats_Menu_Scene::dispose() {
-   Status.dispose(); 
-   Status_vit.dispose(); 
-   Profesion.dispose();  
-   Aramas.dispose();         
-     }
+void Status_scene::dispose()
+{
+    Status.dispose();
+    Status_vit.dispose();
+    Profession.dispose();
+    my_weapons.dispose();
+}

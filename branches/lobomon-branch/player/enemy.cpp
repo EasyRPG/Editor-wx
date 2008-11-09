@@ -1,4 +1,4 @@
-/* enemy.cpp, enemy routines.
+/*enemy.cpp, enemy routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -28,137 +28,154 @@
 #include "item.h"
 #include "enemy.h"
 
-void Enemy::set_HP(int The_HP)
+void Enemy::set_hp(int the_hp)
 {
-   HP=The_HP;
-}
-void Enemy::set_MaxHP(int The_MaxHP)
-{
-   MaxHP=The_MaxHP;
-}
-void Enemy::set_MP(int The_MP)
-{
-   MP=The_MP;
-}
-void Enemy::set_MaxMP(int The_MaxMP)
-{
-   MaxMP=The_MaxMP;
+	hp = the_hp;
 }
 
-int * Enemy::get_HP()
+void Enemy::set_max_hp(int the_max_hp)
 {
-  return (&HP);
-}
-int * Enemy::get_MaxHP()
-{
-  return (&MaxHP);
-}
-int* Enemy::get_MP()
-{
-   return (&MP);
-}
-int* Enemy::get_MaxMP()
-{
-   return (&MaxMP);
+	max_hp = the_max_hp;
 }
 
-void Enemy::set_Heal(int The_Heal)
+void Enemy::set_mp(int the_mp)
 {
-   Heal=The_Heal;
-}
-void Enemy::set_Attack(int The_Attack)
-{
-   Attack=The_Attack;
-}
-void Enemy::set_Defense(int The_Defense)
-{
-   Defense=The_Defense;
-}
-void Enemy::set_Speed(int The_Speed)
-{
-   Speed=The_Speed;
-}
-void Enemy::set_Spirit(int The_Spirit)
-{
-   Spirit=The_Spirit;
-}
-void Enemy::set_Level(int The_Level)
-{
-   Level=The_Level;
-}
-void Enemy::set_Exp(int The_Exp)
-{
-   Exp=The_Exp;
+	mp = the_mp;
 }
 
-int * Enemy::get_Heal()
+void Enemy::set_max_mp(int the_max_mp)
 {
-  return (&Heal);
-}
-int * Enemy::get_Attack()
-{
-  return (&Attack);
-}
-int* Enemy::get_Defense()
-{
-   return (&Defense);
-}
-int* Enemy::get_Speed()
-{
-   return (&Speed);
+	max_mp = the_max_mp;
 }
 
-int * Enemy::get_Spirit()
+int *Enemy::get_hp()
 {
-  return (&Spirit);
-}
-int * Enemy::get_Level()
-{
-  return (&Level);
-}
-int* Enemy::get_Exp()
-{
-   return (&Exp);
+	return (&hp);
 }
 
-void Enemy::set_name(const char * name)
+int *Enemy::get_max_hp()
 {
-   nombre=name;
-}
-const char * Enemy::get_name()
-{
-   return(nombre);
+	return (&max_hp);
 }
 
-
-void Enemy::add_skill(Skill Myskill)
+int*Enemy::get_mp()
 {
-      Skills.push_back(Myskill);
+	return (&mp);
 }
 
-const char * Enemy::get_skill_name(int num)
+int*Enemy::get_max_mp()
 {
-   return (((Skills.at(num))).get_name()); 
+	return (&max_mp);
 }
 
-int * Enemy::get_skill_mp_price(int num)
+void Enemy::set_heal(int the_heal)
 {
-   return (((Skills.at(num))).get_mp_price()); 
-}
-int * Enemy::get_skill_damange(int num)
-{
-   return (((Skills.at(num))).get_damange()); 
-}
-int * Enemy::get_skill_level_req(int num)
-{
-   return (((Skills.at(num))).get_level_req()); 
+	heal = the_heal;
 }
 
-Animacion * Enemy::get_skill_get_anim(int num)
+void Enemy::set_attack(int the_attack)
 {
-   return (((Skills.at(num))).get_anim()); 
+	attack = the_attack;
+}
+
+void Enemy::set_defense(int the_defense)
+{
+	defense = the_defense;
+}
+
+void Enemy::set_speed(int the_speed)
+{
+	speed = the_speed;
+}
+
+void Enemy::set_spirit(int the_spirit)
+{
+	spirit = the_spirit;
+}
+
+void Enemy::set_level(int the_level)
+{
+	level = the_level;
+}
+
+void Enemy::set_exp(int the_exp)
+{
+	exp = the_exp;
+}
+
+int *Enemy::get_heal()
+{
+	return (&heal);
+}
+
+int *Enemy::get_attack()
+{
+	return (&attack);
+}
+
+int*Enemy::get_defense()
+{
+	return (&defense);
+}
+
+int*Enemy::get_speed()
+{
+	return (&speed);
+}
+
+int *Enemy::get_spirit()
+{
+	return (&spirit);
+}
+
+int *Enemy::get_level()
+{
+	return (&level);
+}
+
+int*Enemy::get_exp()
+{
+	return (&exp);
+}
+
+void Enemy::set_name(const char *name)
+{
+	name = name;
+}
+
+const char *Enemy::get_name()
+{
+	return(name);
+}
+
+void Enemy::add_skill(Skill My_skill)
+{
+	my_skills.push_back(My_skill);
+}
+
+const char *Enemy::get_skill_name(int num)
+{
+	return (((my_skills.at(num))).get_name());
+}
+
+int *Enemy::get_skill_mp_price(int num)
+{
+	return (((my_skills.at(num))).get_mp_price());
+}
+int *Enemy::get_skill_damage(int num)
+{
+	return (((my_skills.at(num))).get_damage());
+}
+int *Enemy::get_skill_level_req(int num)
+{
+	return (((my_skills.at(num))).get_level_req());
+}
+
+Animation *Enemy::get_skill_get_anim(int num)
+{
+	return (((my_skills.at(num))).get_anim());
 }
 int Enemy::get_skill_size()
 {
-     return (Skills.size());
+	return (my_skills.size());
 }

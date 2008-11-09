@@ -13,27 +13,30 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-   
+
 #ifndef DELTATIME_H
 #define DELTATIME_H
+///perfesto
 
-class CDeltaTime {
+class CDeltaTime
+{
     public:
         // Methods
-	CDeltaTime(int pIdealFPS);
-        void setIdealFPS(int pIdealFPS);
- 	void clear(); 
-	void update();
+        CDeltaTime  (int p_ideal_fps);
+        void        set_ideal_fps(int p_ideal_fps);
+        void        clear();
+        void        update();
         // Attributes
-        float deltaTime;
-    private:
-        long  idealFPS;
-        float idealTime;
-        float  timePrevious;
-        float  timeCurrent;      
+        float       delta_time;
 
-        float deltaTimeArray[16];
-        int  deltaCurrentVector;
+    private:
+        long        ideal_fps;
+        float       ideal_time;
+        float       time_previous;
+        float       time_current;
+
+        float       delta_time_array[16];
+        int         delta_current_vector;
 };
 
 #endif

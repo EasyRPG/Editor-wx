@@ -1,4 +1,4 @@
-/* deltatime.cpp, deltatime routines.
+/*deltatime.cpp, deltatime routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -18,36 +18,45 @@
 #include "SDL.h"
 #include "deltatime.h"
 
- CDeltaTime::CDeltaTime(int pIdealFPS) {
- // calls the set function
- setIdealFPS(pIdealFPS);
+CDeltaTime::CDeltaTime(int p_ideal_fps)
+{
+    // calls the set function
+    set_ideal_fps(p_ideal_fps);
 }
-void CDeltaTime::setIdealFPS(int pIdealFPS) {
- // Change FPS settings and calculates ideal time.
-idealFPS  = pIdealFPS;
-idealTime = 1/float(idealFPS);
-clear();
+void CDeltaTime::set_ideal_fps(int p_ideal_fps)
+{
+// Change FPS settings and calculates ideal time.
+    ideal_fps       = p_ideal_fps;
+    ideal_time      = 1 / float(ideal_fps);
+    clear();
 }
-void CDeltaTime::clear() {
- timePrevious = SDL_GetTicks();
- timeCurrent  = SDL_GetTicks();
-for (int i=15; i>=0; i--) deltaTimeArray[i] = idealTime;
+void CDeltaTime::clear()
+{
+    time_previous   = SDL_GetTicks();
+    time_current    = SDL_GetTicks();
+    for (int i = 15; i>=0; i--)
+    {
+        delta_time_array[i] = ideal_time;
+    }
 }
- void CDeltaTime::update() {
- // Calculate interval between frames
-timePrevious = timeCurrent;
- timeCurrent  = SDL_GetTicks();
-// Calculate delta interval
-deltaTimeArray[deltaCurrentVector] = (float(((timeCurrent-timePrevious)*idealFPS)*0.001));
+void CDeltaTime::update()
+{
+    // Calculate interval between frames
+    time_previous   = time_current;
+    time_current    = SDL_GetTicks();
+    // Calculate delta intervalhttp://mail.google.com/mail/?shva=1#inbox
+    delta_time_array[delta_current_vector] = (float(((time_current - time_previous) * ideal_fps) * 0.001));
 
-
-++deltaCurrentVector &= 0xF;     //++ y nunca mayor a 15
- // calculo de promedio
-  deltaTime = 0.0f;
-for (int i=0; i<15; i++) deltaTime+=deltaTimeArray[i];
-deltaTime *= 0.0625f; // It's the same as deltaTime /= 16, but faster.
-//para pIdealFPS = 60 e intervalos de 16 clics  deltaTime es aproximadamente  1
-//deltaTime=1.0f;
+    ++delta_current_vector &=0xF;     //++ y_pos nunca mayor a 15
+    // Calculate average time
+    delta_time      = 0.0f;
+    for (int i = 0; i<15; i++)
+    {
+        delta_time  += delta_time_array[i];
+    }
+        delta_time  *=  0.0625f;//  It's the same as delta_time /=16, but faster.
+                                //  to p_ideal_fps = 60 and 16-clicks interval
+                                //  delta_time is aprox. 1 delta_time = 1.0f;
 
 
 }

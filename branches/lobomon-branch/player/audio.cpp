@@ -20,47 +20,52 @@
 #include "SDL_mixer.h"
 #include "audio.h"
 
+///a quedado perfessto
+
 void Audio::init()
 {
-  int audio_rate = 44100;
-  Uint16 audio_format = AUDIO_S16; 
-  int audio_channels = 2;
-  int audio_buffers = 4096;
+    int audio_rate      = 44100;
+    Uint16 audio_format = AUDIO_S16;
+    int audio_channels  = 2;
+    int audio_buffers   = 4096;
 
-  if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
-    printf("Unable to open audio!\n");
-    exit(1);
-  }
- phaserChannel = -1;
+    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
+    {
+        printf("Unable to open audio!\n");
+        exit(1);
+    }
+    phaser_channel=-1;
 }
 
-      
-void Audio::musicload(const char* string)
-{   
-	musica = Mix_LoadMUS(string);
-	Mix_PlayMusic(musica, -1);
-	//Mix_HookMusicFinished(funcion); //por is queremos llamar uan funcion cuando termine
-}    
+
+void Audio::music_load(const char*string)
+{
+    My_mix_music        = Mix_LoadMUS(string);
+    Mix_PlayMusic(My_mix_music, -1);
+    //Mix_HookMusicFinished(funcion); //to call one function when this finishes
+}
 
 
-void Audio::stopmusic()
-{	
-	Mix_HaltMusic();
-	Mix_FreeMusic(musica);
-	musica = NULL;
-}             
+void Audio::stop_music()
+{
+    Mix_HaltMusic();
+    Mix_FreeMusic(My_mix_music);
+    My_mix_music        = NULL;
+}
 
 
-void Audio::soundload(const char* string)
-{   
-     sonido = Mix_LoadWAV(string);
-      if(phaserChannel < 0) {
-	phaserChannel = Mix_PlayChannel(-1, sonido, 1);
-      }
- else {
-      Mix_HaltChannel(phaserChannel);
-      
-      phaserChannel = -1;
+void Audio::sound_load(const char*string)
+{
+    My_mix_sound = Mix_LoadWAV(string);
+    if (phaser_channel < 0)
+    {
+        phaser_channel = Mix_PlayChannel(-1, My_mix_sound, 1);
     }
- }
+    else
+    {
+        Mix_HaltChannel(phaser_channel);
+
+        phaser_channel = -1;
+    }
+}
 

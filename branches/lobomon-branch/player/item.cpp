@@ -25,38 +25,39 @@
 #include "audio.h"
 #include "map.h"
 #include "item.h"
+///perfesssto ^_^
 
-void Item::set_NOI(int The_NOI)
+void Item::set_items_number(int the_items_number)
 {
-   NOI=The_NOI;
+    items_number = the_items_number;
 }
-int* Item::get_NOI()
+int*Item::get_items_number()
 {
-   return (&NOI);
+    return (&items_number);
 }
-void Item::set_name(const char * name)
+void Item::set_name(const char *the_name)
 {
-   nombre=name;
+    actual_name = the_name;
 }
-const char * Item::get_name()
+const char *Item::get_name()
 {
-   return(nombre);
+    return(actual_name);
 }
 
-void Item::set_type(unsigned char The_type)
+void Item::set_type(Uint8 the_type)//consultar a delapipol
 {
-   type=The_type;
+    actual_type = the_type;
 }
-unsigned char* Item::get_type()
+Uint8 *Item::get_type()
 {
-   return (&type);
+    return (&actual_type);
 }
-void Item::set_anim(Animacion the_anim)
+void Item::set_anim(Animation the_anim)
 {
-   anim=the_anim;
+    anim = the_anim;
 }
-Animacion * Item::get_anim()
+Animation *Item::get_anim()
 {
-   return (& anim);
+    return (&anim);
 }
 

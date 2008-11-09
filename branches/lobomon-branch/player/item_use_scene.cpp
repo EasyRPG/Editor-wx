@@ -1,4 +1,4 @@
-/* item_use_scene.cpp, item use scene routines.
+/*item_use_scene.cpp, item use scene routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,94 +32,111 @@
 #include "actor.h"
 #include "scene.h"
 
-void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{  int i;
-   myteam=TheTeam;
-   myaudio=theaudio;
-   players.init(theaudio, run,0,((*myteam).get_size()-1),184,240,136,0,124,48);
-   players.init_curXY(55,5); //ya eran muchos comandos
-   players.visible=true;
-   itemwin.init(136,30,0,0);
-   itemwin2.init(136,30,0,30);
-  
-   char stringBuffer[255];
-     i=(*myteam).select;
-    itemwin.add_text(((*myteam).get_item_name(i)) ,5,5);
-    sprintf(stringBuffer, "Objetos prop.  %d", (*(*myteam).get_NOI(i)));
-   itemwin2.add_text(stringBuffer,5,5);
-   running=  run;   
-   NScene=TheScene;
+void Item_use_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team)
+{
+    int i;
+    My_team = the_team;
+    My_audio = the_audio;
+    players.init(the_audio, run,0,((*My_team).get_size()-1),184,240,136,0,124,48);
+    players.init_xy_cur(55,5); //ya eran muchos comandos
+    players.visible = true;
+    item_win.init(136,30,0,0);
+    item_win2.init(136,30,0,30);
 
-int space=60;
+    char string_buffer[255];
+    i = (*My_team).select;
+    item_win.add_text(((*My_team).get_item_name(i)) ,5,5);
+    sprintf(string_buffer, "Objetos prop.  %d", (*(*My_team).get_items_number(i)));
+    item_win2.add_text(string_buffer,5,5);
+    running =  run;
+    new_scene = the_scene;
 
-for(i=0;i<(*myteam).get_size();i++)    
-{   
-   players.add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
-   players.add_text(((*myteam).get_name(i)),55,2+(i*space));
-  
-   sprintf(stringBuffer, "Level %d ", (*(*myteam).get_Level(i)));
-   players.add_text(stringBuffer,55,20+(i*space));
-   players.add_text("Normal",55,37+(i*space));
-   sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
-   players.add_text(stringBuffer,110,20+(i*space));
-   sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
-   players.add_text(stringBuffer,110,37+(i*space));
-}
- retardo =0;
+    int space = 60;
+
+    for (i = 0;i<(*My_team).get_size();i++)
+    {
+        players.add_sprite(((*My_team).get_faceset(i)),5,5+(i*space));
+        players.add_text(((*My_team).get_name(i)),55,2+(i*space));
+
+        sprintf(string_buffer, "Level %d ", (*(*My_team).get_level(i)));
+        players.add_text(string_buffer,55,20+(i*space));
+        players.add_text("Normal",55,37+(i*space));
+        sprintf(string_buffer, "Hp %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+        players.add_text(string_buffer,110,20+(i*space));
+        sprintf(string_buffer, "Mp %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+        players.add_text(string_buffer,110,37+(i*space));
+    }
+
+    delay = 0;
 }
 
-void Item_use_scene::update(SDL_Surface* Screen)
-{  
-if(retardo==0)
-{SDL_FillRect(Screen, NULL, 0x0);// Clear screen 
- itemwin.draw(Screen);
- players.draw(Screen);
- itemwin2.draw(Screen);
-}
-retardo++;
-   if(retardo==5)
-   {
-   itemwin.draw(Screen);
-    players.draw(Screen);
-     itemwin2.draw(Screen);
-   retardo=1;
-   }     
+void Item_use_scene::update(SDL_Surface*screen)
+{
+    if (delay == 0)
+    {
+        SDL_FillRect(screen, NULL, 0x0);// Clear screen
+        item_win.draw(screen);
+        players.draw(screen);
+        item_win2.draw(screen);
+    }
+
+    delay++;
+
+    if (delay == 5)
+    {
+        item_win.draw(screen);
+        players.draw(screen);
+        item_win2.draw(screen);
+        delay = 1;
+    }
 }
 
 void Item_use_scene::action()
-{int i;
-   char stringBuffer[255];
-  i=(*myteam).select;
-  (*(*myteam).get_NOI(i))=(*(*myteam).get_NOI(i))-1;
-
-  if((*(*myteam).get_NOI(i)) !=0)
-  {
-  itemwin2.dispose();
-  itemwin2.init(136,30,0,30);
-  sprintf(stringBuffer, "Objetos prop.  %d", (*(*myteam).get_NOI(i)));
-  itemwin2.add_text(stringBuffer,5,5);
-players.restarmenu();
-  }else{
-   (*myteam).erase_item(i);
-   * NScene=5;
-  }
-
-
-}
-
-void Item_use_scene::updatekey() {
-if(players.visible)
 {
-players.updatekey();
-if(players.desition())
-action();
+    int     i;
+    char    string_buffer[255];
+    i=(*My_team).select;
+    (*(*My_team).get_items_number(i))=(*(*My_team).get_items_number(i))-1;
+
+    if ((*(*My_team).get_items_number(i)) !=0)
+    {
+        item_win2.dispose();
+        item_win2.init(136,30,0,30);
+        sprintf(string_buffer, "self objects.  %d", (*(*My_team).get_items_number(i)));
+        item_win2.add_text(string_buffer,5,5);
+        players.restart_menu();
+    }
+    else
+    {
+        (*My_team).erase_item(i);
+        *new_scene = 5;
+    }
+
+
 }
 
- if (Key_press_and_realsed(LMK_X ))//retorna alos objetos
-        { (*myaudio).soundload("../Sound/Cansel2.wav");* NScene=5; }
-     }
-void Item_use_scene::dispose() {
-   players.dispose();
-   itemwin.dispose();
-   itemwin2.dispose();
+void Item_use_scene::update_key()
+{
+    if (players.visible)
+    {
+        players.update_key();
+
+        if (players.decision())
+        {
+            action();
+        }
+    }
+
+    if (key_pressed_and_released(KEY_X ))//retorna alos objetos
+    {
+        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        *new_scene = 5;
+    }
+}
+
+void Item_use_scene::dispose()
+{
+    players.dispose();
+    item_win.dispose();
+    item_win2.dispose();
 }

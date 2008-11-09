@@ -1,4 +1,4 @@
-/* audio.h, EasyRPG player audio class declaration file.
+/*audio.h, EasyRPG player audio class declaration file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -17,17 +17,20 @@
 #ifndef AUDIO_H_
 #define AUDIO_H_
 
-class Audio {
-protected:
-   Mix_Music * musica;  
-   Mix_Chunk * sonido;
-   int phaserChannel;
+///a quedado perfessto
 
-public:
-    void init();
-    void musicload(const char* string);
-    void stopmusic();
-    void soundload(const char* string);
+class Audio
+{
+    protected:
+        Mix_Music   *My_mix_music;
+        Mix_Chunk   *My_mix_sound;
+        int         phaser_channel;
+
+    public:
+        void        init();
+        void        music_load(const char *string);
+        void        stop_music();
+        void        sound_load(const char *string);
 };
 
 #endif

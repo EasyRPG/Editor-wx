@@ -1,4 +1,4 @@
-/* scene.h, EasyRPG player scene class declaration file.
+/*scene.h, EasyRPG player scene class declaration file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -17,341 +17,388 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-typedef struct menucomand
+struct menu_command
 {
-	int des1;
-	int des2;
-	int selected_moster;
-} MC;
-class Menu_Easy {
-protected: 
-  int indexX,indexY;    
-  int maxindexY,maxindexX;  
-   Audio * myaudio;
-   bool * running;
-   bool desided;
-   int delay;
-public: 
-//Menu_Easy();		///constructor
-//~Menu_Easy();		///destructor
-   bool desition();
-   int getindexY();
-   int getindexX(); 
-   void updatekey(); 
-   void restarmenu();
-   void init(Audio * theaudio, bool * run,int X,int Y);
+    int     des1;
+    int     des2;
+    int     selected_monster;
 };
-class Window_Base  {
+
+
+class Easyrpg_menu
+{
+    protected:
+        int     index_x,index_y;
+        int     max_index_y,max_index_x;
+        Audio   *My_audio;
+        bool    *running;
+        bool    decided;
+        int     delay;
+        int     repeat;
+    public:
+    //Easyrpg_menu();		///constructor
+    //~Easyrpg_menu();		///destructor
+        bool decision();
+        int get_index_y();
+        int get_index_x();
+        void update_key();
+        void restart_menu();
+        void init(Audio *the_audio, bool *run,int x_pos,int y_pos);
+};
+class Window_Base
+{
 protected:
-Sistem System;
-Sprite tapiz;
-Font fuente;
-int pos_X,pos_Y;
-int Size_X,Size_Y;
-std:: vector <Sprite> Vtext_Sprite;
-std:: vector <int> V_Sprite;//appuntadores a sprites
-Sprite text;
-char stringBuffer[255];
-int falla;
-bool disposing;
-public: 
+    Sprite_system My_sprite_system;
+    Sprite My_texture;
+    Font my_font;
+    int pos_X,pos_Y;
+    int x_size,Size_Y;
+    std:: vector <Sprite> sprite_text;
+    std:: vector <int> v_sprite;//appuntadores a sprites
+    Sprite text;
+    char string_buffer[255];
+    int falla;
+    bool disposing;
+public:
 //Window_Base();		///constructor
 //~Window_Base();	///destructor
-bool visible;
-void dispose();
-void init(int SizeX,int SizeY,int PosX,int PosY);
-void draw(SDL_Surface* Screen);
-void add_text(const char * ctext, int x, int y);
-void add_sprite(Sprite * the_sprite, int x, int y);
+    bool visible;
+    void dispose();
+    void init(int the_x_size,int the_y_size,int x_pos,int y_pos);
+    void draw(SDL_Surface*screen);
+    void add_text(const char *ctext, int x_pos, int y_pos);
+    void add_sprite(Sprite *the_sprite, int x_pos, int y_pos);
 };
 
-class Window_Select   {
+class Window_Select
+{
 protected:
-Sistem System;
-Sprite tapiz;
-Sprite cursor;
-Font fuente;
-Menu_Easy menu;
-std:: vector <Sprite> Vtext_Sprite;
-int pos_X,pos_Y;
-int Init_text_X;
-int Size_X,Size_Y,Size_of_Block;
-int Comand_X,Comand_Y;
-std:: vector <std::string> * My_vector;
-std:: vector <Sprite> My_Sprite;
-bool disposing;
-Sprite text;
 
-public: 
+    Sprite_system My_sprite_system;
+    Sprite My_texture;
+    Sprite cursor;
+    Font my_font;
+    Easyrpg_menu My_menu;
+
+    int x_pos,y_pos;
+    int init_x_text;
+    int x_size,y_size,block_size;
+    int x_command,y_command;
+
+    std:: vector <std::string> *My_vector;
+    std:: vector <Sprite> My_sprite;
+    std:: vector <Sprite> sprite_text;
+    Sprite text;
+
+    bool disposing;
+
+public:
 //Window_Select();		///constructor
 //~Window_Select();		///destructor
-bool visible;
-bool on_use;
-void updatekey(); 
-int getindexX();
-int getindexY();
-void restarmenu();
-bool desition();
-void dispose();
-void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY);
-void draw(SDL_Surface* Screen);
-void add_text(const char * ctext, int x, int y);
-void set_posx_text(int x);
-void setComands(std:: vector <std::string> * str_Vec);
+
+    bool    visible;
+    bool    on_use;
+    bool    decision();
+
+    void    init(Audio *the_audio, bool *run,int the_x_command,int the_y_command,int the_x_size,int the_y_size,int the_x_pos,int the_y_pos);
+
+    void    update_key();
+    int     get_index_x();
+    int     get_index_y();
+    void    restart_menu();
+
+    void    draw(SDL_Surface*screen);
+    void    add_text(const char *ctext, int x_pos, int y_pos);
+    void    set_posx_text(int x_pos);
+    void    set_commands(std::vector <std::string> *string_vector);
+
+    void    dispose();
 };
 
 
-class Window_Player_Select   {
+class Window_Player_Select
+{
 protected:
-Sistem System;
-Sprite tapiz;
-Sprite cursor;
-Font fuente;
-Menu_Easy menu;
-std:: vector <Sprite> Vtext_Sprite;
-int pos_X,pos_Y;
-int Size_X,Size_Y,Size_of_Block;
-int Comand_X,Comand_Y;
-std:: vector <int> V_Sprite;//appuntadores a sprites
-int Cur_pos_X,Cur_pos_Y;
-int Moves_cursorY;
-bool disposing;
-Sprite text;
 
-public: 
-//Window_Player_Select();		///constructor
-///~Window_Player_Select();		///destructor
-bool visible;
-bool visible_window;
-void updatekey(); 
-int getindexX();
-int getindexY();
-void restarmenu();
-bool desition();
-void dispose();
-void init_curXY(int x,int y); 
-void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY);
-void draw(SDL_Surface* Screen);
-void add_text(const char * ctext, int x, int y);
-void add_sprite(Sprite * the_sprite, int x, int y);
-void set_curY(int y);
+    Sprite_system My_sprite_system;
+    Sprite My_texture;
+    Sprite cursor;
+    Font my_font;
+    Easyrpg_menu My_menu;
+
+    int x_pos,y_pos;
+    int x_size,y_size,block_size;
+    int x_command,y_command;
+    std:: vector <int> v_sprite;//appuntadores a sprites
+    int cur_pos_X,cur_pos_Y;
+    int cursor_y_move;
+
+    Sprite text;
+    std:: vector <Sprite> sprite_text;
+
+    bool disposing;
+
+
+public:
+
+    bool    visible;
+    bool    visible_window;
+    void    update_key();
+    bool    decision();
+
+    void    init(Audio *the_audio, bool *run,int the_x_command,int the_y_command,int the_x_size,int the_y_size,int x_pos,int y_pos,int curX,int curY);
+
+    int     get_index_x();
+    int     get_index_y();
+    void    restart_menu();
+    void    init_xy_cur(int x_pos,int y_pos);
+    void    set_y_cursor(int the_y_pos);
+
+    void    draw(SDL_Surface*screen);
+    void    add_text(const char *ctext, int the_x_pos, int the_y_pos);
+    void    add_sprite(Sprite *the_sprite, int the_x_pos, int the_y_pos);
+
+    void    dispose();
 };
 
 
 
-class Scene {
+class Scene
+{
 protected:
-   unsigned char * NScene;
-   bool * running;
-   Audio * myaudio;
-   Player_Team * myteam;
-   int retardo;
-public: 
+    Uint8       *new_scene;
+    bool        *running;
+    Audio       *My_audio;
+    Player_team *My_team;
+    int delay;
+public:
 //Scene();		///constructor
 //~Scene();		///destructor
-  virtual void update(SDL_Surface*){} ;
-  virtual void updatekey(){} ;
-  virtual void dispose(){} ;
+    virtual void    update(SDL_Surface*){} ;
+    virtual void    update_key(){} ;
+    virtual void    dispose(){} ;
 
 };
 
-class Map_Scene: public Scene {
+class Map_scene: public Scene
+{
 private:
- int SCREEN_SIZE_X, SCREEN_SIZE_Y;
- CActor Actor;
- Chara * player;
- Chara npc;
- Faceset alexface;
- Sprite red;
- Font fuente;
- bool moving;
- int to_move;
- stMap Map;
-  char stringBuffer[255];
-public: 
-//Map_Scene();		///constructor
-//~Map_Scene();		///destructor
-   void init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-void Scroll(); 
-   void updatekey(); 
-   void slow_move(); 
-   void mapnpc();
-   void dispose();
-}; 
-class Title_Scene: public Scene {
-private:  
-   Sprite title;
-   Window_Select menu; 
-   std:: vector <std::string> str_Vector;
-   void action();
-public: 
-//Title_Scene();		///constructor
-//~Title_Scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void init_party();
-   void updatekey();
-   void dispose();      
+    int        screen_size_x, screen_size_y;
+    Actor      My_actor;
+    Character  *My_player;
+    Character  npc;
+    Faceset    alex_face;
+    Sprite     my_net;
+    Font       my_font;
+    bool       moving;
+    int        to_move;
+    map        my_map;
+    char string_buffer[255];
+public:
+//Map_scene();		///constructor
+//~Map_scene();		///destructor
+    void    init(Audio *audio,int screen_X, int screen_Y,Uint8 *the_scene,Player_team *the_team);
+    void    update(SDL_Surface*screen);
+    void    scroll();
+    void    update_key();
+    void    slow_move();
+    void    mapnpc();
+    void    dispose();
 };
-class Batle_scene: public Scene {
-private:  
-   bool * the_run;
-   int state;
-   int Nmenu_used;
-   int turnosp;
-   int player_in_turn;
-   int moster_in_turn;   
-   Sprite title;
-   Window_Base Window_text;
-   Window_Player_Select window;
-   Window_Select menu; 
-   Window_Select menu_os; 
-   Window_Select moster_select; 
-   std:: vector <std::string> str_Vector;
-   std:: vector <std::string> str_Vector2;
-   std:: vector <MC> Comands;
-   void action();
-public: 
-//Batle_scene();		///constructor
-//~Batle_scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();
-   void atack(SDL_Surface* Screen,int nperso,int enemy);
-   void update_window_stats();
-   void update_window_mosterselect();
-   void action_mosterselect();
-   void windowtext_showdamange(bool type,int atak,int ataked,int damange);
-   void Give_turn();
-   void win();
-   void lose();
-   void atacked(int enemy);
-   void dispose();      
+class Title_scene: public Scene
+{
+private:
+
+    void action();
+
+    Sprite                      title;
+    Window_Select               My_menu;
+    std:: vector <std::string>  string_vector;
+
+public:
+
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+
+    void update(SDL_Surface*screen);
+    void init_party();
+    void update_key();
+
+    void dispose();
+
 };
-class Main_Menu_Scene: public Scene {
-private:  
-   Window_Player_Select players;
-   Window_Base gold;
-   Window_Select menu;
-   Window_Select menu_exit;  
-   std:: vector <std::string> str_Vector;
-   std:: vector <std::string> str_Vector_2;
-   void action();
-   void action2();
-   void action3();
-public: 
-//Main_Menu_Scene();		///constructor
-//~Main_Menu_Scene();	///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey(); 
-   void dispose();      
+
+class Battle_scene: public Scene
+{
+private:
+    bool            *the_run;
+    int             state;
+    int             new_menu_used;
+    int             player_turns;
+    int             player_in_turn;
+    int             monster_in_turn;
+    Sprite          title;
+    Window_Base     Window_text;
+    Window_Player_Select    window;
+    Window_Select   My_menu;
+    Window_Select   menu_os;
+    Window_Select   monster_select;
+    std::vector <std::string> string_vector;
+    std::vector <std::string> string_vector2;
+    std::vector <menu_command> menu_commands;
+
+    void action();
+
+
+public:
+
+    void    init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+
+    void    update(SDL_Surface*screen);
+    void    update_key();
+    void    update_window_stats();
+    void    update_window_monster_select();
+    void    give_turn();
+
+    void    attack(SDL_Surface*screen,int nperso,int enemy);
+    void    attacked(int enemy);
+    void    action_monster_select();
+
+    void    window_text_show_damage(bool type,int attack,int attacked,int damage);
+
+    void    win();
+    void    lose();
+
+    void dispose();
 };
-class Objects_Menu_Scene: public Scene {
-private:  
-   Window_Base descripcion;
-   Window_Select menu; 
-   std:: vector <std::string> str_Vector;
-   void action();
-public: 
-//Objects_Menu_Scene();		///constructor
-//~Objects_Menu_Scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();  
-   void dispose();     
+class Main_menu_scene: public Scene
+{
+private:
+    Window_Player_Select    players;
+    Window_Base             gold;
+    Window_Select           My_menu;
+    Window_Select           menu_exit;
+    std:: vector <std::string> string_vector;
+    std:: vector <std::string> string_vector_2;
+    void                    action();
+    void                    action2();
+    void                    action3();
+public:
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
-class Item_use_scene: public Scene {
-private:  
-   Window_Player_Select players;
-   Window_Base itemwin;
-   Window_Base itemwin2;
-   void action();
-public: 
+class Inventory_scene: public Scene
+{
+private:
+    Window_Base description;
+    Window_Select My_menu;
+    std:: vector <std::string> string_vector;
+    void action();
+public:
+//Inventory_scene();		///constructor
+//~Inventory_scene();		///destructor
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
+};
+class Item_use_scene: public Scene
+{
+private:
+    Window_Player_Select players;
+    Window_Base item_win;
+    Window_Base item_win2;
+    void action();
+public:
 //Item_use_scene();		///constructor
 //~Item_use_scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey(); 
-   void dispose();      
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
 
-class Save_Load_Menu_Scene: public Scene {
-private:  
-   Window_Base descripcion;
-   Window_Base Save_pos_1;
-   Window_Base Save_pos_2;
-   Window_Base Save_pos_3;
-public: 
-//Save_Load_Menu_Scene();		///constructor
-//~Save_Load_Menu_Scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();  
-   void dispose();     
+class Save_load_scene: public Scene
+{
+private:
+    Window_Base description;
+    Window_Base Save_pos_1;
+    Window_Base Save_pos_2;
+    Window_Base Save_pos_3;
+public:
+//Save_load_scene();		///constructor
+//~Save_load_scene();		///destructor
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
-class Stats_Menu_Scene: public Scene {
-private:  
-   Window_Base Status; 
-   Window_Base Status_vit; 
-   Window_Base Profesion; 
-   Window_Base Aramas; 
-public: 
-//Stats_Menu_Scene();		///constructor
-//~Stats_Menu_Scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();  
-   void dispose();     
+class Status_scene: public Scene
+{
+private:
+    Window_Base Status;
+    Window_Base Status_vit;
+    Window_Base Profession;
+    Window_Base my_weapons;
+public:
+//Status_scene();		///constructor
+//~Status_scene();		///destructor
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
-class Euip_Menu_Scene: public Scene {
-private:  
-  bool * therun;
-   Window_Base descripcion;
-   Window_Base stats;
-   Window_Select Armas;
-   Window_Select menu; 
-   std:: vector <std::string> str_Vector;
-    std:: vector <std::string> str_Vector2;
-   void action();
-public: 
-//Euip_Menu_Scene();       	///constructor
-//~Euip_Menu_Scene();		///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();
-   void update_1_menu();
-   void update_2_menu();
-   void action2();
-   void dispose();       
+class Equipment_scene: public Scene
+{
+private:
+    bool *the_run;
+    Window_Base description;
+    Window_Base stats;
+    Window_Select my_weapons;
+    Window_Select My_menu;
+    std:: vector <std::string> string_vector;
+    std:: vector <std::string> string_vector2;
+    void action();
+public:
+//Equipment_scene();       	///constructor
+//~Equipment_scene();		///destructor
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void update_1_menu();
+    void update_2_menu();
+    void action2();
+    void dispose();
 };
-class Skills_Menu_Scene: public Scene {
-private:  
-   Window_Base descripcion;
-   Window_Base descripcion2;
-   Window_Select menu; 
-   std:: vector <std::string> str_Vector;
-   void action();
-public: 
-//Skills_Menu_Scene();		///constructor
-//~Skills_Menu_Scene();	///destructor
-   void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();  
-   void dispose();     
+class Skills_menu_scene: public Scene
+{
+private:
+    Window_Base description;
+    Window_Base description2;
+    Window_Select My_menu;
+    std:: vector <std::string> string_vector;
+    void action();
+public:
+//Skills_menu_scene();		///constructor
+//~Skills_menu_scene();	///destructor
+    void init(Audio *My_audio,  bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
-class GO_Scene: public Scene {
-private:  
-   Sprite title;
-   void action();
-public: 
-//GO_Scene();		///constructor
-//~GO_Scene();		///destructor
-   void init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam);
-   void update(SDL_Surface* Screen); 
-   void updatekey();
-   void dispose();
+class Game_over_scene: public Scene
+{
+private:
+    Sprite title;
+    void action();
+public:
+//Game_over_scene();		///constructor
+//~Game_over_scene();		///destructor
+    void init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team);
+    void update(SDL_Surface*screen);
+    void update_key();
+    void dispose();
 };
 
 #endif

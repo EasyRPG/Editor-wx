@@ -18,54 +18,53 @@
 #define MAP_H
 
 // *****************************************************************************
-// =============================================================================
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <string>
-    #include "SDL.h"
-    #include "tools.h"
-    #include "chipset.h"
-    using namespace std;
-// =============================================================================
+//=============================================================================
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include "SDL.h"
+#include "tools.h"
+#include "chipset.h"
+//=============================================================================
 // *****************************************************************************
-        
-    // === Map structure =======================================================
-    struct stMap
-    {
-        // --- Fields declaration ---------------------------------------------- 
-        short MapWidth, MapHeight;      // These determine the size of the map
-        
-        short ChipsetID;                // This points to the ID of the Chipset
-        stChipset Chipset;              // the map uses, and the structure
-                                        // contains the tileset data of it
-   
-        unsigned char TypeOfLoop;       // These flags determines if the map has to
-                                        // loop infinitely.
-        
-        bool ParallaxBackground;
-        string BackgroundName;
-            
-        bool HorizontalPan;
-        bool HorizontalAutoPan;
-        short HorizontalPanSpeed;
-            
-        bool VerticalPan;
-        bool VerticalAutoPan;
-        short VerticalPanSpeed;
-            
-        unsigned short * LowerLayer;
-        unsigned short * UpperLayer;
-            
-        int TimesSaved;
-        int NumEvents;
-        
-        // --- Methods declaration ---------------------------------------------
-        bool Load(string Filename);
-        void GetNextChunk(FILE * Stream);
-        void ProcessChunk(FILE * Stream, tChunk * Chunk);
-        void ShowInformation();   
-        
-        void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);         
-    };
+
+//===Map structure=======================================================
+struct map
+{
+    // --- Fields declaration ----------------------------------------------
+    short       map_width, map_height;      // These determine the size of the map
+
+    short       chipset_id;                // This points to the id of the My_chipset
+    stChipset   my_chipset;              // the map uses, and the structure
+    // contains the tileset data of it
+
+    Uint8       loop_type;       // These flags determines if the map has to
+    // loop infinitely.
+
+    bool        parallax_background;
+    std::string background_name;
+
+    bool        horizontal_pan;
+    bool        horizontal_auto_pan;
+    short       horizontal_pan_speed;
+
+    bool        vertical_pan;
+    bool        vertical_auto_pan;
+    short       vertical_pan_speed;
+
+    Uint16 *lower_layer;
+    Uint16 *upper_layer;
+
+    int saved_times;
+    int events_number;
+
+    // --- Methods declaration ---------------------------------------------
+    bool load(std::string file_name);
+    void get_next_chunk(FILE *stream);
+    void ProcessChunk(FILE *stream, t_chunk *Chunk);
+    void show_information();
+
+    void render(SDL_Surface *My_destiny, int layer, int x_camera, int camera_y);
+};
 
 #endif

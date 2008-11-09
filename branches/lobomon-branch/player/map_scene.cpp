@@ -1,4 +1,4 @@
-/* map_scene.cpp, map scene routines.
+/*map_scene.cpp, map scene routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -33,129 +33,135 @@
 #include "actor.h"
 #include "scene.h"
 
-void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam)
-{  
-       myteam=TheTeam;
-        myaudio=audio;
-        SCREEN_SIZE_X= SCREEN_X;
-        SCREEN_SIZE_Y= SCREEN_Y;
-      player=((*myteam).get_chara(0));
-        npc.init_Chara();
-       (*myteam).view.x = 0;
-        (*myteam).view.y = 0;
-        npc.setimg("../chara/Monster1.png"); 
-Actor.init_Chara();
-Actor.setimg("../chara/protagonist1.PNG"); 
-Actor.setposXY(12,12);
+void Map_scene::init(Audio *audio, int screen_X, int screen_Y, Uint8 *the_scene, Player_team *the_team)
+{
+	My_team             = the_team;
+	My_audio            = audio;
+	My_player = ((*My_team).get_chara(0));
+	npc.init_chara();
+ 	(*My_team).my_view.x_pos   = 0;
+	(*My_team).my_view.y_pos   = 0;
+	npc.set_image("../chara/Monster1.png");
+	My_actor.init_chara();
+	My_actor.set_image("../chara/protagonist1.PNG");
+	My_actor.set_xy_position(12, 12);
 
-        npc.setx(120);
-	npc.sety(120);
-        red.setimg("../title/malla.png"); 
-        red.x=0;
-        red.y=0;
-       // ===[ LOADING MAP DATA ]==============================================
-          Map.Load("../Map0001.lmu");
-        Map.Chipset.GenerateFromFile("../ChipSet/Basis.png");
-        (* myaudio).musicload("../Music/Town.mid");
-        NScene=TheScene;
-        moving=false;
-        to_move=0;
-        fuente.init_Font();
+	npc.set_x(120);
+	npc.set_y(120);
+	my_net.set_image("../title/malla.png");
+	my_net.x_pos     = 0;
+	my_net.y_pos     = 0;
+	//===[ LOADING MAP DATA ]==============================================
+	my_map.load("../Map0001.lmu");
+	my_map.my_chipset.generate_from_file("../chipset/Basis.png");
+	(*My_audio).music_load("../Music/Town.mid");
+	new_scene = the_scene;
+	moving = false;
+	to_move = 0;
+	my_font.init_font();
 }
-void Map_Scene::update(SDL_Surface* Screen)
-{     // SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil   
-Map.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
-Map.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
-Actor.drawc(Screen);   
-npc.addx(-(*myteam).view.x);
-npc.addy(-(*myteam).view.y);
-npc.drawc(Screen); 
-npc.addx(+(*myteam).view.x);
-npc.addy(+(*myteam).view.y);
-       
-    // red.draw(Screen);   
-       //ver los datos del mapa
+void Map_scene::update(SDL_Surface*screen) {    // SDL_FillRect(screen, NULL, 0x0);// Clear screen  inutil
+	my_map.render(screen, 0, (*My_team).my_view.x_pos, (*My_team).my_view.y_pos); //dibuja mapa capa 1 con repecto a la vista
+	my_map.render(screen, 1, (*My_team).my_view.x_pos, (*My_team).my_view.y_pos);//dibuja mapa capa 2 con repecto a la vista
+	My_actor.draw_c(screen);
+	npc.add_x(-(*My_team).my_view.x_pos);
+	npc.add_y(-(*My_team).my_view.y_pos);
+	npc.draw_c(screen);
+	npc.add_x(+ (*My_team).my_view.x_pos);
+	npc.add_y(+(*My_team).my_view.y_pos);
+
+	// my_net.draw(screen);
+	//ver los datos del mapa
 
 }
 
-
-void Map_Scene::Scroll() {
+void Map_scene::scroll()
+{
 //active the  scroll
-(*myteam).view.x= Actor.Clamp((int) sll2dbl(Actor.realX)+ 8 - (SCREEN_SIZE_X>>1),0, (Map.MapWidth<<4)-SCREEN_SIZE_X);
-          if(!Actor.outofarea)
-          { Actor.x= (int)sll2dbl(Actor.realX)  -(*myteam).view.x;
-          }else
-           {Actor.x=(SCREEN_SIZE_X>>1)-8; }
-(*myteam).view.y= Actor.Clamp((int) sll2dbl(Actor.realY) - (SCREEN_SIZE_Y>>1), 0, (Map.MapHeight<<4)-SCREEN_SIZE_Y);
-          if(!Actor.outofarea)
-          { Actor.y=(int)sll2dbl(Actor.realY)-(*myteam).view.y;
-          }else
-           {Actor.y=(SCREEN_SIZE_Y>>1); }
+	(*My_team).my_view.x_pos = My_actor.clamp((int) sll2dbl(My_actor.realX) + 8 - (screen_SIZE_X >> 1), 0, (my_map.map_width << 4) - screen_SIZE_X);
+	if (!My_actor.outofarea)
+	{
+        My_actor.x_pos=(int)sll2dbl(My_actor.realX)  - (*My_team).my_view.x_pos;
+	}
+	else
+	{
+        My_actor.x_pos=(screen_SIZE_X >> 1) - 8;
+	}
+	(*My_team).my_view.y_pos = My_actor.clamp((int) sll2dbl(My_actor.realY) - (screen_SIZE_Y >> 1), 0, (my_map.map_height << 4) - screen_SIZE_Y);
+	if (!My_actor.outofarea)
+	{
+        My_actor.y_pos=(int)sll2dbl(My_actor.realY) - (*My_team).my_view.y_pos;
+    } else
+    {
+        My_actor.y_pos=(screen_SIZE_Y >> 1);
+	}
 }
 //minimo
- void Map_Scene::updatekey() {
+void Map_scene::update_key() {
 
-Actor.MoveOnInput(); 
-Scroll();  
-          
-           if (Key_press_and_realsed(LMK_X ))
-        { (*myaudio).soundload("../Sound/Cursor1.wav");* NScene=4; }
+	My_actor.move_on_input();
+	scroll();
+
+	if (key_pressed_and_released(KEY_X )) {
+			(*My_audio).sound_load("../Sound/Cursor1.wav");
+			*new_scene = 4;
+		}
 }
 
 
-void Map_Scene::mapnpc()
-{  
-         static unsigned char * keyData;
-     		  keyData = SDL_GetKeyState(NULL);
-       if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
-        { 
-       Enemy enemigo;
-        enemigo.set_HP(20);
-       enemigo.set_MaxHP(20);
-       enemigo.set_MP(200);
-       enemigo.set_MaxMP(200);
-       enemigo.set_Attack(12);
-       enemigo.set_Defense(50);
-       enemigo.set_Speed(25);
-       enemigo.set_Spirit(20);
-       (enemigo.Batler).setimg("../Monster/Slime.png");
-       (enemigo.Batler).setcols(1);
-       (enemigo.Batler).setrows(1);
-       (enemigo.Batler).x=140;
-       (enemigo.Batler).y=100;
-       enemigo.set_name("Limo");
-        (*myteam).add_enemy(enemigo);
-         enemigo.set_name("Murici");
-       enemigo.set_HP(300);
-       enemigo.set_MaxHP(30);
- (enemigo.Batler).setimg("../Monster/Bat.png");
-      (enemigo.Batler).x=80;
-(enemigo.Batler).y=100;
-   (*myteam).add_enemy(enemigo);
-enemigo.set_HP(35);
-enemigo.set_MaxHP(35);
- enemigo.set_name("Araña");
- (enemigo.Batler).setimg("../Monster/Spider.png");
-(enemigo.Batler).x=180;
-(enemigo.Batler).y=100;
-   (*myteam).add_enemy(enemigo);
-  enemigo.set_HP(20);
-       enemigo.set_MaxHP(20);
-        enemigo.set_name("Avispón");
- (enemigo.Batler).setimg("../Monster/Bee.png");
-(enemigo.Batler).x=140;
-(enemigo.Batler).y=60;
-   (*myteam).add_enemy(enemigo);    
-* NScene=2; 
-      
-        }
+void Map_scene::mapnpc() {
+	static Uint8    *key_data;
+	key_data = SDL_GetKeyState(NULL);
+	if ((key_pressed_and_released(KEY_Z )) && (npc.colision((*My_player))))
+	{
+        Enemy   enemy_mapnpc;
+
+        enemy_mapnpc.set_hp(20);
+        enemy_mapnpc.set_max_hp(20);
+        enemy_mapnpc.set_mp(200);
+        enemy_mapnpc.set_max_mp(200);
+        enemy_mapnpc.set_attack(12);
+        enemy_mapnpc.set_defense(50);
+        enemy_mapnpc.set_speed(25);
+        enemy_mapnpc.set_spirit(20);
+        (enemy_mapnpc.battler).set_image("../Monster/Slime.png");
+        (enemy_mapnpc.battler).setcols(1);
+        (enemy_mapnpc.battler).setrows(1);
+        (enemy_mapnpc.battler).x_pos = 140;
+        (enemy_mapnpc.battler).y_pos = 100;
+        enemy_mapnpc.set_name("Limo");
+        (*My_team).add_enemy(enemy_mapnpc);
+        enemy_mapnpc.set_name("Bat");
+        enemy_mapnpc.set_hp(300);
+        enemy_mapnpc.set_max_hp(30);
+        (enemy_mapnpc.battler).set_image("../Monster/Bat.png");
+        (enemy_mapnpc.battler).x_pos = 80;
+        (enemy_mapnpc.battler).y_pos = 100;
+        (*My_team).add_enemy(enemy_mapnpc);
+        enemy_mapnpc.set_hp(35);
+        enemy_mapnpc.set_max_hp(35);
+        enemy_mapnpc.set_name("AraÃ±a");
+        (enemy_mapnpc.battler).set_image("../Monster/Spider.png");
+        (enemy_mapnpc.battler).x_pos = 180;
+        (enemy_mapnpc.battler).y_pos = 100;
+        (*My_team).add_enemy(enemy_mapnpc);
+        enemy_mapnpc.set_hp(20);
+        enemy_mapnpc.set_max_hp(20);
+        enemy_mapnpc.set_name("AvispÃ³n");
+        (enemy_mapnpc.battler).set_image("../Monster/Bee.png");
+        (enemy_mapnpc.battler).x_pos = 140;
+        (enemy_mapnpc.battler).y_pos = 60;
+        (*My_team).add_enemy(enemy_mapnpc);
+        *new_scene = 2;
+	}
 }
-void Map_Scene::dispose() {
-     red.dispose();
+void Map_scene::dispose()
+{
+	my_net.dispose();
 //(*player).dispose();
-npc.dispose();
-Map.Chipset.dispose();
-alexface.dispose();
-(*myaudio).stopmusic();
+	npc.dispose();
+	my_map.my_chipset.dispose();
+	alex_face.dispose();
+	(*My_audio).stop_music();
 }
 

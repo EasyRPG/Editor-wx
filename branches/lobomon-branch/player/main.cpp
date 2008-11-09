@@ -1,4 +1,4 @@
-/* main.cpp, EasyRPG player main file.
+/*main.cpp, EasyRPG player main file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -36,213 +36,264 @@
 #include "scene.h"
 #include "timer.h"
 #include "deltatime.h"
-#define SCREEN_SIZE_X  320
-#define SCREEN_SIZE_Y  240
+#define screen_SIZE_X  320
+#define screen_SIZE_Y  240
 
-bool running = true;
-unsigned char TheScene=0;
-Mix_Music *musica;
-SDL_Surface * Screen;
-//unsigned long nextTicks = 0, fps = 0, frames = 0;
+//Uint64 nextTicks = 0, fps = 0, frames = 0;
 //char stringBuffer[255];
-unsigned char speed=4,timer=0;
-Scene * actual;
-Map_Scene mapas;
-Title_Scene titulo;
-GO_Scene fin;
-Save_Load_Menu_Scene        Menu_Save_Load;
-Euip_Menu_Scene             Menu_Euip;
-Main_Menu_Scene             Menu_Main;
-Objects_Menu_Scene          Menu_Objects;
-Stats_Menu_Scene            Menu_Stats;
-Skills_Menu_Scene           Menu_Skills;
-Item_use_scene              Menu_item_use;
-Batle_scene                 batalla;
-Player_Team                 team;
-CDeltaTime 	System(60);
-bool wind;
-Timer update;  
-Timer fps; 
 
-int fps_sincronizar()
-{      
-        static unsigned  int frames=0;
-        int tiempodesignado, tiempotrascurrido,framesideales, retraso;
-	frames++;
-	if(( update.get_ticks() > 1020 ) ||(frames==60)) { 
-	frames=0;
-	update.start(); 
-	fps.start(); 
-	}else
-	{
-        tiempodesignado=((1020- update.get_ticks())/(60-frames)); 
-	tiempotrascurrido=fps.get_ticks();
-	
-     if(tiempotrascurrido < tiempodesignado) {  
-		SDL_Delay( tiempodesignado- tiempotrascurrido ); 
-		fps.start(); 
-		return 1;
-		}
-	else{
-		framesideales= (update.get_ticks())/17;//frames que ya deveriamos a ver refrescado
-		retraso=framesideales-frames;
-		fps.start(); 
-			if((retraso)>=1)//si nos retasamos por mas de un frame
-		   	{
-			frames=frames+retraso;
-		//	System.update(); //updates a deltas
-			return (1+retraso);//refresca mas la entrada y salida
-			}
-		}
-	}
-return 1;
+/* For convenience, we have to use (while we find another thing better) this conventions for make the
+    development more readable and faster:
+    -Data names in accurate english
+    -Tabs instead of spaces.
+    -ANSI compatible code.
+    -Names_like_this.
+    -Class names start with big letter, methods and variable names with small letters.
+    -Doxygen compatible comments. ( http://www.stack.nl/~dimitri/doxygen/ )
+    -Will add more (plus examples) later~
+*/
+
+
+//Variables
+
+Uint8           speed = 4;
+Uint8           timer=0;
+bool running    = true;
+Uint8 the_scene = 0;
+Mix_Music       *music;
+SDL_Surface     *screen;
+bool            wind;
+Timer           update;
+Timer           fps;
+
+
+//  Gameplay scene instances
+Title_scene             My_title_scene;
+Save_load_scene         My_save_load_scene;     // Save_And_Load_Menu_Scene could be confusing and bothering
+Scene                   *My_actual_scene;
+Map_scene               My_map_scene;
+Battle_scene            My_battle_scene;
+
+//My_menu scene instances
+Main_menu_scene         My_main_menu_scene;
+Game_over_scene         My_gameover_scene;
+Equipment_scene         My_equipment_scene;
+Item_use_scene          My_items_use_scene;
+Status_scene            My_status_scene;
+Skills_menu_scene       My_skills_scene;
+Inventory_scene         My_inventory_scene;
+//  Misc instances
+Player_team             My_team;
+CDeltaTime 	            My_system_time(60);
+
+int fps_synchronyze()
+{
+    static Uint32 frames    = 0 ;                     //  frames measurer
+    int base_time, passed_time, ideal_frames, delay;    //  data related with time control
+    frames++;
+    if ((update.get_ticks() > 1020 ) || (frames == 60))
+    {
+        frames = 0;
+        update.start();
+        fps.start();
+    }
+    else
+    {
+        base_time =  (( 1020 - update.get_ticks()) / (60 - frames));
+        passed_time = fps.get_ticks();
+
+        if (passed_time < base_time)
+        {
+            SDL_Delay(base_time - passed_time);
+            fps.start();
+            return 1;
+        }
+        else
+        {
+            ideal_frames = update.get_ticks() / 17;//   frames that we had to be refreshed
+            delay = ideal_frames - frames;
+            fps.start();
+            if (delay >= 1)   //  if there are more than one delay frame:
+            {
+                frames = frames+delay;
+                //	System.update(); //to-delta updates
+                return (1 + delay); //  it refreshes more input and output
+            }
+        }
+    }
+    return 1;
 }
 
 
- void CambioScene(Audio myaudio, Scene  ** apuntador) //si no haces esto, te cartgas la memoria donde lo estas ejecutando
- {   unsigned static char LastScene=0; 
-      if(TheScene!=LastScene)
-     {  //si alguie encuntra una mejor forma de hacerlo que avise -_- 
-      (**apuntador).dispose();
-      if(TheScene==0)
-        { 
-         titulo.init(& myaudio,& running,& TheScene,& team);
-         *apuntador=(& titulo);
-         LastScene=0;
-         }
-      if(TheScene==1)
-        { 
-         mapas.init(&myaudio,320,240,& TheScene,& team);
-        *apuntador=& mapas;
-         LastScene=1;
-         }
-       if(TheScene==2)
-        { 
-         batalla.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& batalla;
-         LastScene=2;
-         } 
-       if(TheScene==3)
-        { 
-        fin.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& fin;
-         LastScene=3;
-         }   
-        if(TheScene==4)
-        { 
-        Menu_Main.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Main;
-         LastScene=4;
-         }
-        if(TheScene==5)
-        { 
-        Menu_Objects.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Objects;
-         LastScene=5;
-         }
-        if(TheScene==6)
-        { 
-        Menu_Skills.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Skills;
-         LastScene=6;
-         }       
-         if(TheScene==7)
-        { 
-        Menu_Euip.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Euip;
-         LastScene=7;
-         }
-        if(TheScene==8)
-        { 
-        Menu_Stats.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Stats;
-         LastScene=8;
-         }  
+void change_scene(Audio My_audio, Scene **pointer) //si no haces esto, te cartgas la memoria donde lo estas ejecutando
+{
+    Uint8 last_scene = 0;
+    if (the_scene != last_scene)
+    {
+        //  if someone finds a better way to do it please warn me -_-
+        (**pointer).dispose();
+        if (the_scene == 0)
+        {
+            My_title_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer = &My_title_scene;
+            last_scene = 0;
+        }
+        if (the_scene == 1)
+        {
+            My_map_scene.init (&My_audio, 320, 240, &the_scene, &My_team);
+            *pointer = &My_map_scene;
+            last_scene = 1;
+        }
+        if (the_scene == 2)
+        {
+            My_battle_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer =& My_battle_scene;
+            last_scene = 2;
+        }
+        if (the_scene == 3)
+        {
+            My_gameover_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer =& My_gameover_scene;
+            last_scene = 3;
+        }
+        if (the_scene == 4)
+        {
+            My_main_menu_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer =& My_main_menu_scene;
+            last_scene = 4;
+        }
+        if (the_scene == 5)
+        {
+            My_inventory_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer =& My_inventory_scene;
+            last_scene = 5;
+        }
+        if (the_scene == 6)
+        {
+            My_skills_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer = &My_skills_scene;
+            last_scene = 6;
+        }
+        if (the_scene == 7)
+        {
+            My_equipment_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer = &My_equipment_scene;
+            last_scene = 7;
+        }
+        if (the_scene == 8)
+        {
+            My_status_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer = &My_status_scene;
+            last_scene = 8;
+        }
 
-        if(TheScene==9)
-        { 
-        Menu_Save_Load.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_Save_Load;
-         LastScene=9;
-         }         
-       if(TheScene==10)
-        { 
-        Menu_item_use.init(& myaudio,& running,& TheScene,& team);
-        *apuntador=& Menu_item_use;
-         LastScene=10;
-         }   
-      }
- }
+        if (the_scene == 9)
+        {
+            My_save_load_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer = &My_save_load_scene;
+            last_scene = 9;
+        }
+        if (the_scene == 10)
+        {
+            My_items_use_scene.init(&My_audio, &running, &the_scene, &My_team);
+            *pointer=&My_items_use_scene;
+            last_scene = 10;
+        }
+    }
+}
 
 int main()
-    {  
-        Audio myaudio;
-        int repxciclo,i;
-	    // ===[ INITIALIZATION ]================================================
-        // Start SDL
-        if (SDL_Init (SDL_INIT_VIDEO| SDL_INIT_AUDIO) < 0) exit(1);//mod
-        atexit (SDL_Quit);
-	    myaudio.init();
-        const SDL_VideoInfo * videoInfo = SDL_GetVideoInfo();
-        unsigned long flags = 0;
+{
+    Audio   My_audio;
+    int     repeat_x_cicle;
+    int     i;
 
-        if (videoInfo->hw_available) flags |= SDL_HWSURFACE;
-        else                         flags |= SDL_SWSURFACE;
-        if (videoInfo->blit_hw)      flags |= SDL_HWACCEL;
-//flags |= SDL_FULLSCREEN;
-        // Start screen (set to 320x240)
-        Screen = SDL_SetVideoMode (SCREEN_SIZE_X  , SCREEN_SIZE_Y, 16, flags );
-        if (Screen == NULL) exit(2);
-        SDL_WM_SetCaption ("Proyecto 1", NULL);
+    //============[ INITIALIZATION ]================
 
-        // ===[ ENTRY POINT ]===================================================
+    // Start SDL
+    if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
+    {
+        exit(1);
+    }
+    atexit (SDL_Quit);
+    My_audio.init();
+    const SDL_VideoInfo    *video_info = SDL_GetVideoInfo();
+    Uint64 flags            = 0;
 
-        SDL_Event event;
-        titulo.init(& myaudio,& running,& TheScene,& team);
-        actual= & titulo;
-	    update.start(); 
-	    fps.start(); 
-        while (running)
+    if (video_info -> hw_available)
+    {
+        flags |= SDL_HWSURFACE;
+    }
+    else
+    {
+        flags |= SDL_SWSURFACE;
+    }
+    if (video_info -> blit_hw)
+    {
+        flags |= SDL_HWACCEL;
+    }
+    //flags |= SDL_FULLscreen;
+
+    // Start screen (set to 320x240)
+    screen = SDL_SetVideoMode (320, 240, 16, flags);
+    if (screen == NULL)
+    {
+        exit(2);
+    }
+    SDL_WM_SetCaption ("Window title pending", NULL);
+
+    //============[ ENTRY POINT ]====================
+
+    SDL_Event   event;
+    My_title_scene.init(&My_audio, &running, &the_scene, &My_team);
+    My_actual_scene = &My_title_scene;
+    update.start();
+    fps.start();
+
+    while (running)
+    {
+        timer++;
+
+        // Check for events
+        while (SDL_PollEvent(&event))
         {
-            timer++;
-            // Check for events
-            while (SDL_PollEvent (&event))
+            switch (event.type)
             {
-                switch (event.type)
+            case SDL_QUIT:
+                running = false;
+                break;
+            case SDL_KEYDOWN:
+                if ( event.key.keysym.sym == SDLK_RETURN )
                 {
-                    case SDL_QUIT:
-                        running = false;
-                        break;
-                   case SDL_KEYDOWN:  
-                           if( event.key.keysym.sym == SDLK_RETURN )
-                         {     if(wind)
-      {   Screen = SDL_SetVideoMode( SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, SDL_SWSURFACE | SDL_RESIZABLE  );
-         wind=false;
-         }
-         else
-         {    Screen = SDL_SetVideoMode( SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, SDL_SWSURFACE | SDL_RESIZABLE | SDL_FULLSCREEN );
-           wind=true;
-            }
-                 break;
+                    if (wind)
+                    {
+                        screen = SDL_SetVideoMode( 320, 240, 16, SDL_SWSURFACE | SDL_RESIZABLE  );
+                        wind = false;
+                    }
+                    else
+                    {
+                        screen = SDL_SetVideoMode( 320, 240, 16, SDL_SWSURFACE | SDL_RESIZABLE | SDL_FULLSCREEN );
+                        wind = true;
+                    }
+                    break;
                 }
-                    default:
-                        break;
-                }
+            default:
+                break;
             }
-	repxciclo = fps_sincronizar ();
+        }
+        repeat_x_cicle = fps_synchronyze ();
 
-   // SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil   
- 
-  for (i = 0; i < repxciclo; i ++)//estradas a lectrura de teclado
-	{	System.update(); //updates a deltas
-         actual->updatekey( );
-	}
-           
-    actual->update(Screen);
-    CambioScene( myaudio, & actual);
-    SDL_Flip(Screen); // Flip
+        // SDL_FillRect(screen, NULL, 0x0);// Nonsenseless Clear screen
 
-    }        
+        for (i = 0; i < repeat_x_cicle; i++)    //  Inputs to keyboard reading
+        {
+            My_system_time.update();    //  Updates to deltas
+            My_actual_scene->update_key( );
+        }
+        My_actual_scene -> update(screen);
+        change_scene(My_audio, &My_actual_scene);
+        SDL_Flip(screen);   //  Flip
+    }
     SDL_Quit();
     return true;
- }
+}

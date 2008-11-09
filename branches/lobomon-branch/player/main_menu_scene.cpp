@@ -1,4 +1,4 @@
-/* main_menu_scene.cpp, main menu scene routines.
+/*main_menu_scene.cpp, main My_menu scene routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,137 +32,153 @@
 #include "actor.h"
 #include "scene.h"
 
-void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{  int i;
-   myteam=TheTeam;
-   myaudio=theaudio;
-   menu.init( theaudio, run, 0,5, 96, 125, 0, 0);
-   players.init(theaudio, run,0,((*myteam).get_size()-1),224,240,96,0,166,48);
-   players.init_curXY(55,5); //ya eran muchos comandos
-   gold.init(96,40,0,200);
-   menu_exit.init( theaudio, run, 0,2, 96, 67, 112, 86);
-   str_Vector.push_back("Objetos ");
-   str_Vector.push_back("Técnicas ");
-   str_Vector.push_back("Equipamiento");
-   str_Vector.push_back("Estados");
-   str_Vector.push_back("Guardar");
-   str_Vector.push_back("Fin partida");
-   menu.setComands(& str_Vector);
-   str_Vector_2.push_back("Ir a titulo");
-   str_Vector_2.push_back("Salir");
-   str_Vector_2.push_back("Cancelar");
-   menu_exit.setComands(& str_Vector_2);
-   menu_exit.visible=false; 
-   running=  run;   
-   NScene=TheScene;
+void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team)
+{
+    int         i;
+    My_team     = the_team;
+    My_audio    = the_audio;
+    My_menu.init( the_audio, run, 0, 5, 96, 125, 0, 0);
+    players.init(the_audio, run, 0, ((*My_team).get_size()-1), 224, 240, 96, 0, 166, 48);
+    players.init_xy_cur(55,5); //ya eran muchos comandos
+    gold.init(96,40,0,200);
+    menu_exit.init(the_audio, run, 0, 2, 96, 67, 112, 86);
+    string_vector.push_back("Objects");
+    string_vector.push_back("Skills");
+    string_vector.push_back("Equipment");
+    string_vector.push_back("States");
+    string_vector.push_back("Save");
+    string_vector.push_back("Exit game");
+    My_menu.set_commands(&string_vector);
+    string_vector_2.push_back("go to title scene");
+    string_vector_2.push_back("Exit");
+    string_vector_2.push_back("Cancel");
+    menu_exit.set_commands(& string_vector_2);
+    menu_exit.visible   = false;
+    running             = run;
+    new_scene           = the_scene;
 
-   gold.add_text("Gold",5,5);
+    gold.add_text("gold",5,5);
 
-    char stringBuffer[255];
-    sprintf(stringBuffer, "$ %d", (*(*myteam).get_Gold()));
-    gold.add_text(stringBuffer,5,20);
-int space=60;
+    char string_buffer[255];
+    sprintf(string_buffer, "$ %d", (*(*My_team).get_gold()));
+    gold.add_text(string_buffer,5,20);
+    int space   = 60;
 
+    for (i = 0; i < (*My_team).get_size(); i++)
+    {
+        players.add_sprite(((*My_team).get_faceset(i)),5,5+(i*space));
+        players.add_text(((*My_team).get_name(i)),55,2+(i*space));
+        players.add_text(((*My_team).get_job(i)),150,2+(i*space));
 
-for(i=0;i<(*myteam).get_size();i++)    
-{   
-   players.add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
-   players.add_text(((*myteam).get_name(i)),55,2+(i*space));
-   players.add_text(((*myteam).get_job(i)),150,2+(i*space));
-  
-   sprintf(stringBuffer, "Level %d  Normal", (*(*myteam).get_Level(i)));
-   players.add_text(stringBuffer,55,20+(i*space));
-   sprintf(stringBuffer, "Exp %d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
-   players.add_text(stringBuffer,55,37+(i*space));
-   sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
-   players.add_text(stringBuffer,150,20+(i*space));
-   sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
-   players.add_text(stringBuffer,150,37+(i*space));
-}
- retardo =0;
-   
-}
+        sprintf(string_buffer, "Level %d  Normal", (*(*My_team).get_level(i)));
+        players.add_text(string_buffer, 55, 20 + (i*space));
+        sprintf(string_buffer, "Exp %d / %d", (*(*My_team).get_exp(i)), (*(*My_team).get_max_exp(i)));
+        players.add_text(string_buffer,55,37+(i*space));
+        sprintf(string_buffer, "Hp %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+        players.add_text(string_buffer,150,20+(i*space));
+        sprintf(string_buffer, "Mp %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+        players.add_text(string_buffer,150,37+(i*space));
+    }
+    delay   = 0;
 
-void Main_Menu_Scene::update(SDL_Surface* Screen)
-{  // static int retardo =0;
-if(retardo==0)
-{SDL_FillRect(Screen, NULL, 0x0);// Clear screen 
- gold.draw(Screen);
- players.draw(Screen);
-  menu.draw(Screen);
-}
-retardo++;
-
-   if(retardo==5)
-   {players.draw(Screen);
-   menu.draw(Screen);
-  menu_exit.draw(Screen); 
-    
- 
-   retardo=1;
-   }     
 }
 
-void Main_Menu_Scene::action()
-{ int i;
-     for(i=1;i<4;i++)
-     if(menu.getindexY()==i)
-       players.visible=true;  
-    
- if(menu.getindexY()==0)
-    * NScene=5;     
-  if(menu.getindexY()==4)
-    * NScene=9;  
-    
-if(menu.getindexY()==5)
-   menu_exit.visible=true; 
-}
-void Main_Menu_Scene::action2()
-{ 
-if(menu_exit.getindexY()==0)
- * NScene=0;  
-if(menu_exit.getindexY()==1)
-(*running)=false;
-if(menu_exit.getindexY()==2)
-    { menu_exit.visible=false; 
-    menu_exit.restarmenu();
-    menu.restarmenu();
-    retardo=0;
+void Main_menu_scene::update(SDL_Surface*screen)
+{
+    // static int delay = 0;
+    if (delay == 0)
+    {
+        SDL_FillRect(screen, NULL, 0x0);// Clear screen
+        gold.draw(screen);
+        players.draw(screen);
+        My_menu.draw(screen);
+    }
+    delay++;
+
+    if (delay == 5)
+    {
+        players.draw(screen);
+        My_menu.draw(screen);
+        menu_exit.draw(screen);
+
+
+        delay = 1;
     }
 }
 
-void Main_Menu_Scene::action3()
-{    int i;
-  (*myteam).select=players.getindexY();
-   for(i=1;i<4;i++)
-     if(menu.getindexY()==i)
-        * NScene=5+i; 
+void Main_menu_scene::action()
+{
+    int i;
+    for (i = 1; i < 4; i++)
+        if (My_menu.get_index_y() == i)
+        {
+            players.visible = true;
+        }
+    if (My_menu.get_index_y() == 0)
+        *new_scene = 5;
+    if (My_menu.get_index_y()==4)
+        *new_scene = 9;
+
+    if (My_menu.get_index_y()==5)
+        menu_exit.visible = true;
+}
+void Main_menu_scene::action2()
+{
+    if (menu_exit.get_index_y()==0)
+        *new_scene = 0;
+    if (menu_exit.get_index_y()==1)
+        (*running)=false;
+    if (menu_exit.get_index_y()==2)
+    {
+        menu_exit.visible = false;
+        menu_exit.restart_menu();
+        My_menu.restart_menu();
+        delay = 0;
+    }
+}
+
+void Main_menu_scene::action3()
+{
+    int i;
+    (*My_team).select = players.get_index_y();
+    for (i = 1;i<4;i++)
+        if (My_menu.get_index_y()==i)
+            *new_scene = 5+i;
 
 }
-void Main_Menu_Scene::updatekey() {
-if(players.visible)
+void Main_menu_scene::update_key()
 {
-players.updatekey();
-if(players.desition())
-action3();
-}
+    if (players.visible)
+    {
+        players.update_key();
+        if (players.decision())
+            action3();
+    }
 
-if(menu_exit.visible)
-{
-menu_exit.updatekey();
-if(menu_exit.desition())
-action2();
-}else{
-menu.updatekey();
-if(menu.desition())
-{action();}
+    if (menu_exit.visible)
+    {
+        menu_exit.update_key();
+        if (menu_exit.decision())
+            action2();
+    }
+    else
+    {
+        My_menu.update_key();
+        if (My_menu.decision())
+        {
+            action();
+        }
+    }
+    if (key_pressed_and_released(KEY_X ))
+    {
+        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        *new_scene = 1;
+    }
 }
- if (Key_press_and_realsed(LMK_X ))
-        { (*myaudio).soundload("../Sound/Cansel2.wav");* NScene=1; }
-     }
-void Main_Menu_Scene::dispose() {
-   menu.dispose();
-   players.dispose();
-   gold.dispose();
-   menu_exit.dispose();       
+void Main_menu_scene::dispose()
+{
+    My_menu.dispose();
+    players.dispose();
+    gold.dispose();
+    menu_exit.dispose();
 }

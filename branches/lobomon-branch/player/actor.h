@@ -1,4 +1,4 @@
-/* actor.h, EasyRPG actor class declaration file.
+/*  actor.h, EasyRPG actor class declaration file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -19,32 +19,33 @@
 
 #include "math-sll.h"
 
-struct mot
+struct mot  //comentar a delapipol(que es mot?)
 {
-sll distance;
-sll delta;
-unsigned char direction;
+    sll distance;
+    sll delta;
+    Uint8 direction;
 };
 
 
-class CActor:public Chara {
-public:
+class Actor:public Character
+{
+    public:
         // Methods
-void MoveOnInput(); 
+        void move_on_input();
 
-int Min(int value, int max);
-sll Minf(float value, float max);
-int Clamp(int value, int min, int max);
-sll Clampf(float value, float min, float max);
-void setposXY(int x,int y);
-unsigned char  flags;
-unsigned char state;
-mot Cmotion;
-int GridX;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
-int GridY;
-sll realX;
-sll realY;
-bool outofarea;
+        int min(int value, int max);
+        sll min_f(float value, float max);
+        int clamp(int value, int min, int max);
+        sll clamp_f(float value, float min, float max);
+        void set_xy_position(int x_pos,int y_pos);
+        Uint8  flags;
+        Uint8 state;
+        mot Motion;
+        int grid_x;///aparte de la x_pos  y_pos y_pos  tenemos la poscion con referencia bloques.
+        int GridY;
+        sll realX;
+        sll realY;
+        bool outofarea;
 };
 
 #endif

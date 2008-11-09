@@ -1,4 +1,4 @@
-/* actor.cpp, actor routines.
+/*actor.cpp, actor routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-//extern CWorld  * World; //cuando exista
+//extern CWorld  *World; //cuando exista
 #include "SDL.h"
 #include "math-sll.h"
 #include "sprite.h"
@@ -22,11 +22,11 @@
 #include "deltatime.h"
 
 
-extern CDeltaTime System;
+extern CDeltaTime my_system_time;
 /*
-metodos faltantes 
+metodos faltantes
 
-World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)
+World->CollisionAt(grid_x, GridY+1, WORLD_COLLISION_FROM_UP)
 
 
 
@@ -43,89 +43,121 @@ World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)
 
 #define ACTOR_SPEED_SLOW        2.0f
 
-int CActor::Clamp(int value, int min, int max) {
-if(value<min)//mark when is out of range under development
+int Actor::clamp(int value, int min, int max)
 {
-outofarea=false;
-return (min);}
-else
-if(value>max)
-{outofarea=false;
-return (max);
-}
-else
- {
- outofarea=true;
-return (value);
- }
+    if (value<min)//mark when is out of range under development
+    {
+        outofarea = false;
+        return (min);
+    }
+    else
+        if (value>max)
+        {
+            outofarea = false;
+            return (max);
+        }
+        else
+        {
+            outofarea = true;
+            return (value);
+        }
 
     return ((value<min)? min:(value>max)? max:value);
 }
-int CActor::Min(int value, int max) {
+int Actor::min(int value, int max)
+{
     return ((value>max)? max:value);
 }
 
-
-sll CActor::Minf(float value, float max) {
+sll Actor::min_f(float value, float max)
+{
     return ((value>=max)? max:value);
 }
-sll CActor::Clampf(float value, float min, float max) {
+
+sll Actor::clamp_f(float value, float min, float max)
+{
     return ((value<min)? min:(value>=max)? max:value);
 }
-void CActor::setposXY(int x,int y)
+
+void Actor::set_xy_position(int x_pos,int y_pos)
 {
- realX=(sll)x;
- realY=(sll)y;   
+    realX=(sll)x_pos;
+    realY=(sll)y_pos;
 }
-void CActor::MoveOnInput() {
+
+void Actor::move_on_input()
+{
     // In case the method was called and the actor is put on freeze
     // (for example, on message display or game pause)
     if (flags & ACTOR_FLAGS_FREEZE) return;
-
-    
     // Depending on current actor state, select between accepting input
-    // and Cmotion
-    switch(state) {
-        case ACTOR_STATE_IDLE:
-          unsigned char * keyData;
-     		  keyData = SDL_GetKeyState(NULL);
-	  if ( keyData[SDLK_UP]  ){// && World->CollisionAt(GridX, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
-                state            = ACTOR_STATE_MOVING;
-                Cmotion.direction = ACTOR_DIRECTION_UP;
-                dir=0;
-                Cmotion.distance  = 0;
-            } else if (keyData[SDLK_DOWN]  ){// && World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
-                state            = ACTOR_STATE_MOVING;
-                Cmotion.direction = ACTOR_DIRECTION_DOWN;
-                dir=2;
-                Cmotion.distance  = 0;
-            } else if ( keyData[SDLK_LEFT] ){// && World->CollisionAt(GridX-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
-                state            = ACTOR_STATE_MOVING;
-                Cmotion.direction = ACTOR_DIRECTION_LEFT;
-                dir=3;
-                Cmotion.distance  = 0;
-            } else if ( keyData[SDLK_RIGHT] ){ //&& World->CollisionAt(GridX+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
-                state            = ACTOR_STATE_MOVING;
-                Cmotion.direction = ACTOR_DIRECTION_RIGHT;
-                dir=1;
-                Cmotion.distance  = 0;
-            }else{frame=0;}
-// 	    GridX = (x)>>4; GridY = (y)>>4;// Calculate Grid X and Grid Y
+    // and Motion
+    switch (state)
+    {
+    case ACTOR_STATE_IDLE:
+        Uint8 *key_data;
+        key_data = SDL_GetKeyState(NULL);
+        if ( key_data[SDLK_UP]  )
+        {
+            // && World->CollisionAt(grid_x, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
+            state            = ACTOR_STATE_MOVING;
+            Motion.direction = ACTOR_DIRECTION_UP;
+            dir = 0;
+            Motion.distance  = 0;
+        }
+        else if (key_data[SDLK_DOWN]  )
+        {
+            // && World->CollisionAt(grid_x, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
+            state            = ACTOR_STATE_MOVING;
+            Motion.direction = ACTOR_DIRECTION_DOWN;
+            dir = 2;
+            Motion.distance  = 0;
+        }
+        else if ( key_data[SDLK_LEFT] )
+        {
+            // && World->CollisionAt(grid_x-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
+            state = ACTOR_STATE_MOVING;
+            Motion.direction = ACTOR_DIRECTION_LEFT;
+            dir = 3;
+            Motion.distance  = 0;
+        }
+        else if ( key_data[SDLK_RIGHT] )
+        {
+            //&& World->CollisionAt(grid_x+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
+            state = ACTOR_STATE_MOVING;
+            Motion.direction = ACTOR_DIRECTION_RIGHT;
+            dir = 1;
+            Motion.distance  = 0;
+        }
+        else
+        {
+            frame = 0;
+        }
+// 	    grid_x=(x_pos)>>4; GridY=(y_pos)>>4;// Calculate Grid x_pos and Grid y_pos
+        break;
+    case ACTOR_STATE_MOVING:
+        // Calculate how many pixels has the actor travelled  and how many's left
+        Motion.delta    = clamp_f(ACTOR_SPEED_SLOW*my_system_time.delta_time, 0, 16-Motion.distance); // clamp_f(value, min, max)
+        Motion.distance = min_f(Motion.distance+ACTOR_SPEED_SLOW*my_system_time.delta_time, 16.0f);//min_f(distancia + movimiento, maximo )
+        frame_update();
+        // Change position of character by adding the delta
+        switch (Motion.direction)
+        {
+        case ACTOR_DIRECTION_UP:
+            realY = sllsub(realY, Motion.delta);
             break;
-        case ACTOR_STATE_MOVING:
-            // Calculate how many pixels has the actor travelled  and how many's left
-            Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
-            Cmotion.distance = Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
-            frameupdate();
-            // Change position of character by adding the delta
-            switch(Cmotion.direction) {
-                case ACTOR_DIRECTION_UP:    realY=sllsub(realY, Cmotion.delta);  break;
-                case ACTOR_DIRECTION_DOWN:  realY=slladd(realY, Cmotion.delta);  break;
-                case ACTOR_DIRECTION_LEFT:  realX=sllsub(realX, Cmotion.delta);  break;
-                case ACTOR_DIRECTION_RIGHT:  realX=slladd(realX, Cmotion.delta); break;
-            }
+        case ACTOR_DIRECTION_DOWN:
+            realY = slladd(realY, Motion.delta);
+            break;
+        case ACTOR_DIRECTION_LEFT:
+            realX = sllsub(realX, Motion.delta);
+            break;
+        case ACTOR_DIRECTION_RIGHT:
+            realX = slladd(realX, Motion.delta);
+            break;
+        }
 
-               if (Cmotion.distance == 16.0f) state = ACTOR_STATE_IDLE;
-             break;            
-    }    
+        if (Motion.distance == 16.0f) state = ACTOR_STATE_IDLE;
+        break;
+    }
 }

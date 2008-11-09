@@ -1,4 +1,4 @@
-/* save_load_menu_scene.cpp, save load menu routines.
+/*save_load_menu_scene.cpp, save load My_menu routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,39 +32,47 @@
 #include "actor.h"
 #include "scene.h"
 
-void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    myteam=TheTeam;
-     myaudio=theaudio;
-  
-   descripcion.init(320,30,0,0);
-   descripcion.add_text("¿Dónde deseas guardar la partida? ",10,5);
-   Save_pos_1.init(320,70,0,30);
-   Save_pos_2.init(320,70,0,100);
-   Save_pos_3.init(320,70,0,170);
-   running=  run;   
-   NScene=TheScene;
-     retardo=0;
-}
-
-void Save_Load_Menu_Scene::update(SDL_Surface* Screen)
+///a quedado perfessto
+void Save_load_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_team *the_team)
 {
-retardo++;
-if(retardo==6)
-{  Save_pos_1.draw(Screen);
-   Save_pos_2.draw(Screen);
-   Save_pos_3.draw(Screen);
-   descripcion.draw(Screen);  
-   retardo=0;  
-}       
+    My_team     = the_team;
+    My_audio    = the_audio;
+
+    description.init(320,30,0,0);
+    description.add_text("Â¿Where do you want save game? ",10,5);
+    Save_pos_1.init(320,70,0,30);
+    Save_pos_2.init(320,70,0,100);
+    Save_pos_3.init(320,70,0,170);
+    running     = run;
+    new_scene   = the_scene;
+    delay       = 0;
 }
 
-void Save_Load_Menu_Scene::updatekey() {
-  if (Key_press_and_realsed(LMK_X ))
-        { (*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; }
-     }
-void Save_Load_Menu_Scene::dispose() {
-   Save_pos_1.dispose();
-   Save_pos_2.dispose();
-   Save_pos_3.dispose();
-   descripcion.dispose(); 
+void Save_load_scene::update(SDL_Surface*screen)
+{
+    delay++;
+    if (delay == 6)
+    {
+        Save_pos_1.draw(screen);
+        Save_pos_2.draw(screen);
+        Save_pos_3.draw(screen);
+        description.draw(screen);
+        delay = 0;
+    }
+}
+
+void Save_load_scene::update_key()
+{
+    if (key_pressed_and_released(KEY_X ))
+    {
+        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        *new_scene = 4;
+    }
+}
+void Save_load_scene::dispose()
+{
+    Save_pos_1.dispose();
+    Save_pos_2.dispose();
+    Save_pos_3.dispose();
+    description.dispose();
 }

@@ -1,4 +1,4 @@
-/* title_scene.cpp, EasyRPG player title scene file.
+/*My_title_scene.cpp, EasyRPG player title scene file.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -32,307 +32,320 @@
 #include "actor.h"
 #include "scene.h"
 
-void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    myteam=TheTeam;
-     myaudio=theaudio;
-     
-     (*myaudio).musicload("../Music/2003wingtoskies.mid");
-     title.x=0;
-	 title.y=0;
-     title.setimg("../title/title2.png");
-     menu.init( myaudio, run, 0,2, 96, 67, 115, 115);
-     str_Vector.push_back("Nuevo ");
-     str_Vector.push_back("Cargar ");
-     str_Vector.push_back("Salir ");
-     menu.setComands(& str_Vector);
-     running=  run;   
-     NScene=TheScene;
-     retardo=0;
+///almost clean
+
+void Title_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_team *the_team)
+{
+    My_team     = the_team;
+    My_audio    = the_audio;
+
+    (*My_audio).music_load("../Music/2003wingtoskies.mid");
+    title.x_pos = 0;
+    title.y_pos = 0;
+    title.set_image("../title/title2.png");
+    My_menu.init( My_audio, run, 0, 2, 96, 67, 115, 115);
+    string_vector.push_back("New");
+    string_vector.push_back("Load");
+    string_vector.push_back("Exit");
+    My_menu.set_commands(&string_vector);
+    running = run;
+    new_scene = the_scene;
+    delay = 0;
 }
 
-void Title_Scene::update(SDL_Surface* Screen)
-{    
-if(retardo==0)
-  {title.draw(Screen);
-   menu.draw(Screen); }
-   retardo++;
-//if(retardo==5)
- //  {
-   menu.draw(Screen);   
- //  retardo=1;
-  // }  
-      
-}
-
-void Title_Scene::action()
-{ static bool used=false;
-
-if(used==false)
- {  used=true;
- if(menu.getindexY()==2)
-  * running =false;
-   if(menu.getindexY()==0)
-   {init_party();
-    * NScene=1; 
-   }         
- }   
-}
-void Title_Scene::init_party()
-{ //desde que aun no lemos el archivo simulamos
-Player Alex;
-Alex.set_name("Alex");
-Chara Alexchara;
-Alexchara.init_Chara();
-
-Alexchara.setimg("../chara/protagonist1.PNG"); 
-Alex.set_chara(Alexchara);
-
-Faceset AlexeFase;  
-AlexeFase.setimg("../Faceset/Chara1.png");
-AlexeFase.init_Faceset(0,0,0);
-
-Alex.set_faceset(AlexeFase);
-Alex.set_name("Alex");
-Alex.set_job("Soldado");
-Alex.set_HP(48);
-Alex.set_MaxHP(48);
-Alex.set_MP(38);
-Alex.set_MaxMP(38);
-Alex.set_Heal(0);
-Alex.set_Attack(27);
-Alex.set_Defense(21);
-Alex.set_Speed(18);
-Alex.set_Spirit(23);
-Alex.set_Level(1);
-Alex.set_Exp(0);
-Alex.set_MaxExp(33);
-//las habilidades del alex que hueva.....
-Skill Veneno;
-Veneno.set_name("Veneno");
-Veneno.set_damange(6);
-Veneno.set_level_req(1);
-Veneno.set_mp_price(10);
-Alex.add_skill(Veneno);
-Skill Paralisis;
-Paralisis.set_name("Paralisis");
-Paralisis.set_damange(5);
-Paralisis.set_level_req(1);
-Paralisis.set_mp_price(5);
-Alex.add_skill(Paralisis);
-
-Item Espada;
-Espada.set_name("Espada de hierro");
-Espada.set_NOI(1); 
-Espada.set_type(4);
-Espada.id=15;
-
-Animacion Myanim;
-Myanim.setimg("../Battle/Sword1.png");
-Myanim.init_Anim(5,2);
-     
-     
-Espada.set_anim(Myanim);
-
-
-Alex.set_Weapon(Espada);
-Item Escudo;
-Escudo.set_name("Escudo de madera");
-Escudo.set_NOI(1); 
-Escudo.set_type(5);
-Escudo.id=16;
-Item Aramadura;
-Aramadura.set_name("Aramadura de cuero");
-Aramadura.set_NOI(1); 
-Aramadura.set_type(6);
-Aramadura.id=17;
-
-Item Casco;
-Casco.set_name("Casco de cuero");
-Casco.set_NOI(1); 
-Casco.set_type(7);
-Casco.id=18;
-
-Item Talisman;
-Talisman.set_name("Talisman");
-Talisman.set_NOI(1); 
-Talisman.set_type(8);
-Talisman.id=19;
-
-
-Alex.set_Shield(Escudo);
-Alex.set_Armor(Aramadura);
-Alex.set_Helmet(Casco);
-Alex.set_Accessory(Talisman);
-
-      Alex.set_Weapon_type(4);
-      Alex.set_Shield_type(5);
-      Alex.set_Armor_type(6);
-      Alex.set_Helmet_type(7);    
-      Alex.set_Accessory_type(8);
-Item nulo;
-nulo.set_name(" ");
-nulo.set_NOI(0); 
-nulo.set_type(0);
-nulo.id=0;
-
-Item nuloarma;
-nuloarma.set_name(" ");
-nuloarma.set_NOI(0); 
-nuloarma.set_type(0);
-nuloarma.id=0;
-
-
-Myanim.setimg("../Battle/Hit.png");
-Myanim.init_Anim(5,3);
-     
-     
-nuloarma.set_anim(Myanim);
-
-
-
-(*myteam).add_player(Alex);
-
-Player Brian;
-
-Chara Brianchara;
-Brianchara.init_Chara();
-Brianchara.setimg("../chara/Chara4.png"); 
-Brian.set_chara(Brianchara);
-Faceset BrianFase;  
-BrianFase.setimg("../Faceset/Chara2.png");
-BrianFase.init_Faceset(0,0,8);
-
-Brian.set_faceset(BrianFase);
-Brian.set_name("Brian");
-Brian.set_job("Soldado");
-Brian.set_HP(52);
-Brian.set_MaxHP(52);
-Brian.set_MP(0);
-Brian.set_MaxMP(0);
-Brian.set_Heal(0);
-Brian.set_Attack(18);
-Brian.set_Defense(21);
-Brian.set_Speed(10);
-Brian.set_Spirit(24);
-Brian.set_Level(1);
-Brian.set_Exp(0);
-Brian.set_MaxExp(32);
-Brian.set_Weapon(nuloarma);
-Brian.set_Shield(nulo);
-Brian.set_Armor(nulo);
-Brian.set_Helmet(nulo);
-Brian.set_Accessory(nulo);
-(*myteam).add_player(Brian);
-
-
-Player Caro;
-
-Chara Carochara;
-Carochara.init_Chara();
-Carochara.setimg("../chara/Chara1.PNG"); 
-Caro.set_chara(Carochara);
-Faceset CaroFase;  
-CaroFase.setimg("../Faceset/Chara1.png");
-CaroFase.init_Faceset(0,0,5);
-
-Caro.set_faceset(CaroFase);
-Caro.set_name("Carola");
-Caro.set_job("Maga");
-Caro.set_HP(36);
-Caro.set_MaxHP(36);
-Caro.set_MP(58);
-Caro.set_MaxMP(58);
-Caro.set_Heal(0);
-Caro.set_Attack(18);
-Caro.set_Defense(15);
-Caro.set_Speed(29);
-Caro.set_Spirit(22);
-Caro.set_Level(1);
-Caro.set_Exp(0);
-Caro.set_MaxExp(31);
-
-Item Baston;
-Baston.set_name("Baston de madera");
-Baston.set_NOI(1); 
-Baston.set_type(16);
-Baston.id=16;
-Myanim.setimg("../Battle/Holy.png");
-Myanim.init_Anim(5,2);
-     
-   
-Baston.set_anim(Myanim);
-Caro.set_Weapon(Baston);
-
-
-
-
-Caro.set_Shield(nulo);
-Caro.set_Armor(nulo);
-Caro.set_Helmet(nulo);
-Caro.set_Accessory(nulo);
-(*myteam).add_player(Caro);
-
-Player Enrique;
-
-Chara Enriquechara;
-Enriquechara.init_Chara();
-Enriquechara.setimg("../chara/Chara3.png"); 
-Enrique.set_chara(Enriquechara);
-Faceset EnriqueFase;  
-EnriqueFase.setimg("../Faceset/Chara2.png");
-EnriqueFase.init_Faceset(0,0,10);
-
-Enrique.set_faceset(EnriqueFase);
-Enrique.set_name("Enrique");
-Enrique.set_job("Luchador");
-Enrique.set_HP(59);
-Enrique.set_MaxHP(59);
-Enrique.set_MP(0);
-Enrique.set_MaxMP(0);
-Enrique.set_Heal(0);
-Enrique.set_Attack(28);
-Enrique.set_Defense(22);
-Enrique.set_Speed(26);
-Enrique.set_Spirit(16);
-Enrique.set_Level(1);
-Enrique.set_Exp(0);
-Enrique.set_MaxExp(29);
-Enrique.set_Weapon(nuloarma);
-Enrique.set_Shield(nulo);
-Enrique.set_Armor(nulo);
-Enrique.set_Helmet(nulo);
-Enrique.set_Accessory(nulo);
-(*myteam).add_player(Enrique);
-(*myteam).set_Gold(100);
-
-Item pocion;
-pocion.set_name("Pocion");
-pocion.set_NOI(10); 
-pocion.set_type(0);
-pocion.id=1;
-Item Ether;
-Ether.set_name("Ether");
-Ether.set_NOI(5); 
-Ether.set_type(0);
-Ether.id=2;
-
-Item Espada2;
-Espada2.set_name("Espada de madera");
-Espada2.set_NOI(1); 
-Espada2.set_type(4);
-Espada2.id=25;
-(*myteam).add_item(Espada2);
-(*myteam).add_item(pocion);
-(*myteam).add_item(Ether);
+void Title_scene::update(SDL_Surface*screen)
+{
+    if (delay == 0)
+    {
+        title.draw(screen);
+        My_menu.draw(screen);
+    }
+    delay++;
+    //if(delay == 5)
+    // {
+    My_menu.draw(screen);
+    //  delay = 1;
+    // }
 
 }
-void Title_Scene::updatekey() {
- menu.updatekey();
-     if(menu.desition())
-     action();
+
+void Title_scene::action()
+{
+    static bool used = false;
+
+    if (used == false)
+    {
+        used = true;
+        if (My_menu.get_index_y() == 2)
+            *running = false;
+        if (My_menu.get_index_y() == 0)
+        {
+            init_party();
+            *new_scene = 1;
+        }
+    }
 }
-void Title_Scene::dispose() {
-title.dispose();
-menu.dispose();
-(*myaudio).stopmusic();
+void Title_scene::init_party()
+{
+    //since file stills unreadable, we simulate it
+    Player alex;
+    alex.set_name("Alex");
+    Character alex_chara;
+    alex_chara.init_chara();
+    alex_chara.set_image("../chara/protagonist1.PNG");
+    alex.set_chara(alex_chara);
+
+    Faceset alex_face;
+    alex_face.set_image("../Faceset/chara1.png");
+    alex_face.init_faceset(0, 0, 0);
+
+    alex.set_faceset(alex_face);
+    alex.set_name("Alex");
+    alex.set_job("Soldier");
+    alex.set_hp(48);
+    alex.set_max_hp(48);
+    alex.set_mp(38);
+    alex.set_max_mp(38);
+    alex.set_heal(0);
+    alex.set_attack(27);
+    alex.set_defense(21);
+    alex.set_speed(18);
+    alex.set_spirit(23);
+    alex.set_level(1);
+    alex.set_exp(0);
+    alex.set_max_exp(33);
+
+    //no skills for Alex?
+    Skill poison;
+    poison.set_name("poison");
+    poison.set_damage(6);
+    poison.set_level_req(1);
+    poison.set_mp_price(10);
+    alex.add_skill(poison);
+    Skill paralysis;
+    paralysis.set_name("paralysis");
+    paralysis.set_damage(5);
+    paralysis.set_level_req(1);
+    paralysis.set_mp_price(5);
+    alex.add_skill(paralysis);
+
+    Item sword;
+    sword.set_name("iron sword");
+    sword.set_items_number(1);
+    sword.set_type(4);
+    sword.id = 15;
+
+    Animation My_anim;
+    My_anim.set_image("../Battle/Sword1.png");
+    My_anim.init_anim(5, 2);
+
+
+    sword.set_anim(My_anim);
+
+
+    alex.set_weapon(sword);
+    Item shield;
+    shield.set_name("Wood shield");
+    shield.set_items_number(1);
+    shield.set_type(5);
+    shield.id = 16;
+    Item armor;
+    armor.set_name("Leather armor");
+    armor.set_items_number(1);
+    armor.set_type(6);
+    armor.id = 17;
+
+    Item helm;
+    helm.set_name("Leather helm");
+    helm.set_items_number(1);
+    helm.set_type(7);
+    helm.id = 18;
+
+    Item talisman;
+    talisman.set_name("talisman");
+    talisman.set_items_number(1);
+    talisman.set_type(8);
+    talisman.id = 19;
+
+
+    alex.set_shield(shield);
+    alex.set_armor(armor);
+    alex.set_helmet(helm);
+    alex.set_accessory(talisman);
+
+    alex.set_weapon_type(4);
+    alex.set_shield_type(5);
+    alex.set_armor_type(6);
+    alex.set_helmet_type(7);
+    alex.set_accessory_type(8);
+    Item null_item;
+    null_item.set_name(" ");
+    null_item.set_items_number(0);
+    null_item.set_type(0);
+    null_item.id = 0;
+
+    Item null_weapon_item;
+    null_weapon_item.set_name(" ");
+    null_weapon_item.set_items_number(0);
+    null_weapon_item.set_type(0);
+    null_weapon_item.id = 0;
+
+
+    My_anim.set_image("../Battle/Hit.png");
+    My_anim.init_anim(5, 3);
+
+
+    null_weapon_item.set_anim(My_anim);
+
+
+
+    (*My_team).add_player(alex);
+
+    Player brian;
+
+    Character brian_chara;
+    brian_chara.init_chara();
+    brian_chara.set_image("../chara/chara4.png");
+    brian.set_chara(brian_chara);
+    Faceset brian_face;
+    brian_face.set_image("../Faceset/chara2.png");
+    brian_face.init_faceset(0, 0, 8);
+
+    brian.set_faceset(brian_face);
+    brian.set_name("Brian");
+    brian.set_job("Soldier");
+    brian.set_hp(52);
+    brian.set_max_hp(52);
+    brian.set_mp(0);
+    brian.set_max_mp(0);
+    brian.set_heal(0);
+    brian.set_attack(18);
+    brian.set_defense(21);
+    brian.set_speed(10);
+    brian.set_spirit(24);
+    brian.set_level(1);
+    brian.set_exp(0);
+    brian.set_max_exp(32);
+    brian.set_weapon(null_weapon_item);
+    brian.set_shield(null_item);
+    brian.set_armor(null_item);
+    brian.set_helmet(null_item);
+    brian.set_accessory(null_item);
+    (*My_team).add_player(brian);
+
+
+    Player caro;
+
+    Character caro_chara;
+    caro_chara.init_chara();
+    caro_chara.set_image("../chara/chara1.PNG");
+    caro.set_chara(caro_chara);
+    Faceset caro_face;
+    caro_face.set_image("../Faceset/chara1.png");
+    caro_face.init_faceset(0, 0, 5);
+
+    caro.set_faceset(caro_face);
+    caro.set_name("carola");
+    caro.set_job("wizard");
+    caro.set_hp(36);
+    caro.set_max_hp(36);
+    caro.set_mp(58);
+    caro.set_max_mp(58);
+    caro.set_heal(0);
+    caro.set_attack(18);
+    caro.set_defense(15);
+    caro.set_speed(29);
+    caro.set_spirit(22);
+    caro.set_level(1);
+    caro.set_exp(0);
+    caro.set_max_exp(31);
+
+    Item staff;
+    staff.set_name("wood staff");
+    staff.set_items_number(1);
+    staff.set_type(16);
+    staff.id = 16;
+    My_anim.set_image("../Battle/Holy.png");
+    My_anim.init_anim(5, 2);
+
+
+    staff.set_anim(My_anim);
+    caro.set_weapon(staff);
+
+
+
+
+    caro.set_shield(null_item);
+    caro.set_armor(null_item);
+    caro.set_helmet(null_item);
+    caro.set_accessory(null_item);
+    (*My_team).add_player(caro);
+
+    Player enrique;
+
+    Character enrique_chara;
+    enrique_chara.init_chara();
+    enrique_chara.set_image("../chara/chara3.png");
+    enrique.set_chara(enrique_chara);
+    Faceset enrique_face;
+    enrique_face.set_image("../Faceset/chara2.png");
+    enrique_face.init_faceset(0, 0, 10);
+
+    enrique.set_faceset(enrique_face);
+    enrique.set_name("enrique");
+    enrique.set_job("Fighter");
+    enrique.set_hp(59);
+    enrique.set_max_hp(59);
+    enrique.set_mp(0);
+    enrique.set_max_mp(0);
+    enrique.set_heal(0);
+    enrique.set_attack(28);
+    enrique.set_defense(22);
+    enrique.set_speed(26);
+    enrique.set_spirit(16);
+    enrique.set_level(1);
+    enrique.set_exp(0);
+    enrique.set_max_exp(29);
+    enrique.set_weapon(null_weapon_item);
+    enrique.set_shield(null_item);
+    enrique.set_armor(null_item);
+    enrique.set_helmet(null_item);
+    enrique.set_accessory(null_item);
+    (*My_team).add_player(enrique);
+    (*My_team).set_gold(100);
+
+    Item potion;
+    potion.set_name("Potion");
+    potion.set_items_number(10);
+    potion.set_type(0);
+    potion.id = 1;
+    Item ether;
+    ether.set_name("Ether");
+    ether.set_items_number(5);
+    ether.set_type(0);
+    ether.id = 2;
+
+    Item sword2;
+    sword2.set_name("Wood sword");
+    sword2.set_items_number(1);
+    sword2.set_type(4);
+    sword2.id = 25;
+    (*My_team).add_item(sword2);
+    (*My_team).add_item(potion);
+    (*My_team).add_item(ether);
+
+}
+void Title_scene::update_key()
+{
+    My_menu.update_key();
+    if (My_menu.decision())
+    {
+        action();
+    }
+}
+void Title_scene::dispose()
+{
+    title.dispose();
+    My_menu.dispose();
+    (*My_audio).stop_music();
 }

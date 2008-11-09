@@ -1,4 +1,4 @@
-/* chipset.h, types and prototypes for the map tileset management.
+/*chipset.h, types and prototypes for the map tileset management.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,34 @@
 #define CHIPSET_H
 
 // *****************************************************************************
-// =============================================================================
+//=============================================================================
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
     #include "SDL.h"
     #include "tools.h"
-    using namespace std;
-// =============================================================================
+//=============================================================================
 // *****************************************************************************
 
-    // === Chipset structure ===================================================
+    //===Chipset structure===================================================
     struct stChipset
     {
         // --- Fields declaration ----------------------------------------------
-        
+
         // The chipset structure holds the graphic tileset of a chipset, as well
         // as their properties and the methods for correctly displaying them.
-        SDL_Surface * BaseSurface;      // Chipset's base surface!
-        SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
-        
+        SDL_Surface *My_surface;      // Chipset's base surface!
+        SDL_Surface *chipset_surface;   // Chipset's precalculated surface
+
         // --- Methods declaration ---------------------------------------------
-        bool GenerateFromSurface(SDL_Surface * Surface);
-        bool GenerateFromFile(string Filename);
+        bool generate_from_surface(SDL_Surface *My_surface);
+        bool generate_from_file(std::string file_name);
         void Release();
-        void dispose();     
-        void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
-        void RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination);
-        void RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination);
-        void RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination);
+        void dispose();
+        void render_tile(SDL_Surface *My_destiny, int x_pos, int y_pos, Uint16 Tile, int frame);
+        void render_water_tile(SDL_Surface *My_destiny, int x_pos, int y_pos, int frame, int Border, int Water, int Combination);
+        void RenderDepthTile(SDL_Surface *My_destiny, int x_pos, int y_pos, int frame, int Depth, int DepthCombination);
+        void render_terrain_tile(SDL_Surface *My_destiny, int x_pos, int y_pos, int Terrain, int Combination);
     };
 
 #endif
