@@ -58,30 +58,30 @@ void Battle_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene,Player_tea
     new_scene       = the_scene;
     menu_command    my_menu_command;
     int i;
-    for (i = 0;i<(*My_team).get_size();i++) //tantos comandos como jugadores.
+    for (i = 0;i<My_team->get_size();i++) //tantos comandos como jugadores.
     menu_commands.push_back(my_menu_command);
     state               = 0;
     new_menu_used       = 0;
     player_in_turn      = 0;
     monster_in_turn     = 0;
     player_turns        = 0;
-    update_window_monsterselect();
+    update_window_monster_select();
     monster_select.visible = false;
 }
 void Battle_scene::update_window_stats()
 {
-    window.init(My_audio,the_run,0,3,224,80,96,160,214,16 );
+    Window.init(My_audio,the_run,0,3,224,80,96,160,214,16 );
     int i = 0;
     char string_buffer[255];
-    for (i = 0;i<(*My_team).get_size();i++)
+    for (i = 0;i<My_team->get_size();i++)
     {
-        sprintf(string_buffer, "Hp %d / %d  Mp %d ", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)),(*(*My_team).get_mp(i)));
-        window.add_text(string_buffer,110, 5+(i*16));
-        window.add_text(((*My_team).get_name(i)),10,5+(i*16));
-        if ((*(*My_team).get_hp(i))>0)
-            window.add_text("Normal",60, 5+(i*16));
+        sprintf(string_buffer, "Hp %d / %d  Mp %d ", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)),(*My_team->get_mp(i)));
+        Window.add_text(string_buffer,110, 5+(i*16));
+        Window.add_text((My_team->get_name(i)),10,5+(i*16));
+        if ((*My_team->get_hp(i))>0)
+            Window.add_text("Normal",60, 5+(i*16));
         else
-            window.add_text("Muerto",60, 5+(i*16));
+            Window.add_text("Muerto",60, 5+(i*16));
     }
 
 }
@@ -94,16 +94,16 @@ void Battle_scene::window_text_show_damage(bool type,int atak,int ataked,int dam
 
     if (type)//si son los players
     {
-        Window_text.add_text(((*My_team).get_name(atak)),5,5);//name heroe
+        Window_text.add_text((My_team->get_name(atak)),5,5);//name heroe
         Window_text.add_text("ataca al enemigo",70, 5);
-        Window_text.add_text((((*My_team).enemies.at(ataked)).get_name()),5, 25);//name moustruo
+        Window_text.add_text(((My_team->enemies.at(ataked)).get_name()),5, 25);//name moustruo
         Window_text.add_text(string_buffer,70, 25);
     }
     else
     {
-        Window_text.add_text((((*My_team).enemies.at(atak)).get_name()),5, 5);//name moustruo
+        Window_text.add_text(((My_team->enemies.at(atak)).get_name()),5, 5);//name moustruo
         Window_text.add_text("ataca ",70, 5);
-        Window_text.add_text(((*My_team).get_name(ataked)),5,25);//name heroe
+        Window_text.add_text((My_team->get_name(ataked)),5,25);//name heroe
         Window_text.add_text(string_buffer,70, 25);
     }
 
@@ -112,21 +112,21 @@ void Battle_scene::window_text_show_damage(bool type,int atak,int ataked,int dam
 
 }
 
-void Battle_scene::update_window_monsterselect()
+void Battle_scene::update_window_monster_select()
 {
     int i,j,k = 0;
-    j=(*My_team).enemies.size();
+    j=My_team->enemies.size();
 
     for (i = 0;i<j;i++)  //dibuja todos los monster
     {
-        if ( (*((*My_team).enemies.at(i)).get_hp())>0)//cambiar por arreglo
+        if ( (*(My_team->enemies.at(i)).get_hp())>0)//cambiar por arreglo
         {
-            string_vector2.push_back(((*My_team).enemies.at(i)).get_name());
+            string_vector2.push_back((My_team->enemies.at(i)).get_name());
             k++;
         }
     }
     monster_select.init( My_audio, the_run, 0,k-1, 96, 80, 0, 160);
-    monster_select.set_commands(& string_vector2);
+    monster_select.set_commands(&string_vector2);
 
 }
 
@@ -135,94 +135,113 @@ void Battle_scene::update(SDL_Surface*screen)
 {
     int i,j;
     SDL_FillRect(screen, NULL, 0x0);// Clear screen
-    j=(*My_team).enemies.size();
+    j=My_team->enemies.size();
     title.draw(screen);
-    window.draw(screen);
+    Window.draw(screen);
     My_menu.draw(screen);
     monster_select.draw(screen);
     Window_text.draw(screen);
     for (i = 0;i<j;i++)  //dibuja todos los monster
-        (((*My_team).enemies.at(i)).battler).draw(screen);
-    if (state == 1) //si le toca alos heroes
-        atack(screen,player_in_turn,menu_commands.at(player_in_turn).selected_monster);
+        ((My_team->enemies.at(i)).battler).draw(screen);
+    if (state == 1)//si le toca alos heroes
+        {
+            attack(screen,player_in_turn,menu_commands.at(player_in_turn).selected_monster);
+        }
     if (state == 2)//si le toca a los moustruos
-        atacked(monster_in_turn);
-
+        {
+            attacked(monster_in_turn);
+        }
 }
 
 void Battle_scene::win()
 {
     Uint32 i;
-    int k = 0;
-    for (i = 0;i<((*My_team).enemies).size();i++)
-        if ( (*((*My_team).enemies.at(i)).get_hp())==0)//cambiar por arreglo
+    int k = 0;  //  S.O.S
+
+    for (i = 0; i < (My_team->enemies).size(); i++)
+    {
+        if(*(My_team->enemies.at(i).get_hp()) == 0)     //cambiar por arreglo
         {
-            (((*My_team).enemies.at(i)).battler).visible = false;//haz que ya no se vea
+            ((My_team->enemies.at(i)).battler).visible = false;//haz que ya no se vea
             k++;
         }
-    if (k==(*My_team).get_size())//si todos los enemigos muetros
-        *new_scene = 1;//sal al mapa
+    }
+    if (k==My_team->get_size())//si todos los enemigos muetros
+    {
+        *new_scene = 1;//   return to map scene
+    }
 }
 void Battle_scene::lose()
 {
-    int i,k = 0;
+    int i   = 0;
+    int k   = 0;
 
-    for (i = 0;i<(*My_team).get_size();i++)
-        if ((*(*My_team).get_hp(i))==0)
+    for (i = 0; i < My_team->get_size(); i++)
+    {
+        if ((My_team->get_hp(i))==0) // in case doesn't works, put a pointer behind My_team( "(My_team->" = "(*My_team->" )
         {
             k++;
         }
-    if (k==(*My_team).get_size())//si todos los heroes muetros
-        *new_scene = 3;//game over
+    }
+    if (k==My_team->get_size())   //  if all heroes are dead:
+        {
+            *new_scene = 3;//game over
+        }
+
 }
 
 
-
-
-void Battle_scene::atack(SDL_Surface*screen,int nperso,int enemy)
+void Battle_scene::attack(SDL_Surface*screen,int new_chara,int enemy)
 {
     int damage;
-    while ((*(((*My_team).enemies.at(enemy)).get_hp()))==0)//si  esta muerto el elgido
+    while ((My_team->enemies.at(enemy).get_hp()) == 0)   //     if doesn't works, see rev.128 or olders
     {
-        enemy++;//elige otro
-        enemy=(enemy%((*My_team).enemies).size());
+        enemy++;    //  it makes choose another enemy
+        enemy = (enemy % (My_team->enemies).size());
     }
 
-    (*((*My_team).get_weapon_anim(nperso))) .x_pos=(((*My_team).enemies.at(enemy)).battler).x_pos-((((*My_team).enemies.at(enemy)).battler).get_weight())/2;
-    (*((*My_team).get_weapon_anim(nperso))) .y_pos=(((*My_team).enemies.at(enemy)).battler).y_pos-((((*My_team).enemies.at(enemy)).battler).get_height())/2;
-    (*((*My_team).get_weapon_anim(nperso))) .draw(screen);
+    (*(My_team->get_weapon_anim(new_chara))).x_pos=((My_team->enemies.at(enemy)).battler).x_pos - (((My_team->enemies.at(enemy)).battler).get_weight()) / 2;
+    (*(My_team->get_weapon_anim(new_chara))).y_pos=((My_team->enemies.at(enemy)).battler).y_pos - (((My_team->enemies.at(enemy)).battler).get_height()) / 2;
+    (*(My_team->get_weapon_anim(new_chara))).draw(screen);
 
 
-    if ((*((*My_team).get_weapon_anim(nperso))) .end_anim)//si termina le atake
+    if (My_team->get_weapon_anim(new_chara)->end_anim)    // if attack finishes. I put a few void lines for avoid stress
     {
-        (*((*My_team).get_weapon_anim(nperso))) .reset();
-        damage=(*((*My_team).get_attack(nperso)));
-        (*(((*My_team).enemies.at(enemy)).get_hp()))=(*(((*My_team).enemies.at(enemy)).get_hp()))-damage;
-        Window_text.dispose();
-        window_text_show_damage(true,nperso,enemy,damage);
 
-        if ((*(((*My_team).enemies.at(enemy)).get_hp()))<0)
-            (*(((*My_team).enemies.at(enemy)).get_hp()))=0;
-        if ((player_turns+1)<(*My_team).get_size())
+        My_team->get_weapon_anim(new_chara)->reset();     //it resets weapon animation for next attack
+
+        damage = ( *(My_team->get_attack(new_chara)) );         //attack damage
+
+        *(My_team->enemies.at(enemy).get_hp()) = *(My_team->enemies.at(enemy).get_hp()) - damage;     //Enemy's health points after attack
+
+        Window_text.dispose();
+        window_text_show_damage(true,new_chara,enemy,damage);   //  it shows a game window where damage attack info is printed in screen
+
+        if ((*((My_team->enemies.at(enemy)).get_hp())) < 0)     //  if hp counter of enemies is lower than 0(death)
+            {
+                (*((My_team->enemies.at(enemy)).get_hp())) = 0;     //  puts the hp counter of enemies to 0 to avoid errors
+            }
+        if ((player_turns + 1) < My_team->get_size())
         {
-            player_in_turn++;//deveria ser una tabla
+            player_in_turn++;   //  it would be a table
             player_turns++;
             win();
         }
         else
         {
             win();
-            state = 2;
-        }//les toca a los moustruos
+            state   = 2;
+        }//it's turn for monsters
 
     }
 }
-void Battle_scene::atacked(int enemy)
+void Battle_scene::attacked(int enemy)
 {
-    int i,j;
-    static   int posxt = title.x_pos,flag = 0,timer = 0,moves = 0;
+    int i;
+    int j;
+    static   int xt_pos = title.x_pos, flag = 0,timer = 0,moves = 0;
     static bool finish = false;
-    if ((((*My_team).enemies.at(enemy)).battler).visible)//si esta vivo el enemigo
+    if (((My_team->enemies.at(enemy)).battler).visible)//si esta vivo el enemigo
     {
         timer++;
         if (timer == 4)
@@ -231,46 +250,51 @@ void Battle_scene::atacked(int enemy)
             timer = 0;
             if (flag%2)
             {
-                title.x_pos = posxt+20;
-                j=(*My_team).enemies.size();
-                for (i = 0;i<j;i++)
-                    (((*My_team).enemies.at(i)).battler).x_pos=(((*My_team).enemies.at(i)).battler).x_pos+20;
+                title.x_pos = xt_pos + 20;
+                j=My_team->enemies.size();
+                for (i = 0; i < j; i++)
+                    ((My_team->enemies.at(i)).battler).x_pos=((My_team->enemies.at(i)).battler).x_pos+20;
             }
             else
             {
-                flag = 0;
+                flag        = 0;
                 moves++;
-                timer = 0;
-                title.x_pos = posxt-20;
-                j=(*My_team).enemies.size();
-                for (i = 0;i<j;i++)
-                    (((*My_team).enemies.at(i)).battler).x_pos=(((*My_team).enemies.at(i)).battler).x_pos-20;
+                timer       = 0;
+                title.x_pos = xt_pos - 20;
+                j           = My_team->enemies.size();
+                for (i = 0; i < j; i++)
+                {
+                    ((My_team->enemies.at(i)).battler).x_pos=((My_team->enemies.at(i)).battler).x_pos - 20;
+                }
             }
         }
         if (moves == 10)
         {
-            moves = 11;
-            flag = 0;
-            timer = 10;
-            title.x_pos = posxt;/////////////////////////restaurado de posiciones
-            j=(*My_team).enemies.size();
+            moves       = 11;
+            flag        = 0;
+            timer       = 10;
+            title.x_pos = xt_pos;
+            j=My_team->enemies.size();
 
+            int         damage;
 
-            int damage;
-///////////////////////////////////////////elecion de player
-            int k=(rand()%(*My_team).get_size());//eleccion al azar
-            while ((*(*My_team).get_hp(k))==0)//si  esta muerto el elgido
+            // player selection
+
+            int k=(rand() % My_team->get_size());   //random selecion
+
+            while (*(My_team->get_hp(k)) == 0)      //if choosed player is dead
             {
-                k++;//elige otro
-                k=(k%(*My_team).get_size());
+                k++;    //chooses another
+                k = (k % My_team->get_size());
             }
-///////////////////////////////////////////////////////////////
 
-            damage=*(((*My_team).enemies.at(enemy)).get_attack()); //calculo de daño
-            (*(*My_team).get_hp(k))=(*(*My_team).get_hp(k))-damage;
-            if ((*(*My_team).get_hp(k))<0)
-                (*(*My_team).get_hp(k))=0;
-//////////////////////////////////////////////////////////////////////////
+            damage = *My_team->enemies.at(enemy).get_attack(); //damage calculum
+
+            *My_team->get_hp(k) = *My_team->get_hp(k) - damage;
+
+            if (*My_team->get_hp(k) < 0)
+                *My_team->get_hp(k) = 0;
+
             lose();
             Window_text.dispose();
             window_text_show_damage(false,enemy ,k,damage);
@@ -283,12 +307,13 @@ void Battle_scene::atacked(int enemy)
         {
             if (timer == 120)
             {
-                moves = 0;
-                flag = 0;
-                timer = 0;
-                finish = false;
-                j=(*My_team).enemies.size();
-                if (monster_in_turn+1<j)
+                moves   = 0;
+                flag    = 0;
+                timer   = 0;
+                finish  = false;
+                j=My_team->enemies.size();
+
+                if (monster_in_turn + 1 < j)
                 {
                     monster_in_turn++;
                 }
@@ -305,39 +330,39 @@ void Battle_scene::atacked(int enemy)
     else  //si el enemigo esta muerto
     {
 
-        moves = 0;
-        flag = 0;
-        timer = 0;
-        finish = false;
-        j=(*My_team).enemies.size();
-        if (monster_in_turn+1<j)//si aun hay moustruos
+        moves   = 0;
+        flag    = 0;
+        timer   = 0;
+        finish  = false;
+        j=My_team->enemies.size();
+        if (monster_in_turn + 1 < j)//si aun hay moustruos <-- traducir
         {
-            monster_in_turn++;    //que le toque a otro
+            monster_in_turn++;    //another monster turn
         }
         else
         {
-            state = 0;//reinicimaos la batalla
-            give_turn();//le toca a los comandos
+            state = 0;  //  battle reset
+            give_turn();//le toca a los comandos <-- traducir
         }
     }
 }
 void Battle_scene::give_turn()
 {
     monster_select.dispose();
-    update_window_monsterselect();
-    window.dispose();
+    update_window_monster_select();
+    Window.dispose();
     update_window_stats();
     My_menu.restart_menu();
     My_menu.visible = true;
     Window_text.visible = false;
     monster_select.visible = false;
-    window.visible_window = true;
+    Window.visible_window = true;
     new_menu_used = 0;
 }
-void Battle_scene::action_monsterselect()
+void Battle_scene::action_monster_select()
 {
     int i,j;
-    j=(*My_team).enemies.size();
+    j=My_team->enemies.size();
     for (i = 0;i<j;i++)
         if (monster_select.get_index_y()==i)
         {
@@ -348,12 +373,12 @@ void Battle_scene::action_monsterselect()
             My_menu.visible = true;
         }
 
-    if (new_menu_used==(*My_team).get_size())//ya todos eligieron
+    if (new_menu_used==My_team->get_size())//ya todos eligieron
     {
         state = 1;
         My_menu.visible = false;
         Window_text.visible = true;
-        window.visible_window = false;
+        Window.visible_window = false;
         player_in_turn = 0;//no heroes a husado ningun turno
         monster_in_turn = 0;//los moustruos tampo han usad
         player_turns = 0;
@@ -389,21 +414,21 @@ void Battle_scene::update_key()
 {
 
 
-    if (new_menu_used<(*My_team).get_size())//si aun no han elegido todos
+    if (new_menu_used<My_team->get_size())//si aun no han elegido todos
     {
 
         if (monster_select.visible)
         {
             monster_select.update_key();
             if (monster_select.decision())
-                action_monsterselect();
+                action_monster_select();
         }
         if (My_menu.visible)
         {
             My_menu.update_key();
-            if (window.visible!=true)//que se vea que perso elige
-                window.visible = true;
-            window.cursor_y_set((16*new_menu_used) +5);//posicionado en el perso
+            if (Window.visible!=true)//que se vea que perso elige
+                Window.visible = true;
+            Window.set_y_cursor((16*new_menu_used) +5);//posicionado en el perso
             if (My_menu.decision())
                 action();
         }
@@ -414,8 +439,8 @@ void Battle_scene::update_key()
 void Battle_scene::dispose()
 {
     title.dispose();
-    window.dispose();
-    (*My_team).clear_enemy();
+    Window.dispose();
+    My_team->clear_enemy();
     (*My_audio).stop_music();
     My_menu.dispose();
 }

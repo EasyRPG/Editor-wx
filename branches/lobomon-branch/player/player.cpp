@@ -310,24 +310,24 @@ Item Player_team::get_item(int num)
 {
     return (items.at(num));
 }
-void Player_team::add_item(Item Myitem)
+void Player_team::add_item(Item the_item)
 {
     Uint32 i;
     int the_id;
-    the_id = Myitem.id;
-    for (i = 0;i<items.size();i++)
+    the_id = the_item.id;
+    for (i = 0; i < items.size(); i++)
     {
-        if (the_id==(items.at(i)).id)
+        if (the_id == (items.at(i)).id)
             break;
     }
 
     if (i<items.size())//lo encontro
     {
-        *((items.at(i)).get_items_number())=*((items.at(i)).get_items_number())+*Myitem.get_items_number();
+        *((items.at(i)).get_items_number()) = *((items.at(i)).get_items_number()) + *the_item.get_items_number();
     }
     else
     {
-        items.push_back(Myitem);
+        items.push_back(the_item);
     }
 }
 
@@ -562,3 +562,4 @@ void Player_team::set_accessory_type(int player_num, Uint8 the_accessory_type)
 {
     (players.at(player_num)).set_accessory_type(the_accessory_type);
 }
+

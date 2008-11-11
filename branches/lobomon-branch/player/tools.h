@@ -1,4 +1,4 @@
-/*tools.h, miscellaneous shared routines.
+/* tools.h, miscellaneous shared routines.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -13,6 +13,7 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
 
 #ifndef TOOLS_H
 #define TOOLS_H
@@ -31,6 +32,8 @@ struct t_chunk
 
     union
     {
+
+
         Uint64 length;
         Uint64 events_number;
     };
@@ -39,7 +42,7 @@ struct t_chunk
 };
 
 // --- Read functions ---------------------------------------------------------
-Uint64 read_compressed_integer(FILE *file_stream);
+Uint64      read_compressed_integer(FILE *file_stream);
 std::string read_string(FILE *file_stream);
 std::string read_string(FILE *file_stream, Uint8 length);
 

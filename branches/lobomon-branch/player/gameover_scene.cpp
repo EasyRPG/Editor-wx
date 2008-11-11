@@ -37,8 +37,8 @@
 void Game_over_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_team *the_team)
 {
     My_team     = the_team;
-    (*My_team).clear_team();
-    (*My_team).clear_objects();
+    My_team->clear_team();
+    My_team->clear_objects();
     My_audio    = the_audio;
     (*My_audio).music_load("../Music/2003sorrow.mid");
     title.x_pos     = 0;

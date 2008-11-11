@@ -199,7 +199,7 @@ void Title_scene::init_party()
 
 
 
-    (*My_team).add_player(alex);
+    My_team->add_player(alex);
 
     Player brian;
 
@@ -231,7 +231,7 @@ void Title_scene::init_party()
     brian.set_armor(null_item);
     brian.set_helmet(null_item);
     brian.set_accessory(null_item);
-    (*My_team).add_player(brian);
+    My_team->add_player(brian);
 
 
     Player caro;
@@ -279,7 +279,7 @@ void Title_scene::init_party()
     caro.set_armor(null_item);
     caro.set_helmet(null_item);
     caro.set_accessory(null_item);
-    (*My_team).add_player(caro);
+    My_team->add_player(caro);
 
     Player enrique;
 
@@ -311,8 +311,8 @@ void Title_scene::init_party()
     enrique.set_armor(null_item);
     enrique.set_helmet(null_item);
     enrique.set_accessory(null_item);
-    (*My_team).add_player(enrique);
-    (*My_team).set_gold(100);
+    My_team->add_player(enrique);
+    My_team->set_gold(100);
 
     Item potion;
     potion.set_name("Potion");
@@ -330,9 +330,9 @@ void Title_scene::init_party()
     sword2.set_items_number(1);
     sword2.set_type(4);
     sword2.id = 25;
-    (*My_team).add_item(sword2);
-    (*My_team).add_item(potion);
-    (*My_team).add_item(ether);
+    My_team->add_item(sword2);
+    My_team->add_item(potion);
+    My_team->add_item(ether);
 
 }
 void Title_scene::update_key()

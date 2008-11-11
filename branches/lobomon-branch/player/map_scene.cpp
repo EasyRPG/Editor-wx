@@ -37,10 +37,10 @@ void Map_scene::init(Audio *audio, int screen_X, int screen_Y, Uint8 *the_scene,
 {
 	My_team             = the_team;
 	My_audio            = audio;
-	My_player = ((*My_team).get_chara(0));
+	My_player = (My_team->get_chara(0));
 	npc.init_chara();
- 	(*My_team).my_view.x_pos   = 0;
-	(*My_team).my_view.y_pos   = 0;
+ 	My_team->my_view.x_pos   = 0;
+	My_team->my_view.y_pos   = 0;
 	npc.set_image("../chara/Monster1.png");
 	My_actor.init_chara();
 	My_actor.set_image("../chara/protagonist1.PNG");
@@ -61,14 +61,14 @@ void Map_scene::init(Audio *audio, int screen_X, int screen_Y, Uint8 *the_scene,
 	my_font.init_font();
 }
 void Map_scene::update(SDL_Surface*screen) {    // SDL_FillRect(screen, NULL, 0x0);// Clear screen  inutil
-	my_map.render(screen, 0, (*My_team).my_view.x_pos, (*My_team).my_view.y_pos); //dibuja mapa capa 1 con repecto a la vista
-	my_map.render(screen, 1, (*My_team).my_view.x_pos, (*My_team).my_view.y_pos);//dibuja mapa capa 2 con repecto a la vista
+	my_map.render(screen, 0, My_team->my_view.x_pos, My_team->my_view.y_pos); //dibuja mapa capa 1 con repecto a la vista
+	my_map.render(screen, 1, My_team->my_view.x_pos, My_team->my_view.y_pos);//dibuja mapa capa 2 con repecto a la vista
 	My_actor.draw_c(screen);
-	npc.add_x(-(*My_team).my_view.x_pos);
-	npc.add_y(-(*My_team).my_view.y_pos);
+	npc.add_x(-My_team->my_view.x_pos);
+	npc.add_y(-My_team->my_view.y_pos);
 	npc.draw_c(screen);
-	npc.add_x(+ (*My_team).my_view.x_pos);
-	npc.add_y(+(*My_team).my_view.y_pos);
+	npc.add_x(+ My_team->my_view.x_pos);
+	npc.add_y(+My_team->my_view.y_pos);
 
 	// my_net.draw(screen);
 	//ver los datos del mapa
@@ -78,22 +78,22 @@ void Map_scene::update(SDL_Surface*screen) {    // SDL_FillRect(screen, NULL, 0x
 void Map_scene::scroll()
 {
 //active the  scroll
-	(*My_team).my_view.x_pos = My_actor.clamp((int) sll2dbl(My_actor.realX) + 8 - (screen_SIZE_X >> 1), 0, (my_map.map_width << 4) - screen_SIZE_X);
+	My_team->my_view.x_pos = My_actor.clamp((int) sll2dbl(My_actor.realX) + 8 - (240 >> 1), 0, (my_map.map_width << 4) - 240);
 	if (!My_actor.outofarea)
 	{
-        My_actor.x_pos=(int)sll2dbl(My_actor.realX)  - (*My_team).my_view.x_pos;
+        My_actor.x_pos=(int)sll2dbl(My_actor.realX)  - My_team->my_view.x_pos;
 	}
 	else
 	{
-        My_actor.x_pos=(screen_SIZE_X >> 1) - 8;
+        My_actor.x_pos=(320 >> 1) - 8;
 	}
-	(*My_team).my_view.y_pos = My_actor.clamp((int) sll2dbl(My_actor.realY) - (screen_SIZE_Y >> 1), 0, (my_map.map_height << 4) - screen_SIZE_Y);
+	My_team->my_view.y_pos = My_actor.clamp((int) sll2dbl(My_actor.realY) - (240 >> 1), 0, (my_map.map_height << 4) - 240);
 	if (!My_actor.outofarea)
 	{
-        My_actor.y_pos=(int)sll2dbl(My_actor.realY) - (*My_team).my_view.y_pos;
+        My_actor.y_pos=(int)sll2dbl(My_actor.realY) - My_team->my_view.y_pos;
     } else
     {
-        My_actor.y_pos=(screen_SIZE_Y >> 1);
+        My_actor.y_pos=(240 >> 1);
 	}
 }
 //minimo
@@ -109,7 +109,7 @@ void Map_scene::update_key() {
 }
 
 
-void Map_scene::mapnpc() {
+void Map_scene::npc_map() {
 	static Uint8    *key_data;
 	key_data = SDL_GetKeyState(NULL);
 	if ((key_pressed_and_released(KEY_Z )) && (npc.colision((*My_player))))
@@ -130,28 +130,28 @@ void Map_scene::mapnpc() {
         (enemy_mapnpc.battler).x_pos = 140;
         (enemy_mapnpc.battler).y_pos = 100;
         enemy_mapnpc.set_name("Limo");
-        (*My_team).add_enemy(enemy_mapnpc);
+        My_team->add_enemy(enemy_mapnpc);
         enemy_mapnpc.set_name("Bat");
         enemy_mapnpc.set_hp(300);
         enemy_mapnpc.set_max_hp(30);
         (enemy_mapnpc.battler).set_image("../Monster/Bat.png");
         (enemy_mapnpc.battler).x_pos = 80;
         (enemy_mapnpc.battler).y_pos = 100;
-        (*My_team).add_enemy(enemy_mapnpc);
+        My_team->add_enemy(enemy_mapnpc);
         enemy_mapnpc.set_hp(35);
         enemy_mapnpc.set_max_hp(35);
         enemy_mapnpc.set_name("Araña");
         (enemy_mapnpc.battler).set_image("../Monster/Spider.png");
         (enemy_mapnpc.battler).x_pos = 180;
         (enemy_mapnpc.battler).y_pos = 100;
-        (*My_team).add_enemy(enemy_mapnpc);
+        My_team->add_enemy(enemy_mapnpc);
         enemy_mapnpc.set_hp(20);
         enemy_mapnpc.set_max_hp(20);
         enemy_mapnpc.set_name("Avispón");
         (enemy_mapnpc.battler).set_image("../Monster/Bee.png");
         (enemy_mapnpc.battler).x_pos = 140;
         (enemy_mapnpc.battler).y_pos = 60;
-        (*My_team).add_enemy(enemy_mapnpc);
+        My_team->add_enemy(enemy_mapnpc);
         *new_scene = 2;
 	}
 }

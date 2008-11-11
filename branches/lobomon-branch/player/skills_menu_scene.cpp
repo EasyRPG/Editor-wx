@@ -37,25 +37,25 @@ void Skills_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player
     My_team = the_team;
     My_audio = the_audio;
     int j;
-    j=(*My_team).select;
+    j=My_team->select;
 
-    int k=(((*My_team).get_skill_size(j)-1)/2);
+    int k=((My_team->get_skill_size(j)-1)/2);
 
     My_menu.init( the_audio, run, 1,k, 320, 180, 0, 60);
-    description.init(320,30,0,0);
-    description2.init(320,30,0,30);
+    My_description.init(320,30,0,0);
+    My_description2.init(320,30,0,30);
 
     int i;
     int space = 16,block_size = 150;
     char string_buffer[255];
-    sprintf(string_buffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", (*(*My_team).get_level(j)), (*(*My_team).get_hp(j)), (*(*My_team).get_max_hp(j)), (*(*My_team).get_mp(j)), (*(*My_team).get_max_mp(j)));
-    description2.add_text(((*My_team).get_name(j)),10,5);
-    description2.add_text(string_buffer,80,5);
+    sprintf(string_buffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", (*My_team->get_level(j)), (*My_team->get_hp(j)), (*My_team->get_max_hp(j)), (*My_team->get_mp(j)), (*My_team->get_max_mp(j)));
+    My_description2.add_text((My_team->get_name(j)),10,5);
+    My_description2.add_text(string_buffer,80,5);
 
-    for (i = 0;i<(*My_team).get_skill_size(j);i++)
+    for (i = 0;i<My_team->get_skill_size(j);i++)
     {
-        string_vector.push_back( (const char *) ((*My_team).get_skill_name(j,i)) );
-        sprintf(string_buffer, "%d ", (*((*My_team).get_skill_mp_price(j,i))));
+        string_vector.push_back( (const char *) (My_team->get_skill_name(j,i)) );
+        sprintf(string_buffer, "%d ", (*(My_team->get_skill_mp_price(j,i))));
         My_menu.add_text(string_buffer,block_size-10+((block_size+10)*((i)%(2))),5+((i/2)*space));
     }
     if (string_vector.size()%2)    //  this is for avoid errors if it's null
@@ -78,14 +78,14 @@ void Skills_menu_scene::update(SDL_Surface*screen)
     if (delay == 0)
     {
         My_menu.draw(screen);
-        description.draw(screen);
-        description2.draw(screen);
+        My_description.draw(screen);
+        My_description2.draw(screen);
     }
     delay++;
     if (delay == 5)
     {
         My_menu.draw(screen);
-        description.draw(screen);
+        My_description.draw(screen);
         delay = 1;
     }
 }
@@ -114,6 +114,6 @@ void Skills_menu_scene::update_key()
 void Skills_menu_scene::dispose()
 {
     My_menu.dispose();
-    description.dispose();
-    description2.dispose();
+    My_description.dispose();
+    My_description2.dispose();
 }

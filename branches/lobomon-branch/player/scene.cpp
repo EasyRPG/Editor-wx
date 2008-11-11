@@ -35,6 +35,7 @@
 
 void Easyrpg_menu::init(Audio *the_audio, bool *run, int x_pos,int y_pos)
 {
+
     My_audio    = the_audio;
     decided     = false;
     max_index_y = y_pos;
@@ -128,52 +129,63 @@ void Easyrpg_menu::update_key()
     }
 }
 
-void Window_Base::init(int the_x_size,int the_y_size,int x_pos,int y_pos)
+void Window_base::init(int the_x_size,int the_y_size,int the_x_pos,int the_y_pos)
 {
+    visible     = true;
+
     My_sprite_system.init_video_system();
     My_sprite_system.set_image("../System/system.png");
-    My_texture.set_surface(My_sprite_system.Exdraw(the_x_size,the_y_size));
-    My_texture.x_pos = x_pos;
-    My_texture.y_pos = y_pos;
+    My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
     my_font.init_font();
-    pos_X = x_pos;
-    pos_Y = y_pos;
-    x_size = the_x_size;
-    Size_Y = the_y_size;
-    disposing = false;
-    visible = true;
+
+    x_pos               = the_x_pos;
+    y_pos               = the_y_pos;
+    x_size              = the_x_size;
+    y_size              = the_y_size;
+    My_texture.x_pos    = x_pos;
+    My_texture.y_pos    = y_pos;
+
+    disposing   = false;
 }
-void Window_Base::dispose()
+void Window_base::dispose()
 {
-    disposing = true;
     My_sprite_system.dispose();
     My_texture.dispose();
     text.dispose();
-    int i,tp;
-    tp=(v_sprite).size();
-    for (i = 0; i < tp; i ++)
+    int i;
+    int dispose;
+    text_dispose=(v_sprite).size();
+    for (i = 0; i < text_dispose; i ++)
+    {
         (v_sprite).pop_back();
-    tp=(sprite_text).size();
-    for (i = 0; i < tp; i ++)
+    }
+    text_dispose = (sprite_text).size();
+    for (i = 0; i < text_dispose; i ++)
+    {
         (sprite_text).pop_back();
+        disposing = true;
+    }
 }
-void Window_Base::add_text(const char *ctext, int x_pos, int y_pos)
+
+void Window_base::add_text(const char *ctext, int the_x_pos, int the_y_pos)
 {
-    text.x_pos = pos_X+x_pos;
-    text.y_pos = pos_Y+y_pos;
+    text.x_pos = the_x_pos+x_pos;
+    text.y_pos = the_y_pos+y_pos;
     text.set_surface(my_font.draw_text(ctext));
     sprite_text.push_back(text);
 }
-void Window_Base::add_sprite(Sprite *the_sprite, int x_pos, int y_pos)
+
+void Window_base::add_sprite(Sprite *the_sprite, int the_x_pos, int the_y_pos)
 {
-    (*the_sprite).x_pos = pos_X+x_pos;
-    (*the_sprite).y_pos = pos_Y+y_pos;
+    the_sprite->x_pos = the_x_pos+x_pos;
+    the_sprite->y_pos = the_y_pos+y_pos;
     v_sprite.push_back((int)the_sprite);
 }
-void Window_Base::draw(SDL_Surface*screen)
+
+void Window_base::draw(SDL_Surface *screen)
 {
     if (visible)
-        if (  !disposing  )
+        if (!disposing)
         {
             My_texture.draw(screen);
             Uint32 i;
@@ -184,114 +196,116 @@ void Window_Base::draw(SDL_Surface*screen)
             Sprite *the_sprite;
             for (i = 0; i < (v_sprite).size(); i ++)
             {
-                the_sprite=(Sprite *)((v_sprite).at(i));
-                (*the_sprite).draw(screen);
+                the_sprite = (Sprite *)(v_sprite.at(i));    //  S.O.S
+                the_sprite->draw(screen);
             }
         }
 }
-void Window_Select::init(Audio *the_audio, bool *run,int the_x_command,int the_y_command, int the_x_size, int the_y_size, int the_x_pos, int the_y_pos)
+void Window_select::init(Audio *the_audio, bool *run,int the_x_command,int the_y_command, int the_x_size, int the_y_size, int the_x_pos, int the_y_pos)
 {
-    menu.init(the_audio, run, x_command, y_command);
+    My_menu.init(the_audio, run, x_command, y_command);
     My_sprite_system.init_video_system();
-    My_sprite_system.setimg("../System/system.png");
-    My_texture.set_surface(System.Exdraw(the_x_size,the_y_size));
-    My_texture.x    =the_x_pos;
-    My_texture.y    =the_y_pos;
+    My_sprite_system.set_image("../System/system.png");
+    My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
+    My_texture.x_pos    = the_x_pos;
+    My_texture.y_pos    = the_y_pos;
     my_font.init_font();
-    x_pos           =the_x_pos;
-    y_pos           =the_y_pos;
-    x_size          =the_x_size;
-    y_size          =the_y_size;
-    x_command       =the_x_command;
-    y_command       =the_y_command;
-    visible         =true;
-    block_size      =((x_size - 10) / (x_command + 1)) - 5 * x_command;
-    cursor.set_surface(My_sprite_system.Cube_select(1,block_size,16));
-    cursor.x        =the_x_pos+5;
-    cursor.y        =the_y_pos+5;
-    disposing       = false;
-    init_x_text     = 10;
-    on_use          = true;
+    x_pos               = the_x_pos;
+    y_pos               = the_y_pos;
+    x_size              = the_x_size;
+    y_size              = the_y_size;
+    x_command           = the_x_command;
+    y_command           = the_y_command;
+    visible             = true;
+    block_size          = ((x_size - 10) / (x_command + 1)) - 5 * x_command;
+    cursor.set_surface(My_sprite_system.cube_select(1,block_size,16));
+    cursor.x_pos        = the_x_pos+5;
+    cursor.y_pos        = the_y_pos+5;
+    disposing           = false;
+    init_x_text         = 10;
+    on_use              = true;
 
 }
 
-void Window_Select::add_text(const char *ctext, int the_x_pos, int the_y_pos)
+void Window_select::add_text(const char *ctext, int the_x_pos, int the_y_pos)
 {
     text.x_pos      = the_x_pos+x_pos;
     text.y_pos      = the_y_pos+y_pos;
     text.set_surface(my_font.draw_text(ctext));
     sprite_text.push_back(text);
 }
-void Window_Select::dispose()
+void Window_select::dispose()
 {
-    disposing       = true;
-    int i,aux_size;
+    int     i;
+    int     text_dispose;
     My_sprite_system.dispose();
     cursor.dispose();
     My_texture.dispose();
-    //   text.dispose();
 
-    tp=(*My_vector).size();
-    for (i = 0; i < tp; i ++)
-        (*My_vector).pop_back();
+    text_dispose=My_vector->size();
+    for (i = 0; i < text_dispose; i ++)
+        My_vector->pop_back();
 
-    tp=(My_Sprite).size();
-    for (i = 0; i < tp; i ++)
-        (My_Sprite).pop_back();
-    tp=(sprite_text).size();
-    for (i = 0; i < tp; i ++)
+    text_dispose=My_sprite.size();
+    for (i = 0; i < text_dispose; i ++)
+    {
+        My_sprite.pop_back();
+    }
+    text_dispose=(sprite_text).size();
+    for (i = 0; i < text_dispose; i ++)
         (sprite_text).pop_back();
+    disposing       = true;
 
 }
-bool Window_Select::decision()
+bool Window_select::decision()
 {
     return (My_menu.decision());
 }
 
-void Window_Select::restart_menu()
+void Window_select::restart_menu()
 {
 
     My_menu.restart_menu();
 }
 
-int Window_Select::get_index_y()
+int Window_select::get_index_y()
 {
     return (My_menu.get_index_y());
 }
 
-int Window_Select::get_index_x()
+int Window_select::get_index_x()
 {
     return (My_menu.get_index_x());
 }
 
-void Window_Select::update_key()
+void Window_select::update_key()
 {
     if (visible)
         if (on_use)
             My_menu.update_key();
 }
 
-void Window_Select::set_x_pos_text(int x_pos)
+void Window_select::set_x_pos_text(int x_pos)
 {
-    Init_text_X = x_pos;
+    init_x_text = x_pos;
 }
 
 
-void Window_Select::set_commands(vector <std::string> *str_Vec)
+void Window_select::set_commands(std::vector <std::string> *the_string_vector)
 {
-    My_vector = str_Vec;
+    My_vector = the_string_vector;
     Uint32 i;
     std::string strd;
-    for (i = 0; i < (*My_vector).size(); i ++)
+    for (i = 0; i < My_vector->size(); i ++)
     {
-        strd=(*My_vector).at(i);
+        strd = My_vector->at(i);
         text.set_surface(my_font.draw_text(strd.c_str()));
-        My_Sprite.push_back(text);
+        My_sprite.push_back(text);
     }
 
 }
 
-void Window_Select::draw(SDL_Surface*screen)
+void Window_select::draw(SDL_Surface*screen)
 {
     Uint32 i;
     int j;
@@ -300,7 +314,7 @@ void Window_Select::draw(SDL_Surface*screen)
         if (visible)
         {
             My_texture.draw(screen);
-            int Max_to_show=((Size_Y-20)/font_size);//los que caben
+            int Max_to_show=((y_size - 20) / font_size);    // los que caben <<- translate
             if (Max_to_show>y_command)
             {
                 Max_to_show = y_command;
@@ -309,37 +323,39 @@ void Window_Select::draw(SDL_Surface*screen)
             if (get_index_y()>Max_to_show)
             {
                 offset = get_index_y()-Max_to_show;
-                My_sprite_system.draw(screen,25, (pos_X+ x_size/2-8), (pos_Y+3));//flechas
-                My_sprite_system.draw(screen,26, (pos_X+ x_size/2), (pos_Y+3));//flechas
+                My_sprite_system.draw(screen, 25, (x_pos + x_size / 2 - 8), (y_pos + 3));   //  arrows
+                My_sprite_system.draw(screen, 26, (x_pos + x_size / 2), (y_pos + 3));       //  arrows
             }
             else
             {
                 offset = 0;
             }
 
-            if ((y_command!=get_index_y())&&(Max_to_show<y_command))
+            if ((y_command != get_index_y()) && (Max_to_show < y_command))
             {
-                My_sprite_system.draw(screen,45, (pos_X+ x_size/2-8), (pos_Y+Size_Y-11));//flechas
-                My_sprite_system.draw(screen,46, (pos_X+ x_size/2), (pos_Y+Size_Y-11));
+                My_sprite_system.draw(screen, 45, (x_pos + x_size / 2 - 8), (y_pos + y_size - 11));//   arrows
+                My_sprite_system.draw(screen, 46, (x_pos + x_size / 2), (y_pos + y_size - 11));
             }//flechas
 
-            cursor.y_pos = pos_Y+(get_index_y()-offset)*font_size+5;
-            cursor.x_pos = pos_X+(get_index_x())*block_size+10*get_index_x()+5;
+            cursor.y_pos = y_pos + (get_index_y() - offset) * font_size + 5;
+            cursor.x_pos = x_pos + (get_index_x()) * block_size + 10 * get_index_x() + 5;
             cursor.draw(screen);
-            for (j = offset; j <=((Max_to_show+offset+1)*(x_command+1)-1); j ++)  //comandos
+            for (j = offset; j <= ((Max_to_show + offset + 1) * (x_command + 1) - 1); j ++)  //    commands
             {
-                (My_Sprite.at(j)).x_pos = pos_X+Init_text_X;
-                if (x_command!=0)
+                (My_sprite.at(j)).x_pos = x_pos + init_x_text;
+                if (x_command != 0)
                 {
-                    (My_Sprite.at(j)).x_pos=(My_Sprite.at(j)).x_pos+((block_size+10)*((j)%(x_command+1)));
-                    (My_Sprite.at(j)).y_pos=((pos_Y+5)+((j-offset)/(x_command+1))*font_size);
+                    (My_sprite.at(j)).x_pos = (My_sprite.at(j)).x_pos+((block_size+10)*((j)%(x_command+1)));
+                    (My_sprite.at(j)).y_pos = ((y_pos + 5) + ((j - offset) / (x_command + 1)) * font_size);
                 }
                 else
-                    (My_Sprite.at(j)).y_pos=((pos_Y+5)+((j-offset)*font_size));
-                (My_Sprite.at(j)).draw(screen);
+                {
+                    (My_sprite.at(j)).y_pos = ((y_pos + 5) + ((j - offset) * font_size));
+                }
+                (My_sprite.at(j)).draw(screen);
             }
 
-            for (i = 0; i < (sprite_text).size(); i ++) //textoadiconal
+            for (i = 0; i < (sprite_text).size(); i++) //additional text
             {
                 ((sprite_text).at(i)).draw(screen);
             }
@@ -350,120 +366,127 @@ void Window_Select::draw(SDL_Surface*screen)
 }
 
 
-void Window_Player_Select::init(Audio *the_audio, bool *run,int the_x_command,int the_y_command,int the_x_size,int the_y_size,int x_pos,int y_pos,int curX,int curY)
+void Window_player_select::init(Audio *the_audio, bool *run,int the_x_command,int the_y_command,int the_x_size,int the_y_size,int the_x_pos,int the_y_pos,int the_cursor_x,int the_cursor_y)
 {
-    My_menu.init( the_audio,run,the_x_command,the_y_command);
-    My_sprite_system.init_Video_system();
+    My_menu.init(the_audio, run, the_x_command, the_y_command);
+    My_sprite_system.init_video_system();
     My_sprite_system.set_image("../My_sprite_system/system.png");
-    My_texture.set_surface(My_sprite_system.Exdraw(the_x_size,the_y_size));
-    My_texture.x_pos = x_pos;
-    My_texture.y_pos = y_pos;
+    My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
+    My_texture.x_pos    = the_x_pos;
+    My_texture.y_pos    = the_y_pos;
     my_font.init_font();
-    block_size=((x_size-10)/(the_x_command+1))-5*the_x_command;
-    cursor.set_surface(My_sprite_system.Cube_select(1,x_cursor,y_cursor));
-    cursor_y_move = curY+12;
-    cursor.x_pos = x_pos+5;
-    cursor.y_pos = y_pos+5;
-    disposing = false;
-    pos_X = the_x_pos;
-    pos_Y = the_y_pos;
-    x_size = the_x_size;
-    y_size = the_y_size;
-    x_command = the_x_command;
-    y_command = the_y_command;
-    cur_pos_X = 5;
-    cur_pos_Y = 5;
-    visible = false;//del cursor
-    visible_window = true;//de la ventana
+    block_size          =((x_size - 10) / (the_x_command + 1)) - 5 * the_x_command;
+    cursor.set_surface(My_sprite_system.cube_select(1, the_cursor_x, the_cursor_y));
+    cursor_y_move       = the_cursor_y+12;
+    cursor.x_pos        = the_x_pos+5;
+    cursor.y_pos        = the_y_pos+5;
+    disposing           = false;
+    x_pos               = the_x_pos;
+    y_pos               = the_y_pos;
+    x_size              = the_x_size;
+    y_size              = the_y_size;
+    x_command           = the_x_command;
+    y_command           = the_y_command;
+    cursor_x            = 5;
+    cursor_y            = 5;
+    visible             = false;    //  from cursor
+    visible_window      = true;     //  from window
 }
-void Window_Player_Select::init_xy_cur(int the_x_pos,int the_y_pos)
+void Window_player_select::init_xy_cur(int the_x_pos,int the_y_pos)
 {
-    cur_pos_X = the_x_pos;
-    cur_pos_Y = the_y_pos;
+    cursor_x = the_x_pos;
+    cursor_y = the_y_pos;
 }
 
-void Window_Player_Select::cursor_y_set(int y_pos)
+void Window_player_select::set_y_cursor(int the_y_pos)
 {
-    cur_pos_Y = y_pos;
+    cursor_y = y_pos;
 }
-void Window_Player_Select::add_text(const char *ctext, int x_pos, int y_pos)
+void Window_player_select::add_text(const char *ctext, int the_x_pos, int the_y_pos)
 {
-    text.x_pos = pos_X+x_pos;
-    text.y_pos = pos_Y+y_pos;
+    text.x_pos = x_pos + the_x_pos;
+    text.y_pos = y_pos + the_y_pos;
     text.set_surface(my_font.draw_text(ctext));
     sprite_text.push_back(text);
 
 }
-void Window_Player_Select::dispose()
+void Window_player_select::dispose()
 {
-    disposing = true;
-    int i, aux_size; //sos
+    disposing       = true;
+    int             i;
+    int             text_dispose;
+
     My_sprite_system.dispose();
     cursor.dispose();
     My_texture.dispose();
-    aux_size=(v_sprite).size();
-    for (i = 0; i < aux_size; i ++)
+    text_dispose    = (v_sprite).size();
+    for (i = 0; i < text_dispose; i ++)
+    {
         (v_sprite).pop_back();
-    aux_size=(sprite_text).size();
-    for (i = 0; i < aux_size; i ++)
+    }
+    text_dispose    = (sprite_text).size();
+    for (i = 0; i < text_dispose; i ++)
+    {
         (sprite_text).pop_back();
+    }
     restart_menu();
 }
-bool Window_Player_Select::decision()
+bool Window_player_select::decision()
 {
     return (My_menu.decision());
 }
 
-void Window_Player_Select::restart_menu()
+void Window_player_select::restart_menu()
 {
 
     My_menu.restart_menu();
 }
 
-int Window_Player_Select::get_index_y()
+int Window_player_select::get_index_y()
 {
     return (My_menu.get_index_y());
 }
 
-int Window_Player_Select::get_index_x()
+int Window_player_select::get_index_x()
 {
     return (My_menu.get_index_x());
 }
 
-void Window_Player_Select::update_key()
+void Window_player_select::update_key()
 {
     if (visible)
         My_menu.update_key();
 }
 
-void Window_Player_Select::add_sprite(Sprite *the_sprite, int the_x_pos, int the_y_pos)
+void Window_player_select::add_sprite(Sprite *the_sprite, int the_x_pos, int the_y_pos)
 {
-    (*the_sprite).x_pos = x_pos + the_x_pos;
-    (*the_sprite).y_pos = y_pos + the_y_pos;
+    the_sprite->x_pos = x_pos + the_x_pos;
+    the_sprite->y_pos = y_pos + the_y_pos;
     v_sprite.push_back((int)the_sprite);
 }
 
-void Window_Player_Select::draw(SDL_Surface*screen)
+void Window_player_select::draw(SDL_Surface*screen)
 {
-    Uint32 i;
-    int offset = 0;
+    Uint32      i;
+    int         offset = 0;
     if (visible_window)
+    {
         if (!disposing)
 
         {
             My_texture.draw(screen);
 
-            int Max_to_show=((y_size - 20) / font_size);//los que caben
-            if (Max_to_show>y_command)
+            int Max_to_show = ((y_size - 20) / font_size);//los que caben
+            if (Max_to_show > y_command)
             {
                 Max_to_show = y_command;
             }
 
-            if (get_index_y()>Max_to_show)
+            if (get_index_y() > Max_to_show)
             {
                 offset = get_index_y()-Max_to_show;
-                My_sprite_system.draw(screen,25, (x_pos + x_size / 2 - 8), (y_pos + 3));  //arrows
-                My_sprite_system.draw(screen,26, (x_pos + x_size / 2), (y_pos + 3));    //arrows
+                My_sprite_system.draw(screen, 25, (x_pos + x_size / 2 - 8), (y_pos + 3));  //arrows
+                My_sprite_system.draw(screen, 26, (x_pos + x_size / 2), (y_pos + 3));    //arrows
             }
             else
             {
@@ -473,14 +496,14 @@ void Window_Player_Select::draw(SDL_Surface*screen)
 
             if ((y_command != get_index_y()) && (Max_to_show < y_command))
             {
-                My_sprite_system.draw(screen, 45, (pos_X + x_size / 2 - 8), (y_pos+y_size - 11));   //arrows
-                My_sprite_system.draw(screen, 46, (pos_X + x_size / 2), (y_pos + y_size - 11));
+                My_sprite_system.draw(screen, 45, (x_pos + x_size / 2 - 8), (y_pos+y_size - 11));   //arrows
+                My_sprite_system.draw(screen, 46, (x_pos + x_size / 2), (y_pos + y_size - 11));
             }//flechas
 
             if (visible)
             {
-                cursor.y_pos = pos_Y + (get_index_y() - offset) * cursor_y_move + cur_pos_Y;
-                cursor.x_pos = pos_X + (get_index_x()) * block_size + 10 * get_index_x() + cur_pos_X;
+                cursor.y_pos = x_pos+ (get_index_y() - offset) * cursor_y_move + cursor_y;
+                cursor.x_pos = y_pos+ (get_index_x()) * block_size + 10 * get_index_x() + cursor_y;
                 cursor.draw(screen);
             }
 
@@ -493,9 +516,10 @@ void Window_Player_Select::draw(SDL_Surface*screen)
             for (i = 0; i < (v_sprite).size(); i ++)
             {
                 the_sprite = (Sprite*)((v_sprite).at(i));
-                (*the_sprite).draw(screen);
+                the_sprite->draw(screen);
             }
 
         }
 
+    }
 }

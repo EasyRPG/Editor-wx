@@ -25,112 +25,122 @@
 #define TRUE 1
 #define FALSE 0
 
-void Sprite_system::init_video_ystem()
+void Sprite_system::init_video_system()
 {
     columns     = 20;
     rows        = 10;
 }
 void Sprite_system::draw (SDL_Surface *screen,int i_frame,int x_pos,int y_pos)
 {
-    int weight = get_weight();
-    int height = get_height();
+    int weight  = get_weight();
+    int height  = get_height();
 
-    SDL_Rect my_sprite_font = {(i_frame%columns)*weight,(i_frame/columns) *height, weight, height};
-    SDL_Rect My_rect={x_pos,y_pos, 0, 0};
+    SDL_Rect my_sprite_font = {(i_frame % columns)*weight, (i_frame / columns) *height, weight, height};
+    SDL_Rect My_rect={x_pos, y_pos, 0, 0};
     SDL_BlitSurface (actual_image, &my_sprite_font, screen, &My_rect);
 }
 
-SDL_Surface *Sprite_system::CubeDraw (SDL_Surface *screen,int sizeX,int sizeY)
+SDL_Surface *Sprite_system::cube_draw (SDL_Surface *screen,int the_x_size,int the_y_size)
 {
-    int weight = get_weight();
-    int h = get_height();
-    int i;
-    int cubesX=((sizeX-2*weight)/weight+1);
-    int cubesY=((sizeY-1*h)/h);
-    draw (screen,4,0, 0);//primera parte del cuadrado
-    for (i = 0;i<cubesX;i++)
-        draw (screen,5,weight*(i+1), 0);//primera parte del cuadrado
-    for (i = 0;i<cubesY;i++)
-        draw (screen,24,0,h*(i+1));
-    draw (screen,7,(sizeX-weight), 0);//segunda parte del cuadrado
-    for (i = 0;i<cubesY;i++)
-        draw (screen,27,(sizeX-weight), h*(i+1));
-    draw (screen,64,0, (sizeY-h));//segunda parte del cuadrado
-    for (i = 0;i<cubesX;i++)
-        draw (screen,65,weight*(i+1), (sizeY-h));//primera parte del cuadrado
-    draw (screen,67,(sizeX-weight), (sizeY-h));//segunda parte del cuadrado
+    int         weight  = get_weight();
+    int         height       = get_height();
+    int         i;
+    int         x_cubes = ((the_x_size - 2 * weight) / weight + 1);
+    int the_y_cubes = ((the_y_size - 1 * height) / height);
+
+    draw (screen,4,0, 0);//first square part
+    for (i = 0; i < x_cubes; i++)
+    {
+        draw (screen, 5, weight * (i + 1), 0);  //  first square part
+    }
+    for (i = 0; i < the_y_cubes; i++)
+    {
+        draw (screen, 24, 0, height * (i + 1));
+    }
+    draw (screen, 7, (the_x_size - weight), 0); //  second square part
+    for (i = 0; i < the_y_cubes; i++)
+    {
+        draw (screen, 27, (the_x_size - weight), height * (i + 1));
+    }
+    draw (screen, 64, 0, (the_y_size - height));     //  second square part
+    for (i = 0;i<x_cubes;i++)
+    {
+        draw (screen,65,weight*(i+1), (the_y_size-height));      //  first square part
+    }
+    draw (screen,67,(the_x_size-weight), (the_y_size-height));   //  second square part
 
     return (screen);
 }
-SDL_Surface *Sprite_system::Exdraw (int sizeX,int sizeY)
+SDL_Surface *Sprite_system::ex_draw (int the_x_size,int the_y_size)
 {
-    SDL_Surface *ex_image;
-    SDL_Surface *Eximg2;
-    double zoomX=((double)sizeX/32);
-    double zoomY=(((double)sizeY)/32);
+    SDL_Surface     *ex_image;
+    SDL_Surface     *Eximg2;
+    double x_zoom=((double)the_x_size/32);
+    double y_zoom=(((double)the_y_size)/32);
     ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("../System/system2.PNG");
     SDL_Rect my_sprite_font={0 , 0,32,32};
     SDL_Rect My_rect={0,0, 0, 0};
     SDL_BlitSurface (actual_image, &my_sprite_font,	ex_image, &My_rect);
-    Eximg2 = zoomSurface (ex_image, zoomX,zoomY,0);
+    Eximg2 = zoomSurface (ex_image, x_zoom,y_zoom,0);
     SDL_FreeSurface(ex_image);
-    return (CubeDraw ( Eximg2, sizeX, sizeY));
+    return (cube_draw ( Eximg2, the_x_size, the_y_size));
 }
-SDL_Surface *Sprite_system::Cube_select(int type,int sizeX,int sizeY)
+SDL_Surface *Sprite_system::cube_select(int type, int the_x_size, int the_y_size)
 {
-    SDL_Surface *screen;
-    screen = SDL_CreateRGBSurface(SDL_SWSURFACE, sizeX, sizeY, 16,0, 0,0, 0x000000ff);
-    int weight = get_weight();
-    int h = get_height();
-    int i,j;
-    int cubesX=((sizeX-2*weight)/weight+1);
-    int cubesY=((sizeY-1*h)/h);
+    SDL_Surface     *screen;
+    screen          = SDL_CreateRGBSurface(SDL_SWSURFACE, the_x_size, the_y_size, 16, 0, 0, 0, 0x000000ff);
+    int             weight      = get_weight();
+    int             height           = get_height();
+    int             i;
+    int             j;
+    int             x_cubes     =((the_x_size - 2 * weight) / weight + 1);
+    int             the_y_cubes =((the_y_size - 1 * height) / height);
 
-    for (j = 1;j<cubesX+1;j++)
-        for (i = 1;i<cubesY+1;i++)
-            draw (screen,(25+(4*type)),weight*(j), h*(i));//cuadro
+    for (j = 1;j<x_cubes+1;j++)
+        for (i = 1;i<the_y_cubes+1;i++)
+            draw (screen,(25+(4*type)),weight*(j), height*(i));//cuadro
     draw (screen,(4+(4*type)),0, 0);//esquina izq arriva
-    for (i = 0;i<cubesX;i++)
+    for (i = 0;i<x_cubes;i++)
         draw (screen,(5+(4*type)),weight*(i+1), 0);//recta horisontal arriva
-    for (i = 0;i<cubesY;i++)
-        draw (screen,(24+(4*type)),0,h*(i+1));//recta vertical izq
-    draw (screen,(7+(4*type)),(sizeX-weight), 0);//esquina derecha arriva
-    for (i = 0;i<cubesY;i++)
-        draw (screen,(27+(4*type)),(sizeX-weight), h*(i+1));//recta vertical derecha
-    draw (screen,(64+(4*type)),0, (sizeY-h));//esquina izquierda abajo
-    for (i = 0;i<cubesX;i++)
-        draw (screen,(65+(4*type)),weight*(i+1), (sizeY-h));//recta horisontal abajo
-    draw (screen,(67+(4*type)),(sizeX-weight), (sizeY-h));//esquina derecha abajo
+    for (i = 0;i<the_y_cubes;i++)
+        draw (screen,(24+(4*type)),0,height*(i+1));//recta vertical izq
+    draw (screen,(7+(4*type)),(the_x_size-weight), 0);//esquina derecha arriva
+    for (i = 0;i<the_y_cubes;i++)
+        draw (screen,(27+(4*type)),(the_x_size-weight), height*(i+1));//recta vertical derecha
+    draw (screen,(64+(4*type)),0, (the_y_size-height));//esquina izquierda abajo
+    for (i = 0;i<x_cubes;i++)
+        draw (screen,(65+(4*type)),weight*(i+1), (the_y_size-height));//recta horisontal abajo
+    draw (screen,(67+(4*type)),(the_x_size-weight), (the_y_size-height));//esquina derecha abajo
 
     return (screen);
 }
-SDL_Surface *Sprite_system::ex_draw_t (int sizeX,int sizeY,int tipe)
+SDL_Surface *Sprite_system::ex_draw_t (int the_x_size,int the_y_size,int tipe)
 {
     SDL_Surface *ex_image;
     SDL_Surface *Eximg2;
-    double zoomX=((double)sizeX/32);
-    double zoomY=(((double)sizeY)/32);
+    double x_zoom=((double)the_x_size/32);
+    double y_zoom=(((double)the_y_size)/32);
     ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("../System/system2.PNG");
     SDL_Rect My_font_rect={(32*tipe) , 0,32,32};
     SDL_Rect My_rect={0,0, 0, 0};
     SDL_BlitSurface (actual_image, &My_font_rect, ex_image, &My_rect);
-    Eximg2 = zoomSurface (ex_image, zoomX,zoomY,0);
+    Eximg2 = zoomSurface (ex_image, x_zoom,y_zoom,0);
     SDL_FreeSurface(ex_image);
     return (Eximg2);
 }
-void Faceset::init_faceset(int x_pos,int y_pos,int theframe)//esto es asi porque no se me ocurre aun algo mejor
+void Faceset::init_faceset(int x_pos,int y_pos,int the_frame)//esto es asi porque no se me ocurre aun algo mejor
 {
     x_pos = x_pos;
     y_pos = y_pos;
-    frame = theframe;
+    frame = the_frame;
 
     columns = 4;//redefinir
     rows = 4;//redefinir
     int weight = 48;
-    int h = 48;
+    int height = 48;
     SDL_Surface *ex_image;
-    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,weight, h, 16,0, 0,0, 0);
-    SDL_Rect my_sprite_font={(frame%columns)*weight,(frame/columns) *h, weight, h};
+    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,weight, height, 16,0, 0,0, 0);
+    SDL_Rect my_sprite_font={(frame%columns)*weight,(frame/columns) *height, weight, height};
     SDL_Rect My_rect={0,0, 0, 0};
     SDL_BlitSurface (actual_image, & my_sprite_font, ex_image, &My_rect);
     dispose();
@@ -143,7 +153,7 @@ void Faceset::drawf (SDL_Surface *screen)
     int weight = get_weight();
     int height = get_height();
 
-    SDL_Rect my_sprite_font={ (frame % columns) * weight, (frame / columns) * height, weight, h};
+    SDL_Rect my_sprite_font={ (frame % columns) * weight, (frame / columns) * height, weight, height};
     SDL_Rect My_rect={x_pos, y_pos, 0, 0};
     SDL_BlitSurface (actual_image, &my_sprite_font,	screen, &My_rect);
 }
@@ -152,7 +162,7 @@ void Character::init_chara()
     x_pos           = 12;
     y_pos           = 12;
     frame           = 2;
-    dir             = 0;
+    actor_direction             = 0;
     columns         = 3;
     rows            = 4;
     animation[0][0] = 1;//this is the 4-columns rpg maker reason
@@ -182,20 +192,22 @@ void Character::frame_update()
         delay = 0;
     }
 }
+
 void Character::frame_origin()
 {
     if (frame != 0)
     {
         frame = 0;
     }
+}
 
-void Character::draw_c (SDL_Surface *screen)
+void Character::draw_c(SDL_Surface *screen)
 {
     int         real_frame;
     int         weight  = 24;//get_weight();
-    int         h       = 32;//get_height();
-    real_frame = animation [dir][frame];
-    SDL_Rect    my_sprite_font  = {(real_frame%columns)*weight,(real_frame/columns) *h, weight, h};   //  ojo aqui, sintaxis desconocida
+    int         height       = 32;//get_height();
+    real_frame = animation [actor_direction][frame];
+    SDL_Rect    my_sprite_font  = {(real_frame%columns)*weight,(real_frame/columns) *height, weight, height};   //  ojo aqui, sintaxis desconocida
     SDL_Rect    My_rect         ={x_pos, y_pos, 0, 0}; //  lo mismo
     SDL_BlitSurface (actual_image, &my_sprite_font, screen, &My_rect);
 }
@@ -211,6 +223,7 @@ void Animation::init_anim(int the_columns,int the_rows)
     end_anim    = false;
     delay       = 0;
 }
+
 void Animation::frame_update()
 {
     delay++;
@@ -227,29 +240,32 @@ void Animation::frame_update()
         delay = 0;
     }
 }
+
 void Animation::reset()
 {
-    delay = 0;
-    frame = 0;
-    end_anim = false;
+    delay       = 0;
+    frame       = 0;
+    end_anim    = false;
 }
+
 void Animation::draw (SDL_Surface *screen)
 {
-    int weight = get_weight();
-    int h = get_height();
+    int weight  = get_weight();
+    int height  = get_height();
     frame_update();
     if (!end_anim)
     {
         SDL_Rect my_sprite_font =
         {
-            (frame%columns)*weight,(frame/columns) *h, weight, h
+            (frame%columns)*weight,(frame/columns) *height, weight, height
         };
-        SDL_Rect My_rect={x_pos, y_pos, 0, 0};
+        SDL_Rect My_rect =
+        {
+            x_pos, y_pos, 0, 0
+        };
         SDL_BlitSurface (actual_image, & my_sprite_font,	screen, &My_rect);
     }
 }
-
-//comentar a delapipol
 
 /*
 void battler::init_Batler()//esto es asi porque no se me ocurre aun algo mejor
@@ -257,7 +273,7 @@ void battler::init_Batler()//esto es asi porque no se me ocurre aun algo mejor
          x_pos = 50;
 	     y_pos = 50;
 	     frame = 2;
-	     dir = 0;
+	     actor_direction = 0;
 	     columns = 4;
 	     rows = 6;
        for(i = 0;i<columns;i++)
@@ -308,9 +324,9 @@ bool battler::Move_to(battler Bt,int moves)//movimiento de vector
 void battler::draw (SDL_Surface *screen)
 {    int real_frame;
 	int weight = get_weight();
-	int h = get_height();
-	real_frame = animation [dir][frame];
-	SDL_Rect my_sprite_font={(real_frame%columns)*weight,(real_frame/columns) *h, weight, h};
+	int height = get_height();
+	real_frame = animation [actor_direction][frame];
+	SDL_Rect my_sprite_font={(real_frame%columns)*weight,(real_frame/columns) *height, weight, height};
 	SDL_Rect My_rect={x_pos, y_pos, 0, 0};
 	SDL_BlitSurface (actual_image, & my_sprite_font,	screen, &My_rect);
 }

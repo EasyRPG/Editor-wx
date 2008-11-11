@@ -133,7 +133,7 @@
 *   - Added library roll-call
 *   - Reformatted the history to RPM format (ick)
 *   - Moved sllexp() closer to related functions
-*   - Added algorithm description to sllpow()
+*   - Added algorithm My_description to sllpow()
 *
 *   *Jan 19 2002 Andrew E. Mileski <andrewm@isoar.ca> v1.1
 *   - Corrected constants, thanks to Mark A. Lisher for noticing

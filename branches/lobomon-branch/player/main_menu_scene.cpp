@@ -38,7 +38,7 @@ void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
     My_team     = the_team;
     My_audio    = the_audio;
     My_menu.init( the_audio, run, 0, 5, 96, 125, 0, 0);
-    players.init(the_audio, run, 0, ((*My_team).get_size()-1), 224, 240, 96, 0, 166, 48);
+    players.init(the_audio, run, 0, (My_team->get_size()-1), 224, 240, 96, 0, 166, 48);
     players.init_xy_cur(55,5); //ya eran muchos comandos
     gold.init(96,40,0,200);
     menu_exit.init(the_audio, run, 0, 2, 96, 67, 112, 86);
@@ -60,23 +60,23 @@ void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
     gold.add_text("gold",5,5);
 
     char string_buffer[255];
-    sprintf(string_buffer, "$ %d", (*(*My_team).get_gold()));
+    sprintf(string_buffer, "$ %d", (*My_team->get_gold()));
     gold.add_text(string_buffer,5,20);
     int space   = 60;
 
-    for (i = 0; i < (*My_team).get_size(); i++)
+    for (i = 0; i < My_team->get_size(); i++)
     {
-        players.add_sprite(((*My_team).get_faceset(i)),5,5+(i*space));
-        players.add_text(((*My_team).get_name(i)),55,2+(i*space));
-        players.add_text(((*My_team).get_job(i)),150,2+(i*space));
+        players.add_sprite((My_team->get_faceset(i)),5,5+(i*space));
+        players.add_text((My_team->get_name(i)),55,2+(i*space));
+        players.add_text((My_team->get_job(i)),150,2+(i*space));
 
-        sprintf(string_buffer, "Level %d  Normal", (*(*My_team).get_level(i)));
+        sprintf(string_buffer, "Level %d  Normal", (*My_team->get_level(i)));
         players.add_text(string_buffer, 55, 20 + (i*space));
-        sprintf(string_buffer, "Exp %d / %d", (*(*My_team).get_exp(i)), (*(*My_team).get_max_exp(i)));
+        sprintf(string_buffer, "Exp %d / %d", (*My_team->get_exp(i)), (*My_team->get_max_exp(i)));
         players.add_text(string_buffer,55,37+(i*space));
-        sprintf(string_buffer, "Hp %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+        sprintf(string_buffer, "Hp %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
         players.add_text(string_buffer,150,20+(i*space));
-        sprintf(string_buffer, "Mp %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+        sprintf(string_buffer, "Mp %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
         players.add_text(string_buffer,150,37+(i*space));
     }
     delay   = 0;
@@ -140,7 +140,7 @@ void Main_menu_scene::action2()
 void Main_menu_scene::action3()
 {
     int i;
-    (*My_team).select = players.get_index_y();
+    My_team->select = players.get_index_y();
     for (i = 1;i<4;i++)
         if (My_menu.get_index_y()==i)
             *new_scene = 5+i;

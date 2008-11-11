@@ -18,11 +18,11 @@
 #define DELTATIME_H
 ///perfesto
 
-class CDeltaTime
+class Delta_time
 {
     public:
         // Methods
-        CDeltaTime  (int p_ideal_fps);
+        Delta_time (int p_ideal_fps);
         void        set_ideal_fps(int p_ideal_fps);
         void        clear();
         void        update();

@@ -38,11 +38,11 @@ void Save_load_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player
     My_team     = the_team;
     My_audio    = the_audio;
 
-    description.init(320,30,0,0);
-    description.add_text("¿Where do you want save game? ",10,5);
-    Save_pos_1.init(320,70,0,30);
-    Save_pos_2.init(320,70,0,100);
-    Save_pos_3.init(320,70,0,170);
+    My_description.init(320,30,0,0);
+    My_description.add_text("¿Where do you want save game? ",10,5);
+    My_save_pos_1.init(320,70,0,30);
+    My_save_pos_2.init(320,70,0,100);
+    My_save_pos_3.init(320,70,0,170);
     running     = run;
     new_scene   = the_scene;
     delay       = 0;
@@ -53,11 +53,11 @@ void Save_load_scene::update(SDL_Surface*screen)
     delay++;
     if (delay == 6)
     {
-        Save_pos_1.draw(screen);
-        Save_pos_2.draw(screen);
-        Save_pos_3.draw(screen);
-        description.draw(screen);
-        delay = 0;
+        My_save_pos_1.draw(screen);
+        My_save_pos_2.draw(screen);
+        My_save_pos_3.draw(screen);
+        My_description.draw(screen);
+        delay   = 0;
     }
 }
 
@@ -71,8 +71,8 @@ void Save_load_scene::update_key()
 }
 void Save_load_scene::dispose()
 {
-    Save_pos_1.dispose();
-    Save_pos_2.dispose();
-    Save_pos_3.dispose();
-    description.dispose();
+    My_save_pos_1.dispose();
+    My_save_pos_2.dispose();
+    My_save_pos_3.dispose();
+    My_description.dispose();
 }

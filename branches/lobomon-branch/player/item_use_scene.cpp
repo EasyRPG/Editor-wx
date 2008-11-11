@@ -37,33 +37,33 @@ void Item_use_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_te
     int i;
     My_team = the_team;
     My_audio = the_audio;
-    players.init(the_audio, run,0,((*My_team).get_size()-1),184,240,136,0,124,48);
+    players.init(the_audio, run,0,(My_team->get_size()-1),184,240,136,0,124,48);
     players.init_xy_cur(55,5); //ya eran muchos comandos
     players.visible = true;
     item_win.init(136,30,0,0);
     item_win2.init(136,30,0,30);
 
     char string_buffer[255];
-    i = (*My_team).select;
-    item_win.add_text(((*My_team).get_item_name(i)) ,5,5);
-    sprintf(string_buffer, "Objetos prop.  %d", (*(*My_team).get_items_number(i)));
+    i = My_team->select;
+    item_win.add_text((My_team->get_item_name(i)) ,5,5);
+    sprintf(string_buffer, "Objetos prop.  %d", (*My_team->get_items_number(i)));
     item_win2.add_text(string_buffer,5,5);
     running =  run;
     new_scene = the_scene;
 
     int space = 60;
 
-    for (i = 0;i<(*My_team).get_size();i++)
+    for (i = 0;i<My_team->get_size();i++)
     {
-        players.add_sprite(((*My_team).get_faceset(i)),5,5+(i*space));
-        players.add_text(((*My_team).get_name(i)),55,2+(i*space));
+        players.add_sprite((My_team->get_faceset(i)),5,5+(i*space));
+        players.add_text((My_team->get_name(i)),55,2+(i*space));
 
-        sprintf(string_buffer, "Level %d ", (*(*My_team).get_level(i)));
+        sprintf(string_buffer, "Level %d ", (*My_team->get_level(i)));
         players.add_text(string_buffer,55,20+(i*space));
         players.add_text("Normal",55,37+(i*space));
-        sprintf(string_buffer, "Hp %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+        sprintf(string_buffer, "Hp %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
         players.add_text(string_buffer,110,20+(i*space));
-        sprintf(string_buffer, "Mp %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+        sprintf(string_buffer, "Mp %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
         players.add_text(string_buffer,110,37+(i*space));
     }
 
@@ -95,20 +95,20 @@ void Item_use_scene::action()
 {
     int     i;
     char    string_buffer[255];
-    i=(*My_team).select;
-    (*(*My_team).get_items_number(i))=(*(*My_team).get_items_number(i))-1;
+    i=My_team->select;
+    (*My_team->get_items_number(i))=(*My_team->get_items_number(i))-1;
 
-    if ((*(*My_team).get_items_number(i)) !=0)
+    if ((*My_team->get_items_number(i)) !=0)
     {
         item_win2.dispose();
         item_win2.init(136,30,0,30);
-        sprintf(string_buffer, "self objects.  %d", (*(*My_team).get_items_number(i)));
+        sprintf(string_buffer, "self objects.  %d", (*My_team->get_items_number(i)));
         item_win2.add_text(string_buffer,5,5);
         players.restart_menu();
     }
     else
     {
-        (*My_team).erase_item(i);
+        My_team->erase_item(i);
         *new_scene = 5;
     }
 

@@ -34,34 +34,34 @@
 
 void Inventory_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team *the_team)
 {
-    My_team = the_team;
-    My_audio = the_audio;
+    My_team     = the_team;
+    My_audio    = the_audio;
 
-    int k = (((*My_team).get_num_items() - 1) / 2);// S.O.S.!!!
+    int k = ((My_team->get_num_items() - 1) / 2);// S.O.S.!!!
     My_menu.init(the_audio, run, 1, k, 320, 210, 0, 30);
-    description.init(320,30,0,0);
-    int i = 0,space = 16,block_size = 150;
+    My_description.init(320,30,0,0);
+    int i = 0, space = 16, block_size = 150;
     char string_buffer[255];
-    for (i = 0;i<(*My_team).get_num_items();i++)
+    for (i = 0; i < My_team->get_num_items(); i++)
     {
-        string_vector.push_back( (const char *) ((*My_team).get_item_name(i)) );
-        sprintf(string_buffer, "%d ", (*(*My_team).get_items_number(i)));
-        My_menu.add_text(string_buffer,block_size-10+((block_size+10)*((i)%(2))),5+((i/2)*space));
+        string_vector.push_back( (const char *) (My_team->get_item_name(i)) );
+        sprintf(string_buffer, "%d ", (*My_team->get_items_number(i)));
+        My_menu.add_text(string_buffer, block_size - 10 + ((block_size + 10) * ((i) % (2))), 5 + ((i / 2) * space));
     }
 
-    if (string_vector.size()%2)//para que no truene si son nones
-    {
-        string_vector.push_back( " " );
+    if (string_vector.size() % 2)   //to avoid game freezes
+        {
+        string_vector.push_back(" ");
     }
 
-    while (string_vector.size()<2)//para que no truene si no hay nada
+    while (string_vector.size()<2)//to avoid game freezes if there's nothing
     {
-        string_vector.push_back( " " );
+        string_vector.push_back(" ");
     }
     My_menu.set_commands(& string_vector);
-    running = run;
-    new_scene = the_scene;
-    delay = 0;
+    running     = run;
+    new_scene   = the_scene;
+    delay       = 0;
 }
 
 void Inventory_scene::update(SDL_Surface*screen)
@@ -71,15 +71,15 @@ void Inventory_scene::update(SDL_Surface*screen)
     if (delay == 4)
     {
         My_menu.draw(screen);
-        description.draw(screen);
-        delay = 0;
+        My_description.draw(screen);
+        delay   = 0;
     }
 }
 
 void Inventory_scene::action()
 {
-    (*My_team).select = My_menu.get_index_y() * 2 + My_menu.get_index_x();
-    if ((*My_team).select < (*My_team).get_num_items())
+    My_team->select = My_menu.get_index_y() * 2 + My_menu.get_index_x();
+    if (My_team->select < My_team->get_num_items())
     {
         *new_scene = 10;
     }
@@ -96,7 +96,7 @@ void Inventory_scene::update_key()
     {
         action();
     }
-    if (key_pressed_and_released(KEY_X ))
+    if (key_pressed_and_released(KEY_X))
     {
         (*My_audio).sound_load("../Sound/Cansel2.wav");
         *new_scene = 4;
@@ -105,5 +105,5 @@ void Inventory_scene::update_key()
 void Inventory_scene::dispose()
 {
     My_menu.dispose();
-    description.dispose();
+    My_description.dispose();
 }

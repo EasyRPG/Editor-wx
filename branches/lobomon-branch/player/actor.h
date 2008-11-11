@@ -18,6 +18,7 @@
 #define ACTOR_H
 
 #include "math-sll.h"
+#include "deltatime.h"
 
 struct mot  //comentar a delapipol(que es mot?)
 {
@@ -31,21 +32,21 @@ class Actor:public Character
 {
     public:
         // Methods
-        void move_on_input();
+        void        move_on_input();
 
-        int min(int value, int max);
-        sll min_f(float value, float max);
-        int clamp(int value, int min, int max);
-        sll clamp_f(float value, float min, float max);
-        void set_xy_position(int x_pos,int y_pos);
-        Uint8  flags;
-        Uint8 state;
-        mot Motion;
-        int grid_x;///aparte de la x_pos  y_pos y_pos  tenemos la poscion con referencia bloques.
-        int GridY;
-        sll realX;
-        sll realY;
-        bool outofarea;
+        int         min(int value, int max);
+        sll         min_f(float value, float max);
+        int         clamp(int value, int min, int max);
+        sll         clamp_f(float value, float min, float max);
+        void        set_xy_position(int x_pos,int y_pos);
+        Uint8       flags;
+        Uint8       state;
+        mot         Motion;
+        int         grid_x;///aparte de la x_pos  y_pos y_pos  tenemos la poscion con referencia bloques.
+        int         grid_y;
+        sll         realX;
+        sll         realY;
+        bool        outofarea;
 };
 
 #endif

@@ -20,13 +20,12 @@
 #include "sprite.h"
 #include "actor.h"
 #include "deltatime.h"
+extern Delta_time My_actor_system_time;
 
-
-extern CDeltaTime my_system_time;
 /*
 metodos faltantes
 
-World->CollisionAt(grid_x, GridY+1, WORLD_COLLISION_FROM_UP)
+World->CollisionAt(grid_x, grid_y+1, WORLD_COLLISION_FROM_UP)
 
 
 
@@ -42,6 +41,8 @@ World->CollisionAt(grid_x, GridY+1, WORLD_COLLISION_FROM_UP)
 #define ACTOR_FLAGS_FREEZE      0x01
 
 #define ACTOR_SPEED_SLOW        2.0f
+
+
 
 int Actor::clamp(int value, int min, int max)
 {
@@ -99,46 +100,46 @@ void Actor::move_on_input()
         key_data = SDL_GetKeyState(NULL);
         if ( key_data[SDLK_UP]  )
         {
-            // && World->CollisionAt(grid_x, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
+            // && World->CollisionAt(grid_x, grid_y-1, WORLD_COLLISION_FROM_DOWN)==false) {
             state            = ACTOR_STATE_MOVING;
             Motion.direction = ACTOR_DIRECTION_UP;
-            dir = 0;
+            actor_direction = 0;
             Motion.distance  = 0;
         }
         else if (key_data[SDLK_DOWN]  )
         {
-            // && World->CollisionAt(grid_x, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
+            // && World->CollisionAt(grid_x, grid_y+1, WORLD_COLLISION_FROM_UP)==false) {
             state            = ACTOR_STATE_MOVING;
             Motion.direction = ACTOR_DIRECTION_DOWN;
-            dir = 2;
+            actor_direction = 2;
             Motion.distance  = 0;
         }
         else if ( key_data[SDLK_LEFT] )
         {
-            // && World->CollisionAt(grid_x-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
-            state = ACTOR_STATE_MOVING;
-            Motion.direction = ACTOR_DIRECTION_LEFT;
-            dir = 3;
-            Motion.distance  = 0;
+            // && World->CollisionAt(grid_x-1, grid_y, WORLD_COLLISION_FROM_RIGHT)==false) {
+            state               = ACTOR_STATE_MOVING;
+            Motion.direction    = ACTOR_DIRECTION_LEFT;
+            actor_direction                 = 3;
+            Motion.distance     = 0;
         }
         else if ( key_data[SDLK_RIGHT] )
         {
-            //&& World->CollisionAt(grid_x+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
-            state = ACTOR_STATE_MOVING;
-            Motion.direction = ACTOR_DIRECTION_RIGHT;
-            dir = 1;
-            Motion.distance  = 0;
+            //&& World->CollisionAt(grid_x+1, grid_y, WORLD_COLLISION_FROM_LEFT)==false) {
+            state               = ACTOR_STATE_MOVING;
+            Motion.direction    = ACTOR_DIRECTION_RIGHT;
+            actor_direction     = 1;
+            Motion.distance     = 0;
         }
         else
         {
             frame = 0;
         }
-// 	    grid_x=(x_pos)>>4; GridY=(y_pos)>>4;// Calculate Grid x_pos and Grid y_pos
+// 	    grid_x=(x_pos)>>4; grid_y=(y_pos)>>4;// Calculate Grid x_pos and Grid y_pos
         break;
     case ACTOR_STATE_MOVING:
         // Calculate how many pixels has the actor travelled  and how many's left
-        Motion.delta    = clamp_f(ACTOR_SPEED_SLOW*my_system_time.delta_time, 0, 16-Motion.distance); // clamp_f(value, min, max)
-        Motion.distance = min_f(Motion.distance+ACTOR_SPEED_SLOW*my_system_time.delta_time, 16.0f);//min_f(distancia + movimiento, maximo )
+        Motion.delta    = clamp_f(ACTOR_SPEED_SLOW*My_actor_system_time.delta_time, 0, 16 - Motion.distance); // clamp_f(value, min, max)
+        Motion.distance = min_f(Motion.distance + ACTOR_SPEED_SLOW * My_actor_system_time.delta_time, 16.0f);//min_f(distancia + movimiento, maximo )
         frame_update();
         // Change position of character by adding the delta
         switch (Motion.direction)

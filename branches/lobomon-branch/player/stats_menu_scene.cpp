@@ -40,43 +40,43 @@ void Status_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_team
     Status.init(200, 80, 120, 80);
     my_weapons.init(200, 80, 120, 160);
     Profession.init(120, 240, 0, 0);
-    int         i = (*My_team).select;
+    int         i = My_team->select;
     int         space = 17;
     char        string_buffer[255];
 
-    sprintf(string_buffer, "Hp             %d / %d", (*(*My_team).get_hp(i)), (*(*My_team).get_max_hp(i)));
+    sprintf(string_buffer, "Hp             %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
     Status_vit.add_text(string_buffer, 10, 10);
-    sprintf(string_buffer, "Mp             %d / %d", (*(*My_team).get_mp(i)), (*(*My_team).get_max_mp(i)));
+    sprintf(string_buffer, "Mp             %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
     Status_vit.add_text(string_buffer, 10, 10 + (1 * space));
-    sprintf(string_buffer, "Exp            %d / %d", (*(*My_team).get_exp(i)), (*(*My_team).get_max_exp(i)));
+    sprintf(string_buffer, "Exp            %d / %d", (*My_team->get_exp(i)), (*My_team->get_max_exp(i)));
     Status_vit.add_text(string_buffer, 10, 10 + (2 * space));
 
-    sprintf(string_buffer, "Fuerza        %d ", (*(*My_team).get_attack(i)));
+    sprintf(string_buffer, "Fuerza        %d ", (*My_team->get_attack(i)));
     Status.add_text(string_buffer, 10, 5);
-    sprintf(string_buffer, "Defenza       %d ", (*(*My_team).get_defense(i)));
+    sprintf(string_buffer, "Defenza       %d ", (*My_team->get_defense(i)));
     Status.add_text(string_buffer, 10, 5 + (1 * space));
-    sprintf(string_buffer, "Intelecto     %d ", (*(*My_team).get_spirit(i)));
+    sprintf(string_buffer, "Intelecto     %d ", (*My_team->get_spirit(i)));
     Status.add_text(string_buffer, 10 ,5 + (2 * space));
-    sprintf(string_buffer, "Agilidad      %d ", (*(*My_team).get_speed(i)));
+    sprintf(string_buffer, "Agilidad      %d ", (*My_team->get_speed(i)));
     Status.add_text(string_buffer, 10, 5 + (3 * space));
     space = 40;
-    Profession.add_sprite(((*My_team).get_faceset(i)),10,10);
+    Profession.add_sprite((My_team->get_faceset(i)),10,10);
     Profession.add_text("name", 10, 30 + (1 * space));
-    Profession.add_text(((*My_team).get_name(i)),50,30+(1*space) + 16);
+    Profession.add_text((My_team->get_name(i)),50,30+(1*space) + 16);
     Profession.add_text("Profesión", 10, 30 + (2 * space));
-    Profession.add_text(((*My_team).get_job(i)), 50, 30 + (2 * space) + 16);
+    Profession.add_text((My_team->get_job(i)), 50, 30 + (2 * space) + 16);
     Profession.add_text("Estado", 10, 30 + (3 * space));
     Profession.add_text("Normal", 50, 30 + (3 * space) + 16);//falta el casteo del entero
     Profession.add_text("Nivel", 10, 30 + (4 * space));
-    sprintf(string_buffer, "%d ", (*(*My_team).get_level(i)));
+    sprintf(string_buffer, "%d ", (*My_team->get_level(i)));
 
     Profession.add_text(string_buffer, 50, 30 + (4 * space) + 16);//falta el casteo del entero
     space = 14;
-    my_weapons.add_text((*((*My_team).get_weapon(i))).get_name(), 75, 5);
-    my_weapons.add_text((*((*My_team).get_shield(i))).get_name(), 75, 5 + (1 * space));
-    my_weapons.add_text((*((*My_team).get_armor(i))).get_name(), 75, 5 + (2 * space));
-    my_weapons.add_text((*((*My_team).get_helmet(i))).get_name(), 75, 5 + (3 * space));
-    my_weapons.add_text((*((*My_team).get_accessory(i))).get_name(), 75, 5 + (4 * space));
+    my_weapons.add_text((*(My_team->get_weapon(i))).get_name(), 75, 5);
+    my_weapons.add_text((*(My_team->get_shield(i))).get_name(), 75, 5 + (1 * space));
+    my_weapons.add_text((*(My_team->get_armor(i))).get_name(), 75, 5 + (2 * space));
+    my_weapons.add_text((*(My_team->get_helmet(i))).get_name(), 75, 5 + (3 * space));
+    my_weapons.add_text((*(My_team->get_accessory(i))).get_name(), 75, 5 + (4 * space));
 
     my_weapons.add_text("Weapon", 10, 5);
     my_weapons.add_text("shield", 10, 5 + (1 * space));

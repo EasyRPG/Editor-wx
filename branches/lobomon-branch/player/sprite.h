@@ -34,24 +34,24 @@ public:
     }
     void set_y(int actual_y_pos)
     {
-        y_pos = y_pos;
+        y_pos =actual_y_pos;
     }
     void set_image(const char*string);
     void setcols(int icols)
     {
         columns = icols;
     }
-    void setrows(int irows)
+    void setrows(int i_rows)
     {
-        rows = irows;
+        rows = i_rows;
     }
     void add_x(int c)
     {
-        x_pos+=c;
+        x_pos += c;
     }
     void add_y(int c)
     {
-        y_pos+=c;
+        y_pos += c;
     }
     void set_surface(SDL_Surface *imag);
     int get_x()
@@ -68,7 +68,7 @@ public:
     }
     int get_height()
     {
-        return actual_image->h/rows;
+        return actual_image -> h / rows;
     }
     int get_cols()
     {
@@ -89,7 +89,7 @@ private:
     int animation[4][4];//up right down left XP
 
 public:
-    int     dir;
+    int     actor_direction;
     void    init_chara();
     void    frame_origin();
     void    frame_update();
@@ -101,20 +101,20 @@ class Faceset: public Sprite
 
 public:
     void drawf (SDL_Surface *screen);
-    void init_faceset(int x_pos,int y_pos,int theframe);
+    void init_faceset(int x_pos,int y_pos,int the_frame);
 };
 
 class Sprite_system: public Sprite
 {
     private:
-        SDL_Surface     *CubeDraw (SDL_Surface *screen,int sizeX,int sizeY);
+        SDL_Surface     *cube_draw (SDL_Surface *screen,int the_x_size,int the_y_size);
 
     public:
         void init_video_system();
         void draw (SDL_Surface *screen,int i_frame,int x_pos,int y_pos);
-        SDL_Surface     *Exdraw (int sizeX,int sizeY);
-        SDL_Surface     *ex_draw_t (int sizeX,int sizeY,int tipe);
-        SDL_Surface     *Cube_select(int type,int sizeX,int sizeY);
+        SDL_Surface     *ex_draw (int the_x_size,int the_y_size);
+        SDL_Surface     *ex_draw_t (int the_x_size,int the_y_size,int tipe);
+        SDL_Surface     *cube_select(int type,int the_x_size,int the_y_size);
 };
 class Animation: public Sprite
 {

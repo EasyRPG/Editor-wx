@@ -53,7 +53,7 @@ std::string read_string(FILE *file_stream)
 
     // Read string lenght's
     fread(&length, sizeof(char), 1, file_stream);
-    if (length == 0) return My_string("");
+    if (length == 0) return std::string("");
 
     // Allocate string buffer
     characters = new char[length+1];

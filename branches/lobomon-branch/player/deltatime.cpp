@@ -18,19 +18,19 @@
 #include "SDL.h"
 #include "deltatime.h"
 
-CDeltaTime::CDeltaTime(int p_ideal_fps)
+Delta_time::Delta_time(int p_ideal_fps)
 {
     // calls the set function
     set_ideal_fps(p_ideal_fps);
 }
-void CDeltaTime::set_ideal_fps(int p_ideal_fps)
+void Delta_time::set_ideal_fps(int p_ideal_fps)
 {
 // Change FPS settings and calculates ideal time.
     ideal_fps       = p_ideal_fps;
     ideal_time      = 1 / float(ideal_fps);
     clear();
 }
-void CDeltaTime::clear()
+void Delta_time::clear()
 {
     time_previous   = SDL_GetTicks();
     time_current    = SDL_GetTicks();
@@ -39,7 +39,7 @@ void CDeltaTime::clear()
         delta_time_array[i] = ideal_time;
     }
 }
-void CDeltaTime::update()
+void Delta_time::update()
 {
     // Calculate interval between frames
     time_previous   = time_current;

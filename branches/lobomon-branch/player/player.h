@@ -96,7 +96,6 @@ class Player
         void        set_level(int the_level);
         void        set_exp(int the_exp);
         void        set_max_exp(int the_max_exp);
-
         void        set_name(const char *name);
         void        set_job(const char *name);
         void        set_chara(Character thecharset);
@@ -172,7 +171,7 @@ class Player_team
         void        erase_item(int num);
         Item        get_item(int num);
         int         get_num_items();
-        void        add_item(Item Myitem);
+        void        add_item(Item My_item);
         int         *get_items_number(int num);
         Uint8       *get_type(int num);
         const char  *get_item_name(int num);

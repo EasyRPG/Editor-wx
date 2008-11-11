@@ -36,8 +36,6 @@
 #include "scene.h"
 #include "timer.h"
 #include "deltatime.h"
-#define screen_SIZE_X  320
-#define screen_SIZE_Y  240
 
 //Uint64 nextTicks = 0, fps = 0, frames = 0;
 //char stringBuffer[255];
@@ -57,7 +55,7 @@
 //Variables
 
 Uint8           speed = 4;
-Uint8           timer=0;
+Uint8           timer = 0;
 bool running    = true;
 Uint8 the_scene = 0;
 Mix_Music       *music;
@@ -84,7 +82,7 @@ Skills_menu_scene       My_skills_scene;
 Inventory_scene         My_inventory_scene;
 //  Misc instances
 Player_team             My_team;
-CDeltaTime 	            My_system_time(60);
+Delta_time              My_system_time(60);
 
 int fps_synchronyze()
 {
