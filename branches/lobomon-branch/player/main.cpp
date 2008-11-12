@@ -295,3 +295,4 @@ int main()
     SDL_Quit();
     return true;
 }
+

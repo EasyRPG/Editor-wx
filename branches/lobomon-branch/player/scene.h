@@ -210,7 +210,7 @@ private:
 
 public:
 
-    void    init(Audio *audio,int screen_X, int screen_Y,Uint8 *the_scene,Player_team *the_team);
+    void    init(Audio *audio,int screen_x, int screen_y,Uint8 *the_scene,Player_team *the_team);
 
     void    update(SDL_Surface*screen);
     void    scroll();

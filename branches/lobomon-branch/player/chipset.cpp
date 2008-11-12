@@ -1,4 +1,4 @@
-/*chipset.cpp, routines for the map tileset management.
+/* chipset.cpp, routines for the map tileset management.
    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,8 @@ bool stChipset::generate_from_surface(SDL_Surface *My_surface)
     // Generate water A
     for (int j = 0; j<3; j++)
     {
+
+
         for (int i = 0; i<47; i++, current_tile++)
         {
             render_water_tile(chipset_surface, (current_tile%32)*16, (current_tile/32)*16, j, 0, 0, i);
@@ -84,7 +86,7 @@ bool stChipset::generate_from_surface(SDL_Surface *My_surface)
 
     // Done
     return true;
-};
+}
 
 bool stChipset::generate_from_file(std::string file_name)
 {

@@ -44,7 +44,7 @@ void Delta_time::update()
     // Calculate interval between frames
     time_previous   = time_current;
     time_current    = SDL_GetTicks();
-    // Calculate delta intervalhttp://mail.google.com/mail/?shva=1#inbox
+    // Calculate delta interval
     delta_time_array[delta_current_vector] = (float(((time_current - time_previous) * ideal_fps) * 0.001));
 
     ++delta_current_vector &=0xF;     //++ y_pos nunca mayor a 15

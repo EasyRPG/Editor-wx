@@ -101,7 +101,7 @@ bool map::load(std::string file_name)
 
     // Done
     return true;
-};
+}
 
 void map::get_next_chunk(FILE *stream)
 {

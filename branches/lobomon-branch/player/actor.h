@@ -22,9 +22,9 @@
 
 struct mot  //comentar a delapipol(que es mot?)
 {
-    sll distance;
-    sll delta;
-    Uint8 direction;
+    sll     distance;
+    sll     delta;
+    Uint8   direction;
 };
 
 
@@ -33,6 +33,8 @@ class Actor:public Character
     public:
         // Methods
         void        move_on_input();
+
+
 
         int         min(int value, int max);
         sll         min_f(float value, float max);
@@ -44,8 +46,8 @@ class Actor:public Character
         mot         Motion;
         int         grid_x;///aparte de la x_pos  y_pos y_pos  tenemos la poscion con referencia bloques.
         int         grid_y;
-        sll         realX;
-        sll         realY;
+        sll         real_x;
+        sll         real_y;
         bool        outofarea;
 };
 

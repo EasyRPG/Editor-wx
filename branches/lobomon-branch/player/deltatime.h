@@ -16,13 +16,12 @@
 
 #ifndef DELTATIME_H
 #define DELTATIME_H
-///perfesto
 
 class Delta_time
 {
     public:
         // Methods
-        Delta_time (int p_ideal_fps);
+        Delta_time  (int p_ideal_fps);
         void        set_ideal_fps(int p_ideal_fps);
         void        clear();
         void        update();
