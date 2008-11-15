@@ -39,10 +39,10 @@ void Title_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_tea
     My_team     = the_team;
     My_audio    = the_audio;
 
-    (*My_audio).music_load("../Music/2003wingtoskies.mid");
+    (*My_audio).music_load("Music/title.mid");
     title.x_pos = 0;
     title.y_pos = 0;
-    title.set_image("../title/title2.png");
+    title.set_image("Title/title.png");
     My_menu.init( My_audio, run, 0, 2, 96, 67, 115, 115);
     string_vector.push_back("New");
     string_vector.push_back("Load");
@@ -92,11 +92,11 @@ void Title_scene::init_party()
     alex.set_name("Alex");
     Character alex_chara;
     alex_chara.init_chara();
-    alex_chara.set_image("../chara/protagonist1.PNG");
+    alex_chara.set_image("CharSet/charset.png");
     alex.set_chara(alex_chara);
 
     Faceset alex_face;
-    alex_face.set_image("../Faceset/chara1.png");
+    alex_face.set_image("FaceSet/faceset.png");
     alex_face.init_faceset(0, 0, 0);
 
     alex.set_faceset(alex_face);
@@ -117,30 +117,30 @@ void Title_scene::init_party()
 
     //no skills for Alex?
     Skill poison;
-    poison.set_name("poison");
+    poison.set_name("Poison");
     poison.set_damage(6);
     poison.set_level_req(1);
     poison.set_mp_price(10);
     alex.add_skill(poison);
     Skill paralysis;
-    paralysis.set_name("paralysis");
+    paralysis.set_name("Paralysis");
     paralysis.set_damage(5);
     paralysis.set_level_req(1);
     paralysis.set_mp_price(5);
     alex.add_skill(paralysis);
 
     Item sword;
-    sword.set_name("iron sword");
+    sword.set_name("Iron sword");
     sword.set_items_number(1);
     sword.set_type(4);
     sword.id = 15;
 
-    Animation My_anim;
-    My_anim.set_image("../Battle/Sword1.png");
+/*    Animation My_anim; // disabled (fdelapena)
+    My_anim.set_image("Battle/sword.png");
     My_anim.init_anim(5, 2);
 
 
-    sword.set_anim(My_anim);
+    sword.set_anim(My_anim);*/
 
 
     alex.set_weapon(sword);
@@ -156,13 +156,13 @@ void Title_scene::init_party()
     armor.id = 17;
 
     Item helm;
-    helm.set_name("Leather helm");
+    helm.set_name("Leather helmet");
     helm.set_items_number(1);
     helm.set_type(7);
     helm.id = 18;
 
     Item talisman;
-    talisman.set_name("talisman");
+    talisman.set_name("Talisman");
     talisman.set_items_number(1);
     talisman.set_type(8);
     talisman.id = 19;
@@ -191,11 +191,11 @@ void Title_scene::init_party()
     null_weapon_item.id = 0;
 
 
-    My_anim.set_image("../Battle/Hit.png");
+/*    My_anim.set_image("Battle/null.png"); // disabled (fdelapena)
     My_anim.init_anim(5, 3);
 
 
-    null_weapon_item.set_anim(My_anim);
+    null_weapon_item.set_anim(My_anim);*/
 
 
 
@@ -205,10 +205,10 @@ void Title_scene::init_party()
 
     Character brian_chara;
     brian_chara.init_chara();
-    brian_chara.set_image("../chara/chara4.png");
+    brian_chara.set_image("CharSet/chara4.png");
     brian.set_chara(brian_chara);
     Faceset brian_face;
-    brian_face.set_image("../Faceset/chara2.png");
+    brian_face.set_image("FaceSet/chara2.png");
     brian_face.init_faceset(0, 0, 8);
 
     brian.set_faceset(brian_face);
@@ -238,10 +238,10 @@ void Title_scene::init_party()
 
     Character caro_chara;
     caro_chara.init_chara();
-    caro_chara.set_image("../chara/chara1.PNG");
+    caro_chara.set_image("CharSet/charset.png");
     caro.set_chara(caro_chara);
     Faceset caro_face;
-    caro_face.set_image("../Faceset/chara1.png");
+    caro_face.set_image("FaceSet/faceset.png");
     caro_face.init_faceset(0, 0, 5);
 
     caro.set_faceset(caro_face);
@@ -261,15 +261,15 @@ void Title_scene::init_party()
     caro.set_max_exp(31);
 
     Item staff;
-    staff.set_name("wood staff");
+    staff.set_name("Wood staff");
     staff.set_items_number(1);
     staff.set_type(16);
     staff.id = 16;
-    My_anim.set_image("../Battle/Holy.png");
+/*    My_anim.set_image("Battle/staff.png"); // disabled (fdelapena)
     My_anim.init_anim(5, 2);
 
 
-    staff.set_anim(My_anim);
+    staff.set_anim(My_anim); */
     caro.set_weapon(staff);
 
 
@@ -285,14 +285,14 @@ void Title_scene::init_party()
 
     Character enrique_chara;
     enrique_chara.init_chara();
-    enrique_chara.set_image("../chara/chara3.png");
+    enrique_chara.set_image("CharSet/charset.png");
     enrique.set_chara(enrique_chara);
     Faceset enrique_face;
-    enrique_face.set_image("../Faceset/chara2.png");
+    enrique_face.set_image("FaceSet/faceset.png");
     enrique_face.init_faceset(0, 0, 10);
 
     enrique.set_faceset(enrique_face);
-    enrique.set_name("enrique");
+    enrique.set_name("Enrique");
     enrique.set_job("Fighter");
     enrique.set_hp(59);
     enrique.set_max_hp(59);

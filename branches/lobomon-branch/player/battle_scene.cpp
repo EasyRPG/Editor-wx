@@ -37,10 +37,10 @@ void Battle_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene,Player_tea
     My_team     = the_team;
     My_audio    = the_audio;
     the_run     = run;
-    (*My_audio).music_load("../Music/Battle2.mid");
+    (*My_audio).music_load("Music/Battle2.mid");
     title.x_pos     = 0;
     title.y_pos     = 0;
-    title.set_image("../Backdrop/Grass.png");
+    title.set_image("Backdrop/Grass.png");
 
     Window_text.init(320, 80,0, 160);
     Window_text.visible = false;
@@ -89,20 +89,20 @@ void Battle_scene::update_window_stats()
 void Battle_scene::window_text_show_damage(bool type,int atak,int ataked,int damage)
 {
     char string_buffer[255];
-    sprintf(string_buffer, "%d HP perdidos ",damage );
+    sprintf(string_buffer, "%d HP lost ",damage );
     Window_text.init(320, 80,0, 160);
 
     if (type)//si son los players
     {
         Window_text.add_text((My_team->get_name(atak)),5,5);//name heroe
-        Window_text.add_text("ataca al enemigo",70, 5);
+        Window_text.add_text("attacks",70, 5);
         Window_text.add_text(((My_team->enemies.at(ataked)).get_name()),5, 25);//name moustruo
         Window_text.add_text(string_buffer,70, 25);
     }
     else
     {
         Window_text.add_text(((My_team->enemies.at(atak)).get_name()),5, 5);//name moustruo
-        Window_text.add_text("ataca ",70, 5);
+        Window_text.add_text("attacks ",70, 5);
         Window_text.add_text((My_team->get_name(ataked)),5,25);//name heroe
         Window_text.add_text(string_buffer,70, 25);
     }

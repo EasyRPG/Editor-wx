@@ -20,7 +20,7 @@
 
 void Font::init_font()//esto es asi porque no se me ocurre aun algo mejor
 {
-    font_name="../Fonts/BASKVILL.TTF";
+    font_name="Font/VL-Gothic-Regular.ttf";
     size = 14;
     red_color = 255;
     green_color = 255;

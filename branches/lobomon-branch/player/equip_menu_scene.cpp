@@ -54,11 +54,11 @@ void Equipment_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
     string_vector.push_back(( (*(My_team->get_accessory(i))).get_name()));
     My_menu.set_x_pos_text(90);
 
-    My_menu.add_text("Arma",10,5);
-    My_menu.add_text("shield",10,5+(1*space));
-    My_menu.add_text("Armadura",10,5+(2*space));
-    My_menu.add_text("helm",10,5+(3*space));
-    My_menu.add_text("Otros",10,5+(4*space));
+    My_menu.add_text("Weapon",10,5);
+    My_menu.add_text("Shield",10,5+(1*space));
+    My_menu.add_text("Armor",10,5+(2*space));
+    My_menu.add_text("Helmet",10,5+(3*space));
+    My_menu.add_text("Other",10,5+(4*space));
     My_menu.set_commands(& string_vector);
     int j;
     int item_type=(*( (*(My_team->get_weapon(i))).get_type()));
@@ -112,10 +112,10 @@ void Equipment_scene::update_1_menu()
     My_menu.set_x_pos_text(90);
 
     My_menu.add_text("Weapon",10,5);
-    My_menu.add_text("shield",10,5+(1*space));
+    My_menu.add_text("Shield",10,5+(1*space));
     My_menu.add_text("Armor",10,5+(2*space));
-    My_menu.add_text("Helm",10,5+(3*space));
-    My_menu.add_text("Others",10,5+(4*space));
+    My_menu.add_text("Helmet",10,5+(3*space));
+    My_menu.add_text("Other",10,5+(4*space));
     My_menu.set_commands(&string_vector);
 }
 
@@ -279,7 +279,7 @@ void Equipment_scene::update_key()
 
     if (key_pressed_and_released(KEY_X ))
     {
-        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        (*My_audio).sound_load("Sound/cancel.wav");
         *new_scene = 4;
     }
 }

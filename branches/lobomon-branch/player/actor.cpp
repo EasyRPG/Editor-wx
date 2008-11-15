@@ -98,7 +98,7 @@ void Actor::move_on_input()
         key_data    = SDL_GetKeyState(NULL);
         if ( key_data[SDLK_UP]  )
         {
-            // && World->CollisionAt(grid_x, grid_y-1, WORLD_COLLISION_FROM_DOWN)==false) {
+            // && World->CollisionAt(grid_x, grid_y-1, WORLD_COLLISION_FROM_DOWN) == false) {
             state            = ACTOR_STATE_MOVING;
             Motion.direction = ACTOR_DIRECTION_UP;
             actor_direction = 0;
@@ -106,7 +106,7 @@ void Actor::move_on_input()
         }
         else if (key_data[SDLK_DOWN]  )
         {
-            // && World->CollisionAt(grid_x, grid_y+1, WORLD_COLLISION_FROM_UP)==false) {
+            // && World->CollisionAt(grid_x, grid_y+1, WORLD_COLLISION_FROM_UP) == false) {
             state            = ACTOR_STATE_MOVING;
             Motion.direction = ACTOR_DIRECTION_DOWN;
             actor_direction = 2;
@@ -114,7 +114,7 @@ void Actor::move_on_input()
         }
         else if ( key_data[SDLK_LEFT] )
         {
-            // && World->CollisionAt(grid_x-1, grid_y, WORLD_COLLISION_FROM_RIGHT)==false) {
+            // && World->CollisionAt(grid_x-1, grid_y, WORLD_COLLISION_FROM_RIGHT) == false) {
             state               = ACTOR_STATE_MOVING;
             Motion.direction    = ACTOR_DIRECTION_LEFT;
             actor_direction                 = 3;
@@ -122,7 +122,7 @@ void Actor::move_on_input()
         }
         else if ( key_data[SDLK_RIGHT] )
         {
-            //&& World->CollisionAt(grid_x+1, grid_y, WORLD_COLLISION_FROM_LEFT)==false) {
+            //&& World->CollisionAt(grid_x+1, grid_y, WORLD_COLLISION_FROM_LEFT) == false) {
             state               = ACTOR_STATE_MOVING;
             Motion.direction    = ACTOR_DIRECTION_RIGHT;
             actor_direction     = 1;

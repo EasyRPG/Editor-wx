@@ -108,7 +108,7 @@ void Status_scene::update_key()
 {
     if (key_pressed_and_released(KEY_X))
     {
-        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        (*My_audio).sound_load("Sound/Cansel2.wav");
         *new_scene = 4;
     }
 }

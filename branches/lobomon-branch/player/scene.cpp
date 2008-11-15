@@ -83,28 +83,28 @@ void Easyrpg_menu::update_key()
             if ( key_data[SDLK_LEFT]  )
             {
                 index_x--;
-                // (*My_audio).sound_load("../Sound/Cursor1.wav");
+                // (*My_audio).sound_load("Sound/Cursor1.wav");
             }
             if ( key_data[SDLK_RIGHT] )
             {
                 index_x++;
-                // (*My_audio).sound_load("../Sound/Cursor1.wav");
+                // (*My_audio).sound_load("Sound/Cursor1.wav");
             }
             if (key_data[SDLK_UP])
             {
                 index_y--;
-                // (*My_audio).sound_load("../Sound/Cursor1.wav");
+                // (*My_audio).sound_load("Sound/Cursor1.wav");
             }
             if (key_data[SDLK_DOWN])
             {
                 index_y++;
-                // (*My_audio).sound_load("../Sound/Cursor1.wav");
+                // (*My_audio).sound_load("Sound/Cursor1.wav");
             }
 
 
             if ((key_data[KEY_Z]) && (last_key != KEY_Z))
             {
-                //  (*My_audio).sound_load("../Sound/Decision2.wav");
+                //  (*My_audio).sound_load("Sound/Decision2.wav");
                 last_key = KEY_Z;
                 decided = true;
 
@@ -134,7 +134,7 @@ void Window_base::init(int the_x_size,int the_y_size,int the_x_pos,int the_y_pos
     visible     = true;
 
     My_sprite_system.init_video_system();
-    My_sprite_system.set_image("../System/system.png");
+    My_sprite_system.set_image("System/system.png");
     My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
     my_font.init_font();
 
@@ -205,7 +205,7 @@ void Window_select::init(Audio *the_audio, bool *run,int the_x_command,int the_y
 {
     My_menu.init(the_audio, run, x_command, y_command);
     My_sprite_system.init_video_system();
-    My_sprite_system.set_image("../System/system.png");
+    My_sprite_system.set_image("System/system.png");
     My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
     My_texture.x_pos    = the_x_pos;
     My_texture.y_pos    = the_y_pos;
@@ -370,7 +370,7 @@ void Window_player_select::init(Audio *the_audio, bool *run,int the_x_command,in
 {
     My_menu.init(the_audio, run, the_x_command, the_y_command);
     My_sprite_system.init_video_system();
-    My_sprite_system.set_image("../My_sprite_system/system.png");
+    My_sprite_system.set_image("System/system.png");
     My_texture.set_surface(My_sprite_system.ex_draw(the_x_size,the_y_size));
     My_texture.x_pos    = the_x_pos;
     My_texture.y_pos    = the_y_pos;

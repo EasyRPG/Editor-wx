@@ -41,20 +41,20 @@ void Map_scene::init(Audio *audio, int screen_x, int screen_y, Uint8 *the_scene,
 	npc.init_chara();
  	My_team->my_view.x_pos   = 0;
 	My_team->my_view.y_pos   = 0;
-	npc.set_image("../chara/Monster1.png");
+	npc.set_image("CharSet/Monster1.png");
 	My_actor.init_chara();
-	My_actor.set_image("../chara/protagonist1.PNG");
+	My_actor.set_image("CharSet/protagonist1.PNG");
 	My_actor.set_xy_position(12, 12);
 
 	npc.set_x(120);
 	npc.set_y(120);
-	my_net.set_image("../title/malla.png");
+	my_net.set_image("Title/malla.png");
 	my_net.x_pos     = 0;
 	my_net.y_pos     = 0;
 	//Loading map data
-	my_map.load("../Map0001.lmu");
-	my_map.my_chipset.generate_from_file("../chipset/Basis.png");
-	My_audio->music_load("../Music/Town.mid");
+	my_map.load("Map0001.lmu");
+	my_map.my_chipset.generate_from_file("ChipSet/Basis.png");
+	My_audio->music_load("Music/Town.mid");
 	new_scene       = the_scene;
 	moving          = false;
 	to_move         = 0;
@@ -103,7 +103,7 @@ void Map_scene::update_key() {
 	scroll();
 
 	if (key_pressed_and_released(KEY_X )) {
-			(*My_audio).sound_load("../Sound/Cursor1.wav");
+			(*My_audio).sound_load("Sound/Cursor1.wav");
 			*new_scene = 4;
 		}
 }
@@ -124,7 +124,7 @@ void Map_scene::npc_map() {
         enemy_mapnpc.set_defense(50);
         enemy_mapnpc.set_speed(25);
         enemy_mapnpc.set_spirit(20);
-        (enemy_mapnpc.battler).set_image("../Monster/Slime.png");
+        (enemy_mapnpc.battler).set_image("Monster/Slime.png");
         (enemy_mapnpc.battler).setcols(1);
         (enemy_mapnpc.battler).setrows(1);
         (enemy_mapnpc.battler).x_pos = 140;
@@ -134,21 +134,21 @@ void Map_scene::npc_map() {
         enemy_mapnpc.set_name("Bat");
         enemy_mapnpc.set_hp(300);
         enemy_mapnpc.set_max_hp(30);
-        (enemy_mapnpc.battler).set_image("../Monster/Bat.png");
+        (enemy_mapnpc.battler).set_image("Monster/Bat.png");
         (enemy_mapnpc.battler).x_pos = 80;
         (enemy_mapnpc.battler).y_pos = 100;
         My_team->add_enemy(enemy_mapnpc);
         enemy_mapnpc.set_hp(35);
         enemy_mapnpc.set_max_hp(35);
         enemy_mapnpc.set_name("Araña");
-        (enemy_mapnpc.battler).set_image("../Monster/Spider.png");
+        (enemy_mapnpc.battler).set_image("Monster/Spider.png");
         (enemy_mapnpc.battler).x_pos = 180;
         (enemy_mapnpc.battler).y_pos = 100;
         My_team->add_enemy(enemy_mapnpc);
         enemy_mapnpc.set_hp(20);
         enemy_mapnpc.set_max_hp(20);
         enemy_mapnpc.set_name("Avispón");
-        (enemy_mapnpc.battler).set_image("../Monster/Bee.png");
+        (enemy_mapnpc.battler).set_image("Monster/Bee.png");
         (enemy_mapnpc.battler).x_pos = 140;
         (enemy_mapnpc.battler).y_pos = 60;
         My_team->add_enemy(enemy_mapnpc);

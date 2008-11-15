@@ -49,7 +49,7 @@ void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
     string_vector.push_back("Save");
     string_vector.push_back("Exit game");
     My_menu.set_commands(&string_vector);
-    string_vector_2.push_back("go to title scene");
+    string_vector_2.push_back("Go to title scene");
     string_vector_2.push_back("Exit");
     string_vector_2.push_back("Cancel");
     menu_exit.set_commands(& string_vector_2);
@@ -57,7 +57,7 @@ void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
     running             = run;
     new_scene           = the_scene;
 
-    gold.add_text("gold",5,5);
+    gold.add_text("Gold",5,5);
 
     char string_buffer[255];
     sprintf(string_buffer, "$ %d", (*My_team->get_gold()));
@@ -74,9 +74,9 @@ void Main_menu_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_t
         players.add_text(string_buffer, 55, 20 + (i*space));
         sprintf(string_buffer, "Exp %d / %d", (*My_team->get_exp(i)), (*My_team->get_max_exp(i)));
         players.add_text(string_buffer,55,37+(i*space));
-        sprintf(string_buffer, "Hp %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
+        sprintf(string_buffer, "HP %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
         players.add_text(string_buffer,150,20+(i*space));
-        sprintf(string_buffer, "Mp %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
+        sprintf(string_buffer, "MP %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
         players.add_text(string_buffer,150,37+(i*space));
     }
     delay   = 0;
@@ -171,7 +171,7 @@ void Main_menu_scene::update_key()
     }
     if (key_pressed_and_released(KEY_X ))
     {
-        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        (*My_audio).sound_load("Sound/cancel.wav");
         *new_scene = 1;
     }
 }

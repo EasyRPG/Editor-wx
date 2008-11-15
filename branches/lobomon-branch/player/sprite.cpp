@@ -77,7 +77,7 @@ SDL_Surface *Sprite_system::ex_draw (int the_x_size,int the_y_size)
     SDL_Surface     *Eximg2;
     double x_zoom=((double)the_x_size/32);
     double y_zoom=(((double)the_y_size)/32);
-    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("../System/system2.PNG");
+    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("System/system2.PNG");
     SDL_Rect my_sprite_font={0 , 0,32,32};
     SDL_Rect My_rect={0,0, 0, 0};
     SDL_BlitSurface (actual_image, &my_sprite_font,	ex_image, &My_rect);
@@ -120,7 +120,7 @@ SDL_Surface *Sprite_system::ex_draw_t (int the_x_size,int the_y_size,int tipe)
     SDL_Surface *Eximg2;
     double x_zoom=((double)the_x_size/32);
     double y_zoom=(((double)the_y_size)/32);
-    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("../System/system2.PNG");
+    ex_image = SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("System/system2.PNG");
     SDL_Rect My_font_rect={(32*tipe) , 0,32,32};
     SDL_Rect My_rect={0,0, 0, 0};
     SDL_BlitSurface (actual_image, &My_font_rect, ex_image, &My_rect);

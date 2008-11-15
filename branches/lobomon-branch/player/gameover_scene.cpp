@@ -40,10 +40,10 @@ void Game_over_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player
     My_team->clear_team();
     My_team->clear_objects();
     My_audio    = the_audio;
-    (*My_audio).music_load("../Music/2003sorrow.mid");
+    (*My_audio).music_load("Music/2003sorrow.mid");
     title.x_pos     = 0;
     title.y_pos     = 0;
-    title.set_image("../GameOver/gameover.png");
+    title.set_image("GameOver/gameover.png");
     running     = run;
     new_scene   = the_scene;
 }

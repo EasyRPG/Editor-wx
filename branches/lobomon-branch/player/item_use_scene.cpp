@@ -46,7 +46,7 @@ void Item_use_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_te
     char string_buffer[255];
     i = My_team->select;
     item_win.add_text((My_team->get_item_name(i)) ,5,5);
-    sprintf(string_buffer, "Objetos prop.  %d", (*My_team->get_items_number(i)));
+    sprintf(string_buffer, "Own objects %d", (*My_team->get_items_number(i)));
     item_win2.add_text(string_buffer,5,5);
     running =  run;
     new_scene = the_scene;
@@ -61,9 +61,9 @@ void Item_use_scene::init(Audio *the_audio, bool *run,Uint8 *the_scene,Player_te
         sprintf(string_buffer, "Level %d ", (*My_team->get_level(i)));
         players.add_text(string_buffer,55,20+(i*space));
         players.add_text("Normal",55,37+(i*space));
-        sprintf(string_buffer, "Hp %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
+        sprintf(string_buffer, "HP %d / %d", (*My_team->get_hp(i)), (*My_team->get_max_hp(i)));
         players.add_text(string_buffer,110,20+(i*space));
-        sprintf(string_buffer, "Mp %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
+        sprintf(string_buffer, "MP %d / %d", (*My_team->get_mp(i)), (*My_team->get_max_mp(i)));
         players.add_text(string_buffer,110,37+(i*space));
     }
 
@@ -102,7 +102,7 @@ void Item_use_scene::action()
     {
         item_win2.dispose();
         item_win2.init(136,30,0,30);
-        sprintf(string_buffer, "self objects.  %d", (*My_team->get_items_number(i)));
+        sprintf(string_buffer, "Own objects %d", (*My_team->get_items_number(i)));
         item_win2.add_text(string_buffer,5,5);
         players.restart_menu();
     }
@@ -129,7 +129,7 @@ void Item_use_scene::update_key()
 
     if (key_pressed_and_released(KEY_X ))//retorna alos objetos
     {
-        (*My_audio).sound_load("../Sound/Cansel2.wav");
+        (*My_audio).sound_load("Sound/cancel.wav");
         *new_scene = 5;
     }
 }
