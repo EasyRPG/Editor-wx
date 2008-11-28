@@ -17,7 +17,13 @@ unsigned long ReadCompressedInteger(FILE * FileStream)
 	
 	// int i = 0;
 	do
-	{
+	{		
+		if (feof(FileStream))
+		{
+		  // printf("Error: ReadCompressedInteger: Unexpected end of file\n");
+		   return Value;
+		} 
+		
 		Value <<= 7;
 		
 		// Get byte's value

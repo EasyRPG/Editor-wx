@@ -6,12 +6,16 @@
 #include "tools.h"
 #include "ldb.h"
 #include "stevent.h"  
+#include <iostream>
 // =========================================================================
 
 // --- Create list of chunks opcodes ---------------------------------------
 
+bool stop = false;
+
 bool LDB::Load(std::string Filename)
 {
+
 	// Open map file to read
 	FILE * Stream;// apertura de archivo
 	Stream = fopen(Filename.c_str(), "rb");
@@ -23,6 +27,7 @@ bool LDB::Load(std::string Filename)
 		return false;
 	}
 	GetNextChunk(Stream);
+   
 	fclose(Stream);
 	return true;
 }
@@ -67,6 +72,7 @@ std::vector <Magicblock> LDB::heroskillChunk(FILE * Stream)
 
 std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 {		
+       unsigned char temp;
 		 int id,datatoread=0,datareaded=0,comands=0;
 		 int levels;
 		 short dat; 
@@ -79,11 +85,11 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array		 
 		  do{ 
 			  ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo	 
+			  //printf("%x\n", ChunkInfo.ID);
 			  if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
 			  ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño									
 				switch(ChunkInfo.ID)// tipo de la primera dimencion
-				{	 
-								  
+				{	  
 				case CHUNK_Name:
 				     hero.strName = ReadString(Stream, ChunkInfo.Length);	
 				     break;
@@ -91,6 +97,7 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 				     hero.strClass = ReadString(Stream, ChunkInfo.Length);
 				     break;				case CHUNK_Graphicfile:
 				     hero.strGraphicfile = ReadString(Stream, ChunkInfo.Length);
+				     
 				     break;
 				case CHUNK_Graphicindex:				     hero.intGraphicindex = ReadCompressedInteger(Stream);			
 				     break;
@@ -128,41 +135,52 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 				     hero.blHighdefense = ReadCompressedInteger(Stream);
 				     break;
 				case CHUNK_Statisticscurves:
-						levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Hp.push_back(dat);
-						 levels--;
-						 }   
+				        
 						 levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Mp.push_back(dat);
-						 levels--;
-						 }   
-						  levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Attack.push_back(dat);
-						 levels--;
-						 }  
-						  levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Defense.push_back(dat);
-						 levels--;
-						 }  
-						  levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Mind.push_back(dat);
-						 levels--;
-						 }  
+						 while(levels > 0) 
+						 {
+                      fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Hp.push_back(dat);
+						    levels-=2;
+						 }
+						    
 						 levels=ChunkInfo.Length/6;
-						 while(levels--) 
-						 {fread(&dat, sizeof(short), 1, Stream);
-						  hero.vc_sh_Agility.push_back(dat);
-						 levels--;
+						 while(levels > 0) 
+						 {
+						    fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Mp.push_back(dat);
+						    levels-=2;
+						 }
+						 
+						 levels=ChunkInfo.Length/6;
+						 while(levels > 0) 
+						 {
+						    fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Attack.push_back(dat);						    levels-=2;
+						 }
+						 
+						 levels=ChunkInfo.Length/6;
+						 while(levels > 0) 
+						 {
+						    fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Defense.push_back(dat);
+						    levels-=2;
+						 }  
+						 
+						 levels=ChunkInfo.Length/6;
+						 while(levels > 0) 
+						 {
+						    fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Mind.push_back(dat);
+						    levels-=2;
+						 }  
+						 
+						 levels=ChunkInfo.Length/6;
+						 while(levels > 0) 
+						 {
+						    fread(&dat, 2, 1, Stream);
+						    hero.vc_sh_Agility.push_back(dat);
+						    levels-=2;
 						 }	
 						 break;
 				case CHUNK_EXPBaseline:
@@ -193,7 +211,7 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 				     hero.blRenameMagic = ReadCompressedInteger(Stream);
 				     break;
 				case CHUNK_Magicname:
-				     hero.strMagicname = ReadCompressedInteger(Stream);
+				     hero.strMagicname = ReadString(Stream, ChunkInfo.Length);
 				     break;
 				case CHUNK_Condlength:
 				     hero.intCondlength = ReadCompressedInteger(Stream);
@@ -230,6 +248,7 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 			hero.clear();
 		  datareaded++;
 		  }   
+		  stop = true;
 		  return(vecHero);
 }
 stcSound_effect LDB::soundChunk(FILE * Stream)// confusion masica != sonido
@@ -2470,10 +2489,11 @@ std:: vector <stcBattle_comand> LDB:: Fightanim_Chunk(FILE * Stream)
 
 void LDB::GetNextChunk(FILE * Stream)
 {
+
 		unsigned char Void;
 		tChunk ChunkInfo; // informacion del pedazo leido
 		// Loop while we haven't reached the end of the file
-		while(!feof(Stream))
+		while(!feof(Stream) && (!stop))
 		{
 			ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo	 
 			ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño	
