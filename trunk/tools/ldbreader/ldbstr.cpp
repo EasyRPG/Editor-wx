@@ -1,4 +1,5 @@
 #include "ldb.h"
+#include <iostream>
 void stcSound_effect::clear(){
 Name_of_Sound_effect="";
  Volume=100; 
@@ -46,10 +47,10 @@ strClass="";//=0x02,
 strGraphicfile="";//=0x03,
 intGraphicindex=0;//=0x04,
 intTransparent=0;//=0x05,
-intStartlevel=0;//=0x07,
-intMaxlevel=0;//=0x08,
-intCrithit=0;//=0x09,
-intHitchance=0;//=0x0A,
+intStartlevel=1;//=0x07,
+intMaxlevel=50;//=0x08,
+intCrithit=1;//=0x09,
+intHitchance=30;//=0x0A,
 strFacegraphic="";//=0x0F,
 intFaceindex=0;//=0x10,
 blDualwield=0;//=0x15,
@@ -63,9 +64,9 @@ vc_sh_Attack.clear();
 vc_sh_Defense.clear();
 vc_sh_Mind.clear();
 vc_sh_Agility.clear();
-intEXPBaseline=0;//=0x29,
-intEXPAdditional=0;//=0x2A,
-intEXPCorrection=0;//=0x2B,
+intEXPBaseline=30;//=0x29,
+intEXPAdditional=30;//=0x2A,
+intEXPCorrection=30;//=0x2B,
 intprofesion=0;//0x39--2003
 Animatedbattle=0;//0x3E--2003
 //Startequip
@@ -87,6 +88,7 @@ vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimensi
 void stcHero::show()
 {
 printf(" \n Name %s",strName.c_str());
+//std::cout << "Name " << strName << std::endl;
 printf(" \n Class %s",strClass.c_str());
 printf(" \n Graphicfile %s",strGraphicfile.c_str());
 printf(" \n Graphicindex %d",intGraphicindex);
