@@ -20,7 +20,7 @@
 #include <string>
 #include "SDL.h"
 #include "SDL_image.h"
-#include "SDL_rotozoom.h"
+//#include "SDL_rotozoom.h"
 #include "SDL_mixer.h"
 #include "tools.h"
 #include "map.h"
@@ -36,6 +36,7 @@
 #include "scene.h"
 #include "timer.h"
 #include "deltatime.h"
+#include <iostream>
 
 //Uint64 nextTicks = 0, fps = 0, frames = 0;
 //char stringBuffer[255];
@@ -288,11 +289,12 @@ int main()
             My_system_time.update();    //  Updates to deltas
             My_actual_scene->update_key( );
         }
+
         My_actual_scene -> update(screen);
         change_scene(My_audio, &My_actual_scene);
         SDL_Flip(screen);   //  Flip
     }
     SDL_Quit();
-    return true;
+    return 0;
 }
 

@@ -32,6 +32,7 @@
 #include "actor.h"
 #include "scene.h"
 #define font_size 16
+#include <iostream>
 
 void Easyrpg_menu::init(Audio *the_audio, bool *run, int x_pos,int y_pos)
 {
@@ -104,7 +105,7 @@ void Easyrpg_menu::update_key()
 
             if ((key_data[KEY_Z]) && (last_key != KEY_Z))
             {
-                //  (*My_audio).sound_load("Sound/Decision2.wav");
+               //   (*My_audio).sound_load("Sound/Decision2.wav");
                 last_key = KEY_Z;
                 decided = true;
 
@@ -302,6 +303,7 @@ void Window_select::set_commands(std::vector <std::string> *the_string_vector)
         text.set_surface(my_font.draw_text(strd.c_str()));
         My_sprite.push_back(text);
     }
+    
 
 }
 

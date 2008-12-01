@@ -31,6 +31,7 @@
 #include "player.h"
 #include "actor.h"
 #include "scene.h"
+#include <iostream>
 
 ///almost clean
 
@@ -51,6 +52,7 @@ void Title_scene::init(Audio *the_audio, bool *run, Uint8 *the_scene, Player_tea
     running = run;
     new_scene = the_scene;
     delay = 0;
+    
 }
 
 void Title_scene::update(SDL_Surface*screen)
