@@ -1,6 +1,4 @@
-#include <iostream>
-#include "SDL.h"
-#include "SDL_mixer.h"    
+#include <iostream>   
 #include "audio.h"
   
 bool Audio::wasInit = false;
@@ -60,7 +58,15 @@ Music::~Music()
       
 bool Music::load(const char* musicf)
 {   
-    music = Mix_LoadMUS(musicf);
+    if (music == NULL)
+    {
+        music = Mix_LoadMUS(musicf);
+    }
+    else
+    {
+        std::cerr << "Error: Cannot load: " << musicf << "  Music already loaded" << std::endl;
+    }
+    
     if (music == NULL)
     {
         std::cerr << "Error: " << Mix_GetError() << std::endl;

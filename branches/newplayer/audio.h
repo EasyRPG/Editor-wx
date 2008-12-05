@@ -1,5 +1,7 @@
 #ifndef AUDIO_H_
 #define AUDIO_H_
+#include "SDL.h"
+#include "SDL_mixer.h" 
 
 class Audio 
 {
@@ -17,10 +19,11 @@ class Audio
     public:
         static bool init();
         
-        virtual bool load() = 0;
-        virtual bool play() = 0;
+        virtual bool load(const char*) = 0;
+        virtual bool play(int) = 0; 
+        virtual bool play(int, int) = 0;
         virtual void stop() = 0;
-        virtual void setVolume() = 0;
+        virtual void setVolume(int) = 0;
         virtual void pause_resume() = 0;
 };
 
