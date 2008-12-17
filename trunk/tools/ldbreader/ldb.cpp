@@ -248,7 +248,6 @@ std::vector <stcHero> LDB::heroChunk(FILE * Stream)
 			hero.clear();
 		  datareaded++;
 		  }   
-		  stop = true;
 		  return(vecHero);
 }
 stcSound_effect LDB::soundChunk(FILE * Stream)// confusion masica != sonido
@@ -292,11 +291,12 @@ std:: vector <stcSkill> LDB::skillChunk(FILE * Stream)
 		 std:: vector <stcSkill> vecSkill;
 		 stcSkill skill;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
+
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {	  
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array		   
 			  do{			   
-				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo	 
+				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
 				if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
 				  ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 				switch(ChunkInfo.ID)// tipo de la primera dimencion
@@ -410,6 +410,7 @@ std:: vector <stcSkill> LDB::skillChunk(FILE * Stream)
 		  vecSkill.push_back(skill);
 		  skill.clear();
 		  datareaded++;
+		  
 		  }   
 		  return(vecSkill);
 }
@@ -424,7 +425,7 @@ std:: vector <stcItem> LDB::itemChunk(FILE * Stream)
 		 {	  
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array		 
 			  do{			   
-				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo	 
+				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo 	 
 				if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
 				ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño		  
 				switch(ChunkInfo.ID)// tipo de la primera dimencion
@@ -647,11 +648,13 @@ std:: vector <stcEnemy> LDB::mosterChunk(FILE * Stream)
 		 std:: vector <stcEnemy> vecEnemy;
 		 stcEnemy Enemy;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
+		 //printf("Numero de datos -> %d\n", datatoread);
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {	  
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array		 
 			  do{
-				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo	 
+				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+				//printf("%x\n", ChunkInfo.ID);		 
 				if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
 				ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 				switch(ChunkInfo.ID)// tipo de la primera dimencion
@@ -742,7 +745,8 @@ std:: vector <stcEnemy> LDB::mosterChunk(FILE * Stream)
 		  datareaded++;
 		  vecEnemy.push_back(Enemy);
 		  Enemy.clear();
-		  }  
+		  }
+		  //stop = true;  
 		  return(vecEnemy); 
 }
 

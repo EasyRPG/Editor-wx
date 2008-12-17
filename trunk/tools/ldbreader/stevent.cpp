@@ -1927,7 +1927,7 @@ std:: vector <Event_comand> stEvent::EventcommandChunk(FILE * Stream)//instrucci
                          printf("ChunkInfo.ID %04X  ",ChunkInfo.ID);
                            ChunkInfo.Length= ReadCompressedInteger(Stream); //primera longitud 
                            name = ReadString(Stream, ChunkInfo.Length);	
-                             printf(name.c_str());   
+                             printf("%s", name.c_str());   
                             ChunkInfo.Length= ReadCompressedInteger(Stream); //segunda longitud
                             while(ChunkInfo.Length--)//seguro longitud 
                             {data= ReadCompressedInteger(Stream); 
