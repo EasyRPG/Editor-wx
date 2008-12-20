@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="code/atributes/CActor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="171" topLine="0" />
+	</File>
+	<File name="code/atributes/CActor.h" open="0" top="0" tabpos="0">
+		<Cursor position="48" topLine="8" />
+	</File>
+	<File name="code/atributes/Enemy.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="259" topLine="0" />
+	</File>
+	<File name="code/atributes/Player.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="183" topLine="0" />
+	</File>
+	<File name="code/atributes/item.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="183" topLine="0" />
+	</File>
+	<File name="code/atributes/skill.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="183" topLine="0" />
+	</File>
+	<File name="code/control/GameOver_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="461" topLine="0" />
+	</File>
+	<File name="code/control/Map_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="461" topLine="0" />
+	</File>
+	<File name="code/control/Title_scene.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="461" topLine="21" />
+	</File>
+	<File name="code/control/scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="461" topLine="0" />
+	</File>
+	<File name="code/interfaz/Equip_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="464" topLine="7" />
+	</File>
+	<File name="code/interfaz/Main_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="472" topLine="0" />
+	</File>
+	<File name="code/interfaz/Objects_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="472" topLine="0" />
+	</File>
+	<File name="code/interfaz/Save_Load_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="472" topLine="0" />
+	</File>
+	<File name="code/interfaz/Skills_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="472" topLine="0" />
+	</File>
+	<File name="code/interfaz/Stats_Menu_scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="472" topLine="0" />
+	</File>
+	<File name="code/sprites/chipset.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1075" topLine="13" />
+	</File>
+	<File name="code/sprites/chipset.h" open="0" top="0" tabpos="0">
+		<Cursor position="1133" topLine="16" />
+	</File>
+	<File name="code/sprites/map.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="951" topLine="12" />
+	</File>
+	<File name="code/sprites/map.h" open="0" top="0" tabpos="0">
+		<Cursor position="1053" topLine="19" />
+	</File>
+	<File name="code/sprites/sprite.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="176" topLine="0" />
+	</File>
+	<File name="code/sprites/sprite.h" open="1" top="0" tabpos="2">
+		<Cursor position="327" topLine="0" />
+	</File>
+	<File name="code/tools/audio.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="563" topLine="18" />
+	</File>
+	<File name="code/tools/audio.h" open="1" top="0" tabpos="6">
+		<Cursor position="126" topLine="0" />
+	</File>
+	<File name="code/tools/tools.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="4397" topLine="134" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="7698" topLine="237" />
+	</File>
+</CodeBlocks_layout_file>
