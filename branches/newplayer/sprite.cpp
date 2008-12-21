@@ -139,7 +139,7 @@ void Chara::init_Chara()//esto es asi porque no se me ocurre aun algo mejor
 	     dir = 0;
 	     cols=3;
 	     rows=4;
-         animation[0][0] = 1;//por esto en rpgmake xp hay 4 colmunas
+             animation[0][0] = 1;//por esto en rpgmake xp hay 4 colmunas
 	     animation[0][1] = 0;
 	     animation[0][2] = 1;
 	     animation[0][3] = 2;
