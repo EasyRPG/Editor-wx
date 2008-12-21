@@ -1,14 +1,17 @@
 #ifndef SKILL_H_
 #define SKILL_H_
+
+#include "../sprites/Animacion.h"
+
 class Skill {
-      
-protected: 
-const char* nombre;        
+
+protected:
+const char* nombre;
 int mp_price;//numero mp a usar
 Animacion anim;//animacion de batalla
 int damange;
-int level_req; 
-public: 
+int level_req;
+public:
 
 void set_name(const char * name);
 const char * get_name();
@@ -22,4 +25,4 @@ void set_level_req(int The_level_req);
 int* get_level_req();
 
 };
-#endif 
+#endif

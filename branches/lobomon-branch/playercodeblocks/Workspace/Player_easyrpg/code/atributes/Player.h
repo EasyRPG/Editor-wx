@@ -1,13 +1,17 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
+
+#include "../sprites/Chara.h"
+#include "../sprites/Faceset.h"
+
 typedef struct view
 {
 	int x;
 	int y;
 } View;
 class Player {
-     
-protected: 
+
+protected:
       Chara charset;
       Faceset Face;
       int HP;
@@ -23,7 +27,7 @@ protected:
       int Exp;
       int MaxExp;
       const char * nombre;
-      const char * titulo;    
+      const char * titulo;
       Item Weapon;
       Item Shield;
       Item Armor;
@@ -35,10 +39,10 @@ protected:
       unsigned char Helmet_type;
       unsigned char Accessory_type;
 
-public: 
+public:
 
-      
-        
+
+
      // Batler Battler;
      std:: vector <Skill> Skills;
 
@@ -62,14 +66,14 @@ public:
      void set_Weapon_type(unsigned char The_Weapon_type);
      void set_Shield_type(unsigned char The_Shield_type);
      void set_Armor_type(unsigned char The_Armor_type);
-     void set_Helmet_type(unsigned char The_Helmet_type);    
+     void set_Helmet_type(unsigned char The_Helmet_type);
      void set_Accessory_type(unsigned char The_Accessory_type);
 
      void set_HP(int The_HP);
      void set_MaxHP(int The_MaxHP);
      void set_MP(int The_MP);
      void set_MaxMP(int The_MaxMP);
-     
+
      void set_Heal(int The_Heal);
      void set_Attack(int The_Attack);
      void set_Defense(int The_Defense);
@@ -83,7 +87,7 @@ public:
      void set_job(const char * name);
      void set_chara(Chara thecharset);
      void set_faceset(Faceset theFaceset);
-     
+
      int * get_HP();
      int * get_MaxHP();
      int * get_MP();
@@ -97,7 +101,7 @@ public:
      int * get_Exp();
      int * get_MaxExp();
 
-     
+
      Faceset * get_faceset();
      Chara   * get_chara();
      const char * get_name();
@@ -108,20 +112,20 @@ public:
      int * get_skill_mp_price(int num);
      int * get_skill_damange(int num);
      int * get_skill_level_req(int num);
-     Animacion * get_skill_get_anim(int num);    
-     
-         
+     Animacion * get_skill_get_anim(int num);
+
+
 };
 class Player_Team {
 std:: vector <Player> Players;
 std:: vector <Item> Items;
 int Gold;
-public: 
+public:
 std:: vector <Enemy> Enemys;
 void clear_enemy();
 void add_enemy(Enemy Myplayer);
 
-View view;  
+View view;
 int select;
 int get_size();
 void clear_team();
@@ -158,12 +162,12 @@ unsigned char * get_type(int num);
 const char * get_item_name(int num);
 Animacion * get_item_anim(int num);
 
-int get_skill_size(int num); 
-const char * get_skill_name(int nump,int num); 
-int * get_skill_mp_price(int nump,int num); 
-int * get_skill_damange(int nump,int num); 
-int * get_skill_level_req(int nump,int num); 
-Animacion * get_skill_get_anim(int nump,int num); 
+int get_skill_size(int num);
+const char * get_skill_name(int nump,int num);
+int * get_skill_mp_price(int nump,int num);
+int * get_skill_damange(int nump,int num);
+int * get_skill_level_req(int nump,int num);
+Animacion * get_skill_get_anim(int nump,int num);
 
 
 Animacion * get_Weapon_Anim(int num);
@@ -188,10 +192,10 @@ unsigned char* get_Accessory_type(int nump);
 void set_Weapon_type(int nump, unsigned char The_Weapon_type);
 void set_Shield_type(int nump, unsigned char The_Shield_type);
 void set_Armor_type(int nump, unsigned char The_Armor_type);
-void set_Helmet_type(int nump, unsigned char The_Helmet_type);     
+void set_Helmet_type(int nump, unsigned char The_Helmet_type);
 void set_Accessory_type(int nump, unsigned char The_Accessory_type);
 
 
 
 };
-#endif 
+#endif

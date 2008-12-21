@@ -1,14 +1,13 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-
 #include <SDL.h>
 #include "../tools/SDL_rotozoom.h"
 #include "../tools/tools.h"
 #include <SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define pi2 6.28318
+//#define pi2 6.28318
 
 class Sprite {
 protected:
@@ -38,45 +37,5 @@ public:
 	int colision(Sprite sp);
 };
 
-class Chara: public Sprite {
-private:
-  int animation[4][4];//up right down left XP
-
-public:
-    int dir;
-    void init_Chara();
-    void frame_ori();
-    void frameupdate();
-   	void drawc(SDL_Surface *screen);
-};
-
-class Faceset: public Sprite {
-
-public:
-    void drawf (SDL_Surface * screen);
-    void init_Faceset(int posx,int posy,int theframe);
-};
-
-class Sistem: public Sprite {
-private:
-   SDL_Surface *CubeDraw (SDL_Surface * screen,int sizeX,int sizeY);
-public:
-    void init_Sistem();
-    void draw (SDL_Surface * screen,int iframe,int posx,int posy);
-    SDL_Surface * Exdraw (int sizeX,int sizeY);
-    SDL_Surface * ExdrawT (int sizeX,int sizeY,int tipe);
-    SDL_Surface * Cube_select(int type,int sizeX,int sizeY);
-};
-class Animacion: public Sprite {
-private:
-  int maxframe;
-  short delay;
-public:
-    bool endanim;
-    void reset();
-    void init_Anim(int the_cols,int the_rows);
-    void frameupdate();
-   	void draw(SDL_Surface *screen);
-};
 
 #endif

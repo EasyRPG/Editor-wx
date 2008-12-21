@@ -2,7 +2,7 @@
 //extern CWorld  * World; //cuando exista
 #include <SDL/SDL.h>
 #include "../tools/math-sll.h"
-#include "../sprites/sprite.h"
+#include "../sprites/Chara.h"
 #include "CActor.h"
 #include "../tools/CDeltaTime.h"
 

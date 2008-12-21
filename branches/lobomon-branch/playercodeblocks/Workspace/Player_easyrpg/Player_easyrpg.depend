@@ -627,3 +627,488 @@
 1199508731 /usr/include/SDL/SDL_types.h
 	"SDL_stdinc.h"
 
+1229882242 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/CActor.cpp
+	<SDL/SDL.h>
+	"../tools/math-sll.h"
+	"../sprites/Chara.h"
+	"CActor.h"
+	"../tools/CDeltaTime.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/math-sll.h
+	<math.h>
+
+1229881466 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/sprite.h
+	<SDL.h>
+	"../tools/SDL_rotozoom.h"
+	"../tools/tools.h"
+	<SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/SDL_rotozoom.h
+	<math.h>
+	"SDL.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/tools.h
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/CActor.h
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/CDeltaTime.h
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/Enemy.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"skill.h"
+	"item.h"
+	"Enemy.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/key.h
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/font.h
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/audio.h
+	<stdlib.h>
+	<stdio.h>
+	<SDL.h>
+	<SDL_mixer.h>
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/map.h
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+	"../tools/tools.h"
+	"chipset.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/chipset.h
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+	"../tools/tools.h"
+
+1229882619 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/skill.h
+	"../sprites/Animacion.h"
+
+1229882680 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/item.h
+	"../sprites/Animacion.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/Enemy.h
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/Player.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"skill.h"
+	"item.h"
+	"Enemy.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/item.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"item.h"
+
+1229882622 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/skill.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"skill.h"
+
+1229863657 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/Batle_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"scene.h"
+
+1229882656 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/Player.h
+	"../sprites/Chara.h"
+	"../sprites/Faceset.h"
+
+1229882766 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/scene.h
+	"../sprites/Sistem.h"
+
+1229863657 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/GameOver_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"scene.h"
+
+1229863657 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"scene.h"
+
+1229863657 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/Title_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"scene.h"
+
+1229863657 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/control/scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Equip_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Item_use_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Main_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Objects_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Save_Load_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Skills_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/interfaz/Stats_Menu_scene.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_mixer.h>
+	"../sprites/sprite.h"
+	"../tools/key.h"
+	"../tools/font.h"
+	"../tools/audio.h"
+	"../sprites/map.h"
+	<vector>
+	<string>
+	"../atributes/skill.h"
+	"../atributes/item.h"
+	"../atributes/Enemy.h"
+	"../atributes/Player.h"
+	"../tools/math-sll.h"
+	"../atributes/CActor.h"
+	"../control/scene.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/chipset.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+	"../tools/tools.h"
+	"chipset.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/map.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+	"../tools/tools.h"
+	"map.h"
+
+1229880185 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/sprite.cpp
+	<SDL/SDL.h>
+	"../tools/SDL_rotozoom.h"
+	<SDL/SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/CDeltaTime.cpp
+	<stdio.h>
+	<SDL/SDL.h>
+	"CDeltaTime.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/SDL_rotozoom.cpp
+	<windows.h>
+	<stdlib.h>
+	<string.h>
+	"SDL_rotozoom.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/Timer.cpp
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/audio.cpp
+	"audio.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/font.cpp
+	<SDL/SDL.h>
+	<SDL/SDL_ttf.h>
+	"font.h"
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/key.cpp
+	<SDL/SDL.h>
+
+1229863660 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/tools.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	"tools.h"
+
+1229863661 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/main.cpp
+	"code/tools/tools.h"
+	"code/sprites/map.h"
+	"code/sprites/sprite.h"
+	"code/tools/key.h"
+	"code/tools/font.h"
+	"code/tools/audio.h"
+	"code/tools/math-sll.h"
+	"code/tools/Timer.h"
+	"code/tools/CDeltaTime.h"
+	<vector>
+	<string>
+	"code/atributes/skill.h"
+	"code/atributes/item.h"
+	"code/atributes/Enemy.h"
+	"code/atributes/Player.h"
+	"code/atributes/CActor.h"
+	"code/control/scene.h"
+
+1229863660 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/tools/Timer.h
+
+1229880722 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Chara.h
+	<SDL.h>
+	"../tools/SDL_rotozoom.h"
+	"../tools/tools.h"
+	<SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+
+1229881457 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Animacion.h
+	<SDL.h>
+	"../tools/SDL_rotozoom.h"
+	"../tools/tools.h"
+	<SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+
+1229881460 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Faceset.h
+	<SDL.h>
+	"../tools/SDL_rotozoom.h"
+	"../tools/tools.h"
+	<SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+
+1229881459 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Sistem.h
+	<SDL.h>
+	"../tools/SDL_rotozoom.h"
+	"../tools/tools.h"
+	<SDL_image.h>
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+
+1229882427 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Animacion.cpp
+	"Animacion.h"
+
+1229880082 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Batler.cpp
+
+1229882444 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Chara.cpp
+	"Chara.h"
+
+1229882463 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Faceset.cpp
+	"Faceset.h"
+
+1229882480 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/sprites/Sistem.cpp
+	"Sistem.h"
+

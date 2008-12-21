@@ -1,7 +1,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
-#include "../sprites/sprite.h"
 #include "../tools/key.h"
 #include "../tools/font.h"
 #include "../tools/audio.h"
