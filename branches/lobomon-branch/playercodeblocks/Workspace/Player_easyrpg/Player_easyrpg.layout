@@ -4,8 +4,8 @@
 	<File name="code/atributes/CActor.h" open="0" top="0" tabpos="0">
 		<Cursor position="48" topLine="8" />
 	</File>
-	<File name="code/control/Batle_scene.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="19" topLine="0" />
+	<File name="code/control/Batle_scene.cpp" open="1" top="1" tabpos="4">
+		<Cursor position="2" topLine="0" />
 	</File>
 	<File name="code/control/Batle_scene.h" open="1" top="0" tabpos="2">
 		<Cursor position="479" topLine="10" />
@@ -28,10 +28,10 @@
 	<File name="code/control/Title_scene.h" open="1" top="0" tabpos="3">
 		<Cursor position="478" topLine="5" />
 	</File>
-	<File name="code/control/scene.cpp" open="1" top="0" tabpos="6">
+	<File name="code/control/scene.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="159" topLine="2" />
 	</File>
-	<File name="code/control/scene.h" open="1" top="1" tabpos="14">
+	<File name="code/control/scene.h" open="1" top="0" tabpos="3">
 		<Cursor position="99" topLine="0" />
 	</File>
 	<File name="code/interface/Control/Equip_Menu_scene.h" open="1" top="0" tabpos="7">
