@@ -33,6 +33,21 @@
 
 #include "code/atributes/CActor.h"
 #include "code/control/scene.h"
+#include "code/control/Batle_scene.h"
+#include "code/control/GameOver_scene.h"
+#include "code/control/Map_scene.h"
+#include "code/control/Title_scene.h"
+
+#include "code/interfaz/Control/Equip_Menu_scene.h"
+#include "code/interfaz/Control/Item_use_scene.h"
+#include "code/interfaz/Control/Main_Menu_scene.h"
+#include "code/interfaz/Control/Objects_Menu_scene.h"
+#include "code/interfaz/Control/Save_Load_Menu_scene.h"
+#include "code/interfaz/Control/Skills_Menu_scene.h"
+#include "code/interfaz/Control/Stats_Menu_scene.h"
+
+
+
 #define SCREEN_SIZE_X  320
 #define SCREEN_SIZE_Y  240
 
@@ -51,7 +66,7 @@
     Title_Scene titulo;
     GO_Scene fin;
     Save_Load_Menu_Scene        Menu_Save_Load;
-    Euip_Menu_Scene             Menu_Euip;
+    Equip_Menu_Scene             Menu_Euip;
     Main_Menu_Scene             Menu_Main;
     Objects_Menu_Scene          Menu_Objects;
     Stats_Menu_Scene            Menu_Stats;
@@ -249,7 +264,7 @@ int main(int argc, char** argv)
 
     }
     SDL_Quit();
-    return true;
+    return false;
 
 
  }

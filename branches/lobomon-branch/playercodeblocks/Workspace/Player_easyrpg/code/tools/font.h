@@ -3,10 +3,11 @@
 
 class Font{
 protected:
-          int size;
+
           int fR,  fG,  fB,  fU; // fU = unused
           const char * Fname;
 public:
+      int size;
       void init_Font();
       SDL_Surface* drawText(char* string);
       SDL_Surface* drawText(char* string,int r, int b,int g, int u);
@@ -16,4 +17,4 @@ public:
 
 };
 
-#endif 
+#endif
