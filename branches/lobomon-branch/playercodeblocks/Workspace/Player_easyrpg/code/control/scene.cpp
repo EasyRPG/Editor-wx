@@ -8,12 +8,12 @@
 #include "../sprites/map.h"
 #include <vector>
 #include <string>
-#include "../atributes/skill.h"
-#include "../atributes/item.h"
-#include "../atributes/Enemy.h"
-#include "../atributes/Player.h"
+#include "../attributes/skill.h"
+#include "../attributes/item.h"
+#include "../attributes/Enemy.h"
+#include "../attributes/Player.h"
 #include "../tools/math-sll.h"
-#include "../atributes/CActor.h"
+#include "../attributes/CActor.h"
 #include "scene.h"
 #define Size_of_font 16
 

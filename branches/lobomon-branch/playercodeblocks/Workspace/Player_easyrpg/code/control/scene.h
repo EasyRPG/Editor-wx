@@ -1,6 +1,9 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
+#include "../tools/audio.h"
+#include "../attributes/Player_Team.h"
+
 class Scene {
 protected:
    unsigned char * NScene;

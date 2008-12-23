@@ -54,34 +54,55 @@
 			<Add library="/usr/lib/libSDL_ttf.a" />
 			<Add library="/usr/lib/libSDL_ttf.so" />
 		</Linker>
-		<Unit filename="code/atributes/CActor.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/atributes/CActor.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/atributes/Enemy.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/atributes/Enemy.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/atributes/Player.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/atributes/Player.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/atributes/item.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/atributes/item.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/atributes/skill.cpp">
+		<Unit filename="code/atributes/skill.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/atributes/skill.h">
+		<Unit filename="code/attributes/CActor.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/CActor.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Enemy.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Enemy.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Player.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Player.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Player_Team.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/Player_Team.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/item.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/item.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/skill.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/attributes/skill.h">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/control/Batle_scene.cpp">
@@ -114,67 +135,100 @@
 		<Unit filename="code/control/scene.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Control/Equip_Menu_scene.cpp">
+		<Unit filename="code/interface/Control/Equip_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Equip_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Item_use_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Item_use_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Main_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Main_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Objects_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Objects_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Save_Load_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Save_Load_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Skills_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Skills_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Stats_Menu_scene.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Control/Stats_Menu_scene.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Menu_Easy.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Menu_Easy.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Base.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Base.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Player_Select.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Player_Select.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Select.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="code/interface/Windows/Window_Select.h">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Control/Equip_Menu_scene.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Control/Item_use_scene.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/interfaz/Control/Item_use_scene.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/interfaz/Control/Main_Menu_scene.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Control/Main_Menu_scene.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Control/Objects_Menu_scene.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/interfaz/Control/Objects_Menu_scene.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/interfaz/Control/Save_Load_Menu_scene.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Control/Save_Load_Menu_scene.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Control/Skills_Menu_scene.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/interfaz/Control/Skills_Menu_scene.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/interfaz/Control/Stats_Menu_scene.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Control/Stats_Menu_scene.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Menu_Easy.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/interfaz/Menu_Easy.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/interfaz/Windows/Window_Base.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Windows/Window_Base.h">
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="code/interfaz/Windows/Window_Player_Select.cpp">
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="code/interfaz/Windows/Window_Player_Select.h">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="code/interfaz/Windows/Window_Select.cpp">
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="code/interfaz/Windows/Window_Select.h">

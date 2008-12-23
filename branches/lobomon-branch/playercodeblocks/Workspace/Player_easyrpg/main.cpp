@@ -26,25 +26,25 @@
 #include "code/tools/CDeltaTime.h"
 #include <vector>
 #include <string>
-#include "code/atributes/skill.h"
-#include "code/atributes/item.h"
-#include "code/atributes/Enemy.h"
-#include "code/atributes/Player.h"
+#include "code/attributes/skill.h"
+#include "code/attributes/item.h"
+#include "code/attributes/Enemy.h"
+#include "code/attributes/Player.h"
 
-#include "code/atributes/CActor.h"
+#include "code/attributes/CActor.h"
 #include "code/control/scene.h"
 #include "code/control/Batle_scene.h"
 #include "code/control/GameOver_scene.h"
 #include "code/control/Map_scene.h"
 #include "code/control/Title_scene.h"
 
-#include "code/interfaz/Control/Equip_Menu_scene.h"
-#include "code/interfaz/Control/Item_use_scene.h"
-#include "code/interfaz/Control/Main_Menu_scene.h"
-#include "code/interfaz/Control/Objects_Menu_scene.h"
-#include "code/interfaz/Control/Save_Load_Menu_scene.h"
-#include "code/interfaz/Control/Skills_Menu_scene.h"
-#include "code/interfaz/Control/Stats_Menu_scene.h"
+#include "code/interface/Control/Equip_Menu_scene.h"
+#include "code/interface/Control/Item_use_scene.h"
+#include "code/interface/Control/Main_Menu_scene.h"
+#include "code/interface/Control/Objects_Menu_scene.h"
+#include "code/interface/Control/Save_Load_Menu_scene.h"
+#include "code/interface/Control/Skills_Menu_scene.h"
+#include "code/interface/Control/Stats_Menu_scene.h"
 
 
 
