@@ -1,18 +1,17 @@
 
-    // =========================================================================
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <string>
-    #include "tools.h"
-    #include "stevent.h"    
-    #include "map.h"
-    // =========================================================================
+// =========================================================================
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include "tools.h"#include "stevent.h"    
+#include "map.h"// =========================================================================
 
 
 
 
-stPageMovesEventMap stMap::PageMovesChunk(FILE * Stream)//movimientos de la pagina
-{        stPageMovesEventMap moves;
+stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la pagina
+{        
+	 stPageMovesEventMap moves;
          moves.clear();
          unsigned char Void;
          tChunk ChunkInfo; // informacion del pedazo leido
@@ -96,7 +95,7 @@ stPageMovesEventMap stMap::PageMovesChunk(FILE * Stream)//movimientos de la pagi
                                
                           case CHUNK_MAP_END_OF_BLOCK:
                                break;             
-                               default:
+                          default:
                                // saltate un pedazo del tamaño de la longitud
                                while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
                                break; 
@@ -108,7 +107,7 @@ stPageMovesEventMap stMap::PageMovesChunk(FILE * Stream)//movimientos de la pagi
               return(moves);      
 }  
     
-stPageConditionEventMap stMap::conditionChunk(FILE * Stream)//una dimencion
+stPageConditionEventMap map_reader::conditionChunk(FILE * Stream)//una dimencion
 {        stPageConditionEventMap Conditions;
          Conditions.clear();
          unsigned char Void;
@@ -155,7 +154,7 @@ stPageConditionEventMap stMap::conditionChunk(FILE * Stream)//una dimencion
          }
     return (Conditions);         
 }  
-vector <stPageEventMap> stMap::pageChunk(FILE * Stream)
+vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
 {        std:: vector <stPageEventMap> vcPage;  
          stPageEventMap Page;
          stEvent Event_parser;          
@@ -231,7 +230,7 @@ vector <stPageEventMap> stMap::pageChunk(FILE * Stream)
           return(vcPage);
 }    
      
-void stMap::eventChunk(FILE * Stream)
+std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
 {        stEventMap Event;
          Event.clear();
          int id,datatoread=0,datareaded=0; 
@@ -268,9 +267,11 @@ void stMap::eventChunk(FILE * Stream)
           datareaded++;
           vcEvents.push_back(Event);
           Event.clear();
-          }   
+          }
+	return(vcEvents);   
 }    
-    void stMap::GetNextChunk(FILE * Stream)
+
+    void map_reader::GetNextChunk(FILE * Stream,map_data * data)
     {
         tChunk ChunkInfo; // informacion del pedazo leido
         unsigned char Void;
@@ -284,132 +285,130 @@ void stMap::eventChunk(FILE * Stream)
             switch(ChunkInfo.ID)// segun el tipo
             {    
                 case CHUNK_MAP_CHIPSET:
-                    ChipsetID        = ReadCompressedInteger(Stream);
+                    data.ChipsetID        = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_WIDTH:
-                    MapWidth         = ReadCompressedInteger(Stream);
+                    data.MapWidth         = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_HEIGHT:
-                    MapHeight        = ReadCompressedInteger(Stream);
+                    data.MapHeight        = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_TYPE_OF_LOOP:
-                    TypeOfLoop       = ReadCompressedInteger(Stream);
+                    data.TypeOfLoop       = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_PARALLAX_BACK:
-                    ParallaxBackground = ReadCompressedInteger(Stream);
+                    data.ParallaxBackground = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_BACKGROUND:
-                    BackgroundName   = ReadString(Stream, ChunkInfo.Length);
+                    data.BackgroundName   = ReadString(Stream, ChunkInfo.Length);
                     break;
                     
                 case CHUNK_MAP_HORIZONTAL_PAN:
-                    HorizontalPan    = ReadCompressedInteger(Stream);
+                    data.HorizontalPan    = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_VERTICAL_PAN:
-                    VerticalPan      = ReadCompressedInteger(Stream);
+                    data.VerticalPan      = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_HORIZONTAL_PAN_A:
-                    HorizontalAutoPan = ReadCompressedInteger(Stream);
+                    data.HorizontalAutoPan = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_HORIZONTAL_PAN_SP:
-                    HorizontalPanSpeed = ReadCompressedInteger(Stream);
+                    data.HorizontalPanSpeed = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_VERTICAL_PAN_A:
-                    VerticalAutoPan  = ReadCompressedInteger(Stream);
+                    data.VerticalAutoPan  = ReadCompressedInteger(Stream);
                     break;
                     
                 case CHUNK_MAP_VERTICAL_PAN_SP:
-                    VerticalPanSpeed = ReadCompressedInteger(Stream);
+                    data.VerticalPanSpeed = ReadCompressedInteger(Stream);
                     break;
 
-
-
                 case CHUNK_MAP_USE_GENERATOR: //0x2A   usar generdor aleatorio   
-                    use_genertor = ReadCompressedInteger(Stream);
+                    data.use_genertor = ReadCompressedInteger(Stream);
                     break;          
                 case CHUNK_MAP_GEN_MODE: //0x2A    estilo de generacion       
-                    gen_mode = ReadCompressedInteger(Stream);
+                    data.gen_mode = ReadCompressedInteger(Stream);
                     break;    
                     //case 42: //0x2A npi (no poseo informacion)
                 case CHUNK_MAP_GEN_NUM_TITLES: //0x32   granularidad
-                    gen_Num_titles = ReadCompressedInteger(Stream);
+                    data.gen_Num_titles = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_WIDTH: //0x31    largo
-                    gen_width = ReadCompressedInteger(Stream);
+                    data.gen_width = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_HEIGTH: //0x32    alto
-                    gen_height = ReadCompressedInteger(Stream);
+                    data.gen_height = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_SURROUND_MAP: //0x32    rodear mapa de titles adicionales
-                    gen_surround_map = ReadCompressedInteger(Stream);
+                    data.gen_surround_map = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_UPER_WALL: //0x32   usar pared superior
-                    gen_use_upper_wall = ReadCompressedInteger(Stream);
+                    data.gen_use_upper_wall = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_FLOOR_B: //0x32   usar suelo b
-                    gen_use_floor_b = ReadCompressedInteger(Stream);
+                    data.gen_use_floor_b = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_FLOOR_C: //0x32    usar suelo c
-                    gen_use_floor_c = ReadCompressedInteger(Stream);
+                    data.gen_use_floor_c = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_EXTRA_B: //0x32   usar añadidos b
-                    gen_use_extra_b = ReadCompressedInteger(Stream);
+                    data.gen_use_extra_b = ReadCompressedInteger(Stream);
                     break;
                 case CHUNK_MAP_GEN_EXTRA_C: //0x32  usar añadidos c
-                    gen_use_extra_c = ReadCompressedInteger(Stream);
+                    data.gen_use_extra_c = ReadCompressedInteger(Stream);
                     break;
                case CHUNK_MAP_GEN_X_POS: //0x3C  9 datos estandar  4 bytes X techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, añadidos_a,añadidos_b,añadidos_c
-                     fread(&gen_roof_X, sizeof(int), 1, Stream);
-                     fread(&gen_down_wall_X, sizeof(int), 1, Stream);
-                     fread(&gen_upper_wall_X, sizeof(int), 1, Stream);
-                     fread(&gen_floor_a_X, sizeof(int), 1, Stream);
-                     fread(&gen_floor_b_X, sizeof(int), 1, Stream);
-                     fread(&gen_floor_c_X, sizeof(int), 1, Stream);
-                     fread(&gen_extra_a_X, sizeof(int), 1, Stream);
-                     fread(&gen_extra_b_X, sizeof(int), 1, Stream);
-                     fread(&gen_extra_c_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_roof_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_down_wall_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_upper_wall_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_a_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_b_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_c_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_a_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_b_X, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_c_X, sizeof(int), 1, Stream);
                          break;           
                 case CHUNK_MAP_GEN_Y_POS: //0x3D  datos estandar  4 bytes  Y techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, añadidos_a,añadidos_b,añadidos_c
-                     fread(&gen_roof_Y, sizeof(int), 1, Stream);
-                     fread(&gen_down_wall_Y, sizeof(int), 1, Stream);
-                     fread(&gen_upper_wall_Y, sizeof(int), 1, Stream);
-                     fread(&gen_floor_a_Y, sizeof(int), 1, Stream);
-                     fread(&gen_floor_b_Y, sizeof(int), 1, Stream);
-                     fread(&gen_floor_c_Y, sizeof(int), 1, Stream);
-                     fread(&gen_extra_a_Y, sizeof(int), 1, Stream);
-                     fread(&gen_extra_b_Y, sizeof(int), 1, Stream);
-                     fread(&gen_extra_c_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_roof_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_down_wall_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_upper_wall_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_a_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_b_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_floor_c_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_a_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_b_Y, sizeof(int), 1, Stream);
+                     fread(&data.gen_extra_c_Y, sizeof(int), 1, Stream);
                     break;
                 case CHUNK_MAP_GEN_CHIPSETS_IDS: //0x3E   //2bytes por dato, id de cada chipset, mismo formato que en layers
-                   gen_chipset_ids = new unsigned short[ChunkInfo.Length>>1];
-                    fread(gen_chipset_ids, sizeof(char), ChunkInfo.Length, Stream);                 
+                   data.gen_chipset_ids = new unsigned short[ChunkInfo.Length>>1];
+                    fread(data.gen_chipset_ids, sizeof(char), ChunkInfo.Length, Stream);                 
                     break;                    
                 case CHUNK_MAP_LOWER_LAYER:
                     // Allocate lower map layer
-                    LowerLayer = new unsigned short[ChunkInfo.Length>>1];
-                    fread(LowerLayer, sizeof(char), ChunkInfo.Length, Stream);
+                    data.LowerLayer = new unsigned short[ChunkInfo.Length>>1];
+                    fread(data.LowerLayer, sizeof(char), ChunkInfo.Length, Stream);
                     break;
                     
                 case CHUNK_MAP_UPPER_LAYER:
                     // Allocate upper map layer
-                    UpperLayer = new unsigned short[ChunkInfo.Length>>1];
-                    fread(UpperLayer, sizeof(char), ChunkInfo.Length, Stream);
+                    data.UpperLayer = new unsigned short[ChunkInfo.Length>>1];
+                    fread(data.UpperLayer, sizeof(char), ChunkInfo.Length, Stream);
                     break;              
                 case CHUNK_MAP_EVENTS_LAYER:
-                   eventChunk(Stream);
+                  data.vcEvents= eventChunk(Stream);
                    break;
                     
                 case CHUNK_MAP_TIMES_SAVED:
-                    TimesSaved = ReadCompressedInteger(Stream);
+                    data.TimesSaved = ReadCompressedInteger(Stream);
                     break;
                 
                 case CHUNK_MAP_END_OF_BLOCK:
@@ -424,10 +423,10 @@ void stMap::eventChunk(FILE * Stream)
         }
     }
     
-    // --- Map class -----------------------------------------------------------    
-    bool stMap::Load(string Filename)
+    map_data map_reader::Load(string Filename)
     {
-        // Open map file to read
+	// Open map file to read
+	map_data data;         
         FILE * Stream;// apertura de archivo
         Stream = fopen(Filename.c_str(), "rb");
         string Header = ReadString(Stream); // lectura de cabezera
@@ -438,28 +437,28 @@ void stMap::eventChunk(FILE * Stream)
             return false;
         }   
         // Set default data of the map
-        ChipsetID = 1;            
-        MapWidth = 20;
-        MapHeight = 15;
-        TypeOfLoop = 0;            
-        ParallaxBackground = false;
-        string BackgroundName = "None";
-        HorizontalPan = false;
-        HorizontalAutoPan = false;
-        HorizontalPanSpeed = 0;
-        VerticalPan = false;
-        VerticalAutoPan = false;
-        VerticalPanSpeed = 0;            
-        LowerLayer = NULL;
-        UpperLayer = NULL;
-        NumEvents = 0;  
-        GetNextChunk(Stream);// Get data from map
+        data.ChipsetID = 1;            
+        data.MapWidth = 20;
+        data.MapHeight = 15;
+        data.TypeOfLoop = 0;            
+        data.ParallaxBackground = false;
+        data.string BackgroundName = "None";
+        data.HorizontalPan = false;
+        data.HorizontalAutoPan = false;
+        data.HorizontalPanSpeed = 0;
+        data.VerticalPan = false;
+        data.VerticalAutoPan = false;
+        data.VerticalPanSpeed = 0;            
+        data.LowerLayer = NULL;
+        data.UpperLayer = NULL;
+        data.NumEvents = 0;  
+        GetNextChunk(Stream,data);// Get data from map
         fclose(Stream);
-        return true; // Done
+        return (data); // Done
     }
     
-    void stMap::ShowInformation()
-    { // muestra de informacion del mapa
+    void map_reader::ShowInformation(map_data * data)
+    { 
         printf("Map information\n"
                "===========================================================\n");
         printf("Chipset : %i\n", ChipsetID);
@@ -508,38 +507,9 @@ void stMap::eventChunk(FILE * Stream)
         printf("Number of times saved : %i\n", TimesSaved);
         int x=vcEvents.size();
         
-          for (int y = 0; y < x; y++ )
-            {
-              vcEvents[y].show();
-            }
+        for (int y = 0; y < x; y++ )
+        {
+            vcEvents[y].show();
+        }
     }
-/*
-    void stMap::Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY)
-    {
-        // Declarate the variables we're going to use...        
-        int x, y, xStart, xEnd, yStart, yEnd;
-        unsigned short * TilePointer;
-        unsigned long  StepPerY;
-        int Frame = SDL_GetTicks()>>7; 
-        // se de una chipset de mas para movimientos
-        xStart = (CameraX>>4) - 1; // inicio de dibujado de mapa X 
-        yStart = (CameraY>>4) - 1; // inicio de dibujado de mapa Y
-        xEnd   = ((CameraX + Destiny->w)>>4) + 1;// fin de dibujado de mapa
-        yEnd   = ((CameraY + Destiny->h)>>4) + 1;// fin dd dibujado de mapa
-        // correcciones
-        if ( xStart < 0        ) xStart = 0;
-        if ( yStart < 0        ) yStart = 0;
-        if ( xEnd   > MapWidth ) xEnd   = MapWidth;
-        if ( yEnd   > MapHeight) yEnd   = MapHeight;
-        
-        if(Layer)
-        TilePointer = &UpperLayer[xStart + yStart * MapWidth]; 
-        else
-        TilePointer = &LowerLayer[xStart + yStart * MapWidth];
-        StepPerY    = MapWidth - (xEnd-xStart);
-// Run through the whole map        
-//                for ( y=yStart; y<yEnd; y++, TilePointer+=StepPerY )
-//                    for ( x = xStart; x < xEnd; x++, TilePointer++ )
-//                        Chipset.RenderTile(Destiny, (x<<4)-CameraX, (y<<4)-CameraY, *TilePointer, Frame);
-    }
-*/
+
