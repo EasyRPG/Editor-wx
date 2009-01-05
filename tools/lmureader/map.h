@@ -14,8 +14,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef MAP_H
-#define MAP_H
+#ifndef MAP_DATA_H
+#define MAP_DATA_H
 
 // *****************************************************************************
 // =============================================================================
@@ -26,19 +26,15 @@
     #include "eventchunks.h" 
     #include "mapchunks.h" 
     #include "strmap.h" 
-//    #include "chipset.h"
     using namespace std;
     #include <vector>
 // =============================================================================
 // *****************************************************************************
   
-    struct stMap
+    class map_data
     {
-        // --- Fields declaration ---------------------------------------------- 
         short MapWidth, MapHeight;      // These determine the size of the map       
         short ChipsetID;                // This points to the ID of the Chipset    
-//        stChipset Chipset;              // the map uses, and the structure
-                                        // contains the tileset data of it
         unsigned char TypeOfLoop;       // These flags determines if the map has to
                                         // loop infinitely.       
         bool ParallaxBackground;        // si se usa un fondo paralelo
@@ -86,10 +82,14 @@
         int gen_extra_a_Y;
         int gen_extra_b_Y;
         int gen_extra_c_Y;  
-        unsigned short * gen_chipset_ids;
-        
-        
+        unsigned short * gen_chipset_ids;               
         std:: vector <stEventMap> vcEvents;  
+       
+          
+    };
+
+    class map_reader
+    {
         unsigned char Void;
         tChunk ChunkInfo; // informacion del pedazo leido
         // --- Methods declaration ---------------------------------------------
@@ -100,8 +100,6 @@
         stPageConditionEventMap conditionChunk(FILE * Stream);//condiciones de pagina
         stPageMovesEventMap PageMovesChunk(FILE * Stream);//movimiento de pagina
         //comados de eventos
-        void ShowInformation();  // info del mapa         
-        //void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY); // rendero de capas         
-    };
-
+        void ShowInformation();  // info del mapa  
+    }
 #endif

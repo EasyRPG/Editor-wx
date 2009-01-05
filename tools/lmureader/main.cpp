@@ -17,20 +17,21 @@
 #include "tools.h"
 #include "map.h"
 
-using namespace std;
-
 int main(int argc, char *argv[])
 {
-	if(argc != 2)
-	{
-		printf("Usage: %s file\n", argv[0]);
-	}
-	else
-	{
-		stMap Map;
-		Map.Load(argv[1]);
-		Map.ShowInformation();
+//	if(argc != 2)
+//	{
+//		printf("Usage: %s file\n", argv[0]);
+//	}
+//	else
+//	{
+		map_reader Map;
+		map_data data;
+//		Map.Load(argv[1],&data);
+		Map.Load("Map0001.lmu",&data);
+
+		//Map.ShowInformation(&data);
 		printf("\n"); //FIXME
-	}
+//	}
 	return 0;
 }
