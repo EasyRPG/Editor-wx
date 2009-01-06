@@ -1,5 +1,5 @@
 /* tools.cpp, miscellaneous shared routines.
-   Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
+   Copyright (C) 2005, 2007, 2008 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,71 +15,68 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include "tools.h"
 
-int read_int(FILE * file)
+int read_int(FILE *file)
 {
-	int		value		= 0;
-	unsigned char	temporal	= 0;
+    int value = 0;
+    unsigned char temporal = 0;
 
-	do
-	{
-		value = value << 7;
+    do
+    {
+        value = value << 7;
+        // Get byte's value
+        fread(&temporal, 1, 1, file);
+        // Check if it's a BER integer
+        value = value | (temporal & 0x7F);
+    }
+    while (temporal & 0x80);
 
-		// Get byte's value
-		fread(&temporal, 1, 1, file);
-
-		// Check if it's a BER integer
-		value = value | (temporal & 0x7F);
-
-	} while(temporal & 0x80);
-
-	return value;
+    return value;
 }
 
-std::string read_string(FILE * file)
+std::string read_string(FILE *file)
 {
-	unsigned char	length;
-	char		* characters;
-	std::string	result_string;
+    int length;
+    char *characters;
+    std::string result_string;
 
-	// Read string length
-	fread(&length, 1, 1, file);
-	if(length == 0)
-	{
-		return std::string("");
-	}
+    // Read string length
+    length = read_int(file);
+    if (length == 0)
+    {
+        return std::string("Empty string 1");
+    }
 
-	// Allocate string buffer
-	characters = new char[length+1];
-	memset(characters, 0, length+1);
-	fread(characters, 1, length, file);
+    // Allocate string buffer
+    characters = new char[length + 1];
+    fread(characters, 1, length, file);
+    //Suffix '\0' to the end of the string
+    characters[length] = 0;
+    result_string = std::string(characters);
+    delete characters;
 
-	// Get string and free characters buffer
-	result_string = std::string(characters);
-	delete characters;
-
-	return result_string;
+    return result_string;
 }
 
-std::string read_string(FILE * file, int length)
+
+std::string read_string(FILE *file, int length)
 {
-	//When the program is reading different chunk IDs and the chunk size
-	//is previous read, the file cursor already have read the length,
-	//so the overload is intended for those cases
-	char		* characters;
-	std::string	result_string;
+    char *characters;
+    std::string result_string;
 
-	// Allocate string buffer
-	characters = new char[length+1];
-	memset(characters, 0, length+1);
-	fread(characters, 1, length, file);
+    if (length == 0)
+    {
+        return std::string("Empty string 2");
+    }
+    // Allocate string buffer
+    characters = new char[length + 1];
+    fread(characters, 1, length, file);
+    //Suffix '\0' to the end of the string
+    characters[length] = 0;
+    result_string = std::string(characters);
+    delete characters;
 
-	// Get string and free characters buffer
-	result_string = std::string(characters);
-	delete characters;
-
-	return result_string;
+    return result_string;
 }

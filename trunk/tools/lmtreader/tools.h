@@ -18,11 +18,10 @@
 #define TOOLS_H
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string>
 
-int		read_int(FILE * file);
-std::string	read_string(FILE * file);
-std::string	read_string(FILE * file, int length);
+int read_int(FILE *file);
+std::string read_string(FILE *file);
+std::string read_string(FILE *file, int length);
 
 #endif

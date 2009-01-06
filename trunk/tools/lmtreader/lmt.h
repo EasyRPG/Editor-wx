@@ -17,65 +17,69 @@
 #ifndef LMT_H
 #define LMT_H
 
+#include <string>
 #include <vector>
 
-struct bgm_data
+struct music_data
 {
-	std::string	name;
-	int		fade_in;
-	int		volume;
-	int		tempo;
-	int		balance;
+    std::string name;
+    int fade_in;
+    int volume;
+    int tempo;
+    int balance;
 };
 
-struct node
+struct node_data
 {
-	std::string		name;
-	int			parent_id;
-	int			depth;
-	int			type;
-	int			scrollbar_x;
-	int			scrollbar_y;
-	int			expanded;
-	int			bgm;
-	bgm_data		bgm_file;
-	int			battle;
-	std::string		battle_file;
-	int			teleport;
-	int			escape;
-	int			save;
-	std::vector<int>	encounter;
-	int			encounter_steps;
-	int			area_start_x;
-	int			area_start_y;
-	int			area_end_x;
-	int			area_end_y;
+    int id;
+    std::string name;
+    int parent_id;
+    int depth;
+    int type;
+    int scrollbar_x;
+    int scrollbar_y;
+    int expanded;
+    int music;
+    music_data music_file;
+    int backdrop;
+    std::string backdrop_file;
+    int teleport;
+    int escape;
+    int save;
+    std::vector<int> encounter;
+    int encounter_steps;
+    int area_start_x;
+    int area_start_y;
+    int area_end_x;
+    int area_end_y;
 };
 
 class lmt
 {
-	public:
-		int			total_nodes;
-		int			party_map_id;
-		int			party_x;
-		int			party_y;
-		int			skiff_map_id;
-		int			skiff_x;
-		int			skiff_y;
-		int			boat_map_id;
-		int			boat_x;
-		int			boat_y;
-		int			airship_map_id;
-		int			airship_x;
-		int			airship_y;
-		std::vector<node>	tree_list;
-		std::vector<int>	tree_order;
-		// Methods
-		bool	load(std::string filename);
-		void	print();
-	private:
-		void	read_tree(FILE * file);
-		void	clear(node * leaf);
+public:
+    int total_nodes;
+    int party_map_id;
+    int party_x;
+    int party_y;
+    int skiff_map_id;
+    int skiff_x;
+    int skiff_y;
+    int boat_map_id;
+    int boat_x;
+    int boat_y;
+    int airship_map_id;
+    int airship_x;
+    int airship_y;
+    std::vector<node_data> tree_list;
+    std::vector<int> tree_order;
+    std::vector<int> tree_order_ordered;
+    int selected_node;
+    //Methods
+    bool load(std::string filename);
+    void print();
+private:
+    void read_tree(FILE *file);
+    void clear(node_data *node);
 };
 
 #endif
