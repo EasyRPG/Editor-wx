@@ -309,6 +309,14 @@ int main()
                 }
             }
             while (joy_axisvalue > 1);
+            if (joy_axisvalue == 1)
+            {
+                joy_axisvalue = -1;
+            }
+            else
+            {
+                joy_axisvalue = 1;
+            }
             bool exit_program;
             exit_program = false;
             if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
