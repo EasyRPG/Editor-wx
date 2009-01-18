@@ -14,10 +14,12 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#include "SDL/SDL.h"
+
 class Joy
 {
     private:
-        SDL_Event    *joy_event;
+        SDL_Event    event;
         SDL_Joystick *joy;
         Uint32       REPEAT_BASE_TIME;
         Uint32       REPEAT_DELAY_TIME;
@@ -46,8 +48,8 @@ class Joy
         bool        button_repeat_control(Uint8 joy_button);
 
         /* Joy axis handling */
-        bool	    axis_action(Uint8 joy_axis, Sint8 axis_value, bool repeat);
-        bool        axis_repeat_control(Uint8 joy_axis, Sint8 axis_value);
-        bool        axis_press(Uint8 joy_axis, Sint8 axis_value);
+        bool	    axis_action(Uint8 joy_axis, Sint16 axis_value, bool repeat);
+        bool        axis_repeat_control(Uint8 joy_axis, Sint16 axis_value);
+        bool        axis_press(Uint8 joy_axis, Sint16 axis_value);
 };
 

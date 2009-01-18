@@ -73,29 +73,28 @@ bool Joy::axis_action(Uint8 joy_axis, Sint16 axis_value, bool repeat)
     switch(repeat)
     {
         case false:
-        {
-            return (Joy::axis_press(joy_axis, axis_value));
+
+            return axis_press(joy_axis, axis_value);
             break;
-        }
+
         case true:
-        {
-            return (axis_repeat_control(joy_axis, axis_value));
-        }
+           return axis_repeat_control(joy_axis, axis_value);
+           break;
     }
 }
 
 bool Joy::axis_press(Uint8 joy_axis, Sint16 axis_value)
 {
-      if (SDL_PollEvent(joy_event))
+      if (SDL_PollEvent(&event))
       {
-        if (joy_event->type == SDL_JOYAXISMOTION)
+        if (event.type == SDL_JOYAXISMOTION)
         {
             if (axis_value < 0)     //  if value is up or left
             {
 
-                if (joy_event->jaxis.axis == joy_axis)
+                if (event.jaxis.axis == joy_axis)
                 {
-                    if(joy_event->jaxis.value <= axis_value)
+                    if(event.jaxis.value <= axis_value)
                     {
 
                         return(true);
@@ -104,9 +103,9 @@ bool Joy::axis_press(Uint8 joy_axis, Sint16 axis_value)
             }
             if (axis_value > 0)
             {
-                if (joy_event->jaxis.axis == joy_axis)
+                if (event.jaxis.axis == joy_axis)
                 {
-                    if (joy_event->jaxis.value >= axis_value)
+                    if (event.jaxis.value >= axis_value)
                     {
 
                         return(true);
@@ -128,7 +127,7 @@ bool Joy::axis_repeat_control(Uint8 joy_axis, Sint16 axis_value)
         if(first_time)// when event switches from none to keydown
         {
             first_time = false;
-            return Joy::axis_press(joy_axis, axis_value);
+            return axis_press(joy_axis, axis_value);
         }
 
         Uint32 joy_time    = SDL_GetTicks();
@@ -166,13 +165,13 @@ bool Joy::button_action(Uint8 joy_button, bool repeat)
     {
         case false:
         {
-            return (Joy::button_press(joy_button));
+            return button_press(joy_button);
             break;
         }
         case true:
         {
-            return (Joy::button_repeat_control(joy_button));
-	    break; 
+            return button_repeat_control(joy_button);
+	    break;
 	}
     }
 
@@ -180,22 +179,19 @@ bool Joy::button_action(Uint8 joy_button, bool repeat)
 
 bool Joy::button_press(Uint8 joy_button)
 {
-    SDL_Event *joy_event;
+    SDL_Event event;
 
-    if (SDL_PollEvent(joy_event))
+    if (SDL_PollEvent(&event))
     {
-	printf("\namparo")
-	if (joy_event->type == SDL_JOYBUTTONDOWN)
-	{	printf("\namparo2")	
-		if (joy_event->jbutton.button == joy_button)
+	if (event.type == SDL_JOYBUTTONDOWN)
+	{	if (event.jbutton.button == joy_button)
 		{
-			printf("\namparo3")
 			return (true);
 		}
 	}
-        
+
     }
-    return (false);   //  if no condition returned true	
+    return (false);   //  if no condition returned true
 }
 
 bool Joy::button_repeat_control(Uint8 joy_button)
