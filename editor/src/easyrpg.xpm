@@ -1,5 +1,5 @@
 /* XPM */
-static char * easyrpg_xpm[] = {
+static const char * easyrpg_xpm[] = {
 "48 48 257 2",
 "  	c None",
 ". 	c #000100",
