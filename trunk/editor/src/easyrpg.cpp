@@ -33,9 +33,9 @@ private:
 class MyFrame : public wxFrame
 {
 public:
-	MyFrame(const wxString& title);
-	void OnAbout(wxCommandEvent& event);
-	void OnQuit(wxCommandEvent& event);
+	MyFrame(const wxString &title);
+	void OnAbout(wxCommandEvent &event);
+	void OnQuit(wxCommandEvent &event);
 private:
 	DECLARE_EVENT_TABLE()
 };
@@ -107,80 +107,80 @@ bool MyApp::OnInit()
 }
 
 // Frame
-MyFrame::MyFrame(const wxString& title)
+MyFrame::MyFrame(const wxString &title)
 	: wxFrame(NULL, wxID_ANY, title)
 {
 	SetIcon(wxICON(easyrpg));
 
 	//Menu bar
-	wxMenu *fileMenu = new wxMenu;
-	fileMenu->Append(MenuitemNewProject, _("&New Project...\tCtrl-N"), _("Create a new project"));
-	fileMenu->Append(MenuitemOpenProject, _("&Open Project\tCtrl-O"), _("Open an existing project"));
-	fileMenu->Append(MenuitemCloseProject, _("&Close Project"), _("Close the current project"));
-	fileMenu->Append(MenuitemSaveProject, _("&Save Project\tCtrl-S"), _("Save the current project"));
-	fileMenu->AppendSeparator();
-	fileMenu->Append(MenuitemCompressGameData, _("Co&mpress Game Data..."), _("Compress game data and create a distributable file"));
-	fileMenu->AppendSeparator();
-	fileMenu->Append(MenuitemQuit, _("E&xit EasyRPG"), _("Exit EasyRPG"));
-	wxMenu *editMenu = new wxMenu;
-	editMenu->Append(MenuitemUndo, _("&Undo\tCtrl-Z"), _("Undo the last action"));
-	editMenu->AppendSeparator();
-	editMenu->Append(MenuitemCut, _("Cu&t\tCtrl-X"), _("Cut the selection and put it on the Clipboard"));
-	editMenu->Append(MenuitemCopy, _("&Copy\tCtrl-C"), _("Copy the selection and put it on the Clipboard"));
-	editMenu->Append(MenuitemPaste, _("&Paste\tCtrl-V"), _("Insert Clipboard contents"));
-	editMenu->Append(MenuitemDelete, _("&Delete\tDel"), _("Erase the selection"));
-	wxMenu *viewMenu = new wxMenu;
-	viewMenu->Append(MenuitemCurrentLayerAndBelow, _("&Current Layer and Below\tF2"), _("Display layer currently being edited and the layer below"));
-	viewMenu->Append(MenuitemAllLayers, _("&All Layers\tF3"), _("Show all layers"));
-	viewMenu->AppendSeparator();
-	viewMenu->Append(MenuitemDimOtherLayers, _("&Dim Other Layers\tF4"), _("Dim all but the layer currently being edited"));
-	wxMenu *modeMenu = new wxMenu;
-	modeMenu->Append(MenuitemLayer1, _("Layer &1\tF5"), _("Switche to layer 1 editing mode"));
-	modeMenu->Append(MenuitemLayer2, _("Layer &2\tF6"), _("Switche to layer 2 editing mode"));
-	modeMenu->Append(MenuitemLayer3, _("Layer &3\tF7"), _("Switche to layer 3 editing mode"));
-	modeMenu->Append(MenuitemEvents, _("&Events\tF8"), _("Switche to event editing mode"));
-	wxMenu *drawMenu = new wxMenu;
-	drawMenu->Append(MenuitemPencil, _("&Pencil"), _("Draw tiles freehand"));
-	drawMenu->Append(MenuitemRectangle, _("&Rectangle"), _("Draw a rectangle"));
-	drawMenu->Append(MenuitemEllipse, _("&Ellipse"), _("Draw an ellipse"));
-	drawMenu->Append(MenuitemFloodFill, _("&Flood Fill"), _("Fill the region with the current tile"));
-	drawMenu->Append(MenuitemSelect, _("&Select"), _("Select a square portion of the map"));
-	wxMenu *scaleMenu = new wxMenu;
-	scaleMenu->Append(Menuitem11, _("1:&1"), _("Display the map in 1:1 scale"));
-	scaleMenu->Append(Menuitem12, _("1:&2"), _("Display the map in 1:2 scale"));
-	scaleMenu->Append(Menuitem14, _("1:&4"), _("Display the map in 1:4 scale"));
-	wxMenu *toolsMenu = new wxMenu;
-	toolsMenu->Append(MenuitemDatabase, _("&Database...\tF9"), _("Open the database"));
-	toolsMenu->Append(MenuitemMaterialbase, _("&Materialbase...\tF10"), _("Open the materialbase"));
-	toolsMenu->Append(MenuitemScriptEditor, _("&Script Editor...\tF11"), _("Open the script editor"));
-	toolsMenu->Append(MenuitemSoundTest, _("Sound &Test..."), _("Open the sound test window"));
-	toolsMenu->AppendSeparator();
-	toolsMenu->Append(MenuitemOptions, _("&Options..."), _("Change editor settings"));
-	wxMenu *gameMenu = new wxMenu;
-	gameMenu->Append(MenuitemPlaytest, _("Play&test\tF12"), _("Start a playtest of this game"));
-	gameMenu->AppendSeparator();
-	gameMenu->Append(MenuitemChangeTitle, _("&Change Title..."), _("Change this game's title"));
-	gameMenu->Append(MenuitemSelectRTP, _("&Select RTP..."), _("Select an RTP to use in this game"));
-	gameMenu->AppendSeparator();
-	gameMenu->Append(MenuitemOpenGameFolder, _("&Open Game Folder"), _("Open folder for game currently being edited"));
-	wxMenu *helpMenu = new wxMenu;
-	helpMenu->Append(MenuitemContents, _("&Contents\tF1"), _("Open the help"));
-	helpMenu->AppendSeparator();
-	helpMenu->Append(MenuitemAbout, _("&About..."), _("Display program information, version number and copyright"));
+	wxMenu *MenuFile = new wxMenu;
+	MenuFile->Append(MenuitemNewProject, _("&New Project...\tCtrl-N"), _("Create a new project"));
+	MenuFile->Append(MenuitemOpenProject, _("&Open Project\tCtrl-O"), _("Open an existing project"));
+	MenuFile->Append(MenuitemCloseProject, _("&Close Project"), _("Close the current project"));
+	MenuFile->Append(MenuitemSaveProject, _("&Save Project\tCtrl-S"), _("Save the current project"));
+	MenuFile->AppendSeparator();
+	MenuFile->Append(MenuitemCompressGameData, _("Co&mpress Game Data..."), _("Compress game data and create a distributable file"));
+	MenuFile->AppendSeparator();
+	MenuFile->Append(MenuitemQuit, _("E&xit EasyRPG"), _("Exit EasyRPG"));
+	wxMenu *MenuEdit = new wxMenu;
+	MenuEdit->Append(MenuitemUndo, _("&Undo\tCtrl-Z"), _("Undo the last action"));
+	MenuEdit->AppendSeparator();
+	MenuEdit->Append(MenuitemCut, _("Cu&t\tCtrl-X"), _("Cut the selection and put it on the Clipboard"));
+	MenuEdit->Append(MenuitemCopy, _("&Copy\tCtrl-C"), _("Copy the selection and put it on the Clipboard"));
+	MenuEdit->Append(MenuitemPaste, _("&Paste\tCtrl-V"), _("Insert Clipboard contents"));
+	MenuEdit->Append(MenuitemDelete, _("&Delete\tDel"), _("Erase the selection"));
+	wxMenu *MenuView = new wxMenu;
+	MenuView->Append(MenuitemCurrentLayerAndBelow, _("&Current Layer and Below\tF2"), _("Display layer currently being edited and the layer below"));
+	MenuView->Append(MenuitemAllLayers, _("&All Layers\tF3"), _("Show all layers"));
+	MenuView->AppendSeparator();
+	MenuView->Append(MenuitemDimOtherLayers, _("&Dim Other Layers\tF4"), _("Dim all but the layer currently being edited"));
+	wxMenu *MenuMode = new wxMenu;
+	MenuMode->Append(MenuitemLayer1, _("Layer &1\tF5"), _("Switche to layer 1 editing mode"));
+	MenuMode->Append(MenuitemLayer2, _("Layer &2\tF6"), _("Switche to layer 2 editing mode"));
+	MenuMode->Append(MenuitemLayer3, _("Layer &3\tF7"), _("Switche to layer 3 editing mode"));
+	MenuMode->Append(MenuitemEvents, _("&Events\tF8"), _("Switche to event editing mode"));
+	wxMenu *MenuDraw = new wxMenu;
+	MenuDraw->Append(MenuitemPencil, _("&Pencil"), _("Draw tiles freehand"));
+	MenuDraw->Append(MenuitemRectangle, _("&Rectangle"), _("Draw a rectangle"));
+	MenuDraw->Append(MenuitemEllipse, _("&Ellipse"), _("Draw an ellipse"));
+	MenuDraw->Append(MenuitemFloodFill, _("&Flood Fill"), _("Fill the region with the current tile"));
+	MenuDraw->Append(MenuitemSelect, _("&Select"), _("Select a square portion of the map"));
+	wxMenu *MenuScale = new wxMenu;
+	MenuScale->Append(Menuitem11, _("1:&1"), _("Display the map in 1:1 scale"));
+	MenuScale->Append(Menuitem12, _("1:&2"), _("Display the map in 1:2 scale"));
+	MenuScale->Append(Menuitem14, _("1:&4"), _("Display the map in 1:4 scale"));
+	wxMenu *MenuTools = new wxMenu;
+	MenuTools->Append(MenuitemDatabase, _("&Database...\tF9"), _("Open the database"));
+	MenuTools->Append(MenuitemMaterialbase, _("&Materialbase...\tF10"), _("Open the materialbase"));
+	MenuTools->Append(MenuitemScriptEditor, _("&Script Editor...\tF11"), _("Open the script editor"));
+	MenuTools->Append(MenuitemSoundTest, _("Sound &Test..."), _("Open the sound test window"));
+	MenuTools->AppendSeparator();
+	MenuTools->Append(MenuitemOptions, _("&Options..."), _("Change editor settings"));
+	wxMenu *MenuGame = new wxMenu;
+	MenuGame->Append(MenuitemPlaytest, _("Play&test\tF12"), _("Start a playtest of this game"));
+	MenuGame->AppendSeparator();
+	MenuGame->Append(MenuitemChangeTitle, _("&Change Title..."), _("Change this game's title"));
+	MenuGame->Append(MenuitemSelectRTP, _("&Select RTP..."), _("Select an RTP to use in this game"));
+	MenuGame->AppendSeparator();
+	MenuGame->Append(MenuitemOpenGameFolder, _("&Open Game Folder"), _("Open folder for game currently being edited"));
+	wxMenu *MenuHelp = new wxMenu;
+	MenuHelp->Append(MenuitemContents, _("&Contents\tF1"), _("Open the help"));
+	MenuHelp->AppendSeparator();
+	MenuHelp->Append(MenuitemAbout, _("&About..."), _("Display program information, version number and copyright"));
 	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(fileMenu, _("&File"));
-	menuBar->Append(editMenu, _("&Edit"));
-	menuBar->Append(viewMenu, _("&View"));
-	menuBar->Append(modeMenu, _("&Mode"));
-	menuBar->Append(drawMenu, _("&Draw"));
-	menuBar->Append(scaleMenu, _("&Scale"));
-	menuBar->Append(toolsMenu, _("&Tools"));
-	menuBar->Append(gameMenu, _("&Game"));
-	menuBar->Append(helpMenu, _("&Help"));
+	menuBar->Append(MenuFile, _("&File"));
+	menuBar->Append(MenuEdit, _("&Edit"));
+	menuBar->Append(MenuView, _("&View"));
+	menuBar->Append(MenuMode, _("&Mode"));
+	menuBar->Append(MenuDraw, _("&Draw"));
+	menuBar->Append(MenuScale, _("&Scale"));
+	menuBar->Append(MenuTools, _("&Tools"));
+	menuBar->Append(MenuGame, _("&Game"));
+	menuBar->Append(MenuHelp, _("&Help"));
 	SetMenuBar(menuBar);
 
 	//Tool bar
-	wxToolBar* toolBar = CreateToolBar();
+	wxToolBar * toolBar = CreateToolBar();
 	toolBar->AddTool(wxID_NEW, wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_TOOLBAR), _("New"), _("Create a new project"));
 	toolBar->AddTool(wxID_OPEN, wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR), _("Open"), _("Open an existing project"));
 	toolBar->AddTool(wxID_SAVE, wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR), _("Save"), _("Save the current project"));
@@ -220,7 +220,7 @@ MyFrame::MyFrame(const wxString& title)
 }
 
 //Events
-void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+void MyFrame::OnAbout(wxCommandEvent &WXUNUSED(event))
 {
 	wxString msg;
 	msg.Printf(
@@ -243,7 +243,7 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 	wxMessageBox(msg, _("About EasyRPG"), wxOK | wxICON_INFORMATION, this);
 }
 
-void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
+void MyFrame::OnQuit(wxCommandEvent &WXUNUSED(event))
 {
 	Close();
 }
