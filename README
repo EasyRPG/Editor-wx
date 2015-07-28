@@ -1,0 +1,39 @@
+EasyRPG Editor-wx
+=================
+
+EasyRPG Editor-wx is a legacy role playing game editor tool.
+
+EasyRPG Editor-wx is part of the EasyRPG Project. More information is
+available at the project website:
+
+  https://easy-rpg.org/
+
+
+Documentation
+-------------
+
+Documentation is available at the documentation wiki:
+
+  https://easy-rpg.org/wiki/
+
+
+Requirements
+------------
+
+wxWidgets development libraries, version 2 or 3.
+
+
+Development
+-----------
+
+EasyRPG Editor-wx development is hosted by GitHub.
+Source code is available in Git repositories.
+
+  https://github.com/EasyRPG/Editor-wx
+
+
+License
+-------
+
+EasyRPG Editor-wx is free software. See the file COPYING for copying
+conditions.
