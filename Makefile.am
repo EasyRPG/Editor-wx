@@ -1,3 +1,5 @@
-SUBDIRS = src
+EXTRA_DIST = src/easyrpg.ico src/easyrpg.xpm
 
-EXTRA_DIST = AUTHORS ChangeLog NEWS README src/easyrpg.ico src/easyrpg.xpm
+bin_PROGRAMS = easyrpg-editor-wx
+
+easyrpg_editor_wx_SOURCES = src/easyrpg.cpp
