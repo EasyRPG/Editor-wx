@@ -1,16 +1,18 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.60)
-AC_INIT(easyrpg, 0.1)
-AC_CONFIG_SRCDIR([config.h.in])
-AC_CONFIG_HEADER([config.h])
+AC_PREREQ([2.69])
+AC_INIT([easyrpg-editor-wx],[0.1],[https://github.com/EasyRPG/Editor-wx/issues])
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects -Wall -Werror])
+AM_MAINTAINER_MODE([enable])
+AM_SILENT_RULES([yes])
+
+AC_CONFIG_SRCDIR([src/easyrpg.cpp])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_CC
 
 # Checks for libraries.
 AM_OPTIONS_WXCONFIG
@@ -36,8 +38,7 @@ LIBS="$LIBS $WX_LIBS"
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
+AC_CHECK_HEADER_STDBOOL
 
 # Checks for library functions.
 
