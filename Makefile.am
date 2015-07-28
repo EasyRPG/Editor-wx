@@ -1,4 +1,4 @@
-EXTRA_DIST = src/easyrpg.ico src/easyrpg.xpm
+EXTRA_DIST = win32/ src/easyrpg.xpm
 
 bin_PROGRAMS = easyrpg-editor-wx
 
