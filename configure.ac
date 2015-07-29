@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
-AC_CONFIG_SRCDIR([src/easyrpg.cpp])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
